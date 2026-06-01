@@ -2,415 +2,978 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+
+// 示例作品数据
+const showcaseWorks = [
+  {
+    id: 1,
+    author: '拼豆小达人',
+    avatar: '😊',
+    title: '彩虹独角兽',
+    description: '用了3个小时完成，颜色搭配很梦幻！',
+    likes: 128,
+    comments: 23,
+    tags: ['动物', '彩虹'],
+    color: '#FF6B6B'
+  },
+  {
+    id: 2,
+    author: '手工爱好者',
+    avatar: '🎨',
+    title: '樱花杯垫',
+    description: '春天的感觉，放在桌上心情都变好了',
+    likes: 96,
+    comments: 15,
+    tags: ['植物', '杯垫'],
+    color: '#FF6B9D'
+  },
+  {
+    id: 3,
+    author: '像素艺术家',
+    avatar: '🌟',
+    title: '马里奥风格蘑菇',
+    description: '经典游戏角色，满满的童年回忆',
+    likes: 234,
+    comments: 45,
+    tags: ['游戏', '经典'],
+    color: '#E74C3C'
+  },
+  {
+    id: 4,
+    author: '创意工坊',
+    avatar: '✨',
+    title: '星空钥匙扣',
+    description: '送给朋友的生日礼物，她超喜欢！',
+    likes: 167,
+    comments: 32,
+    tags: ['钥匙扣', '礼物'],
+    color: '#9B59B6'
+  },
+  {
+    id: 5,
+    author: '豆豆新手',
+    avatar: '🌱',
+    title: '第一个作品：小猫咪',
+    description: '第一次做拼豆，虽然不完美但很有成就感',
+    likes: 89,
+    comments: 28,
+    tags: ['动物', '新手'],
+    color: '#4ECDC4'
+  },
+  {
+    id: 6,
+    author: '国风爱好者',
+    avatar: '🏮',
+    title: '祥云纹书签',
+    description: '结合传统元素，很有中国风的感觉',
+    likes: 156,
+    comments: 19,
+    tags: ['国风', '书签'],
+    color: '#E67E22'
+  }
+];
+
+// 热门话题
+const hotTopics = [
+  { id: 1, title: '分享你的第一个拼豆作品', participants: 523, icon: '📸' },
+  { id: 2, title: '拼豆颜色搭配技巧讨论', participants: 328, icon: '🎨' },
+  { id: 3, title: '晒晒你的拼豆收纳方法', participants: 267, icon: '📦' },
+  { id: 4, title: '求助：熨烫总是失败怎么办', participants: 189, icon: '🔥' }
+];
+
+// 社区公告
+const announcements = [
+  { id: 1, title: '🎉 社区正式上线啦！', date: '2024-01-15', important: true },
+  { id: 2, title: '📢 分享作品赢好礼活动开始', date: '2024-01-10', important: false },
+  { id: 3, title: '🆕 新增50张图纸，快来下载', date: '2024-01-05', important: false }
+];
 ---
 
-<Layout title="社区">
+<Layout title="社区" description="分享作品，交流心得，结识拼豆爱好者">
   <Header activeNav="community" />
   
   <main class="community-page">
     <div class="container">
-      <div class="coming-soon-container">
-        <!-- 社区图标动画 -->
-        <div class="community-animation">
-          <div class="avatar-group">
-            <div class="avatar avatar-1">👤</div>
-            <div class="avatar avatar-2">👤</div>
-            <div class="avatar avatar-3">👤</div>
-            <div class="avatar avatar-main">🎨</div>
+      <!-- 页面标题 -->
+      <div class="page-header">
+        <h1 class="page-title">
+          <span class="title-icon">👥</span>
+          拼豆社区
+        </h1>
+        <p class="page-desc">分享作品，交流心得，结识志同道合的拼豆爱好者</p>
+      </div>
+      
+      <!-- 社区统计 -->
+      <section class="stats-section">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <span class="stat-icon">🎨</span>
+            <span class="stat-number">1,234</span>
+            <span class="stat-label">分享作品</span>
           </div>
-          <div class="connection-lines">
-            <span class="line line-1"></span>
-            <span class="line line-2"></span>
-            <span class="line line-3"></span>
+          <div class="stat-card">
+            <span class="stat-icon">👥</span>
+            <span class="stat-number">567</span>
+            <span class="stat-label">活跃用户</span>
           </div>
-        </div>
-        
-        <!-- 主内容区 -->
-        <div class="content-card pixel-card">
-          <h1 class="page-title">社区功能开发中...</h1>
-          <p class="page-subtitle">
-            一个属于拼豆爱好者的交流空间即将诞生<br/>
-            在这里分享作品、交流心得、结识同好
-          </p>
-          
-          <!-- 功能预告 -->
-          <div class="features-section">
-            <h2 class="features-title">即将开放功能</h2>
-            <div class="features-grid">
-              <div class="feature-card">
-                <div class="feature-icon">📸</div>
-                <h3 class="feature-name">作品展示</h3>
-                <p class="feature-desc">分享您的拼豆作品</p>
-              </div>
-              
-              <div class="feature-card">
-                <div class="feature-icon">💬</div>
-                <h3 class="feature-name">话题讨论</h3>
-                <p class="feature-desc">参与热门话题交流</p>
-              </div>
-              
-              <div class="feature-card">
-                <div class="feature-icon">❓</div>
-                <h3 class="feature-name">问答互助</h3>
-                <p class="feature-desc">解决制作中的疑惑</p>
-              </div>
-              
-              <div class="feature-card">
-                <div class="feature-icon">🏆</div>
-                <h3 class="feature-name">挑战活动</h3>
-                <p class="feature-desc">参与主题创作挑战</p>
-              </div>
-              
-              <div class="feature-card">
-                <div class="feature-icon">📦</div>
-                <h3 class="feature-name">材料交易</h3>
-                <p class="feature-desc">拼豆材料交换分享</p>
-              </div>
-              
-              <div class="feature-card">
-                <div class="feature-icon">🌟</div>
-                <h3 class="feature-name">达人认证</h3>
-                <p class="feature-desc">成为社区认证达人</p>
-              </div>
-            </div>
+          <div class="stat-card">
+            <span class="stat-icon">💬</span>
+            <span class="stat-number">8,901</span>
+            <span class="stat-label">讨论帖子</span>
           </div>
-          
-          <!-- 倒计时提示 -->
-          <div class="countdown-hint">
-            <div class="hint-box">
-              <span class="hourglass">⏳</span>
-              <p class="hint-text">预计开放时间：2024年Q2</p>
-            </div>
+          <div class="stat-card">
+            <span class="stat-icon">❤️</span>
+            <span class="stat-number">12K+</span>
+            <span class="stat-label">累计点赞</span>
           </div>
         </div>
+      </section>
+      
+      <!-- 主要内容区 -->
+        <div class="main-content">
+          <!-- 左侧：作品展示 -->
+          <section class="showcase-section">
+            <div class="section-header">
+              <h2 class="section-title">👤 用户作品</h2>
+              <div class="filter-tabs">
+                <button class="tab-btn active">最新</button>
+                <button class="tab-btn">热门</button>
+                <button class="tab-btn">精华</button>
+              </div>
+            </div>
+            
+            <div id="user-works-grid" class="works-grid">
+              <!-- 用户作品由JS动态加载 -->
+            </div>
+            
+            <div class="section-header" style="margin-top: var(--spacing-xl); padding-top: var(--spacing-lg); border-top: 2px dashed var(--color-border);">
+              <h2 class="section-title">📸 示例作品</h2>
+            </div>
+            
+            <div class="works-grid">
+              {showcaseWorks.map((work) => (
+                <div class="work-card" style={`--card-color: ${work.color}`}>
+                <div class="work-image">
+                  <div class="placeholder-image">
+                    <span class="placeholder-icon">🎨</span>
+                    <span class="placeholder-text">{work.title}</span>
+                  </div>
+                  <div class="work-overlay">
+                    <button class="like-btn">
+                      <span>❤️</span>
+                      <span>{work.likes}</span>
+                    </button>
+                  </div>
+                </div>
+                <div class="work-content">
+                  <h3 class="work-title">{work.title}</h3>
+                  <p class="work-desc">{work.description}</p>
+                  <div class="work-tags">
+                    {work.tags.map((tag) => (
+                      <span class="tag">{tag}</span>
+                    ))}
+                  </div>
+                  <div class="work-footer">
+                    <div class="author">
+                      <span class="author-avatar">{work.avatar}</span>
+                      <span class="author-name">{work.author}</span>
+                    </div>
+                    <div class="work-stats">
+                      <span class="stat">
+                        <span>💬</span>
+                        {work.comments}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          
+          <button class="load-more-btn">加载更多作品</button>
+        </section>
         
-        <!-- 底部行动区 -->
-        <div class="action-area">
-          <div class="action-card">
-            <p class="action-text">不想错过社区上线？</p>
-            <button class="pixel-btn action-btn" onclick="subscribeCommunity()">
-              <span class="btn-icon">✉️</span>
-              订阅通知
+        <!-- 右侧：侧边栏 -->
+        <aside class="sidebar">
+          <!-- 发布按钮 -->
+          <div class="sidebar-section">
+            <button class="publish-btn">
+              <span class="btn-icon">📤</span>
+              <span class="btn-text">分享我的作品</span>
             </button>
           </div>
-        </div>
-        
-        <!-- 导航链接 -->
-        <div class="nav-links">
-          <a href="/patterns" class="nav-btn">
-            <span>🎨</span> 浏览图纸
-          </a>
-          <a href="/tutorials" class="nav-btn secondary">
-            <span>📚</span> 查看教程
-          </a>
-          <a href="/" class="nav-btn accent">
-            <span>🏠</span> 返回首页
-          </a>
-        </div>
+          
+          <!-- 热门话题 -->
+          <div class="sidebar-section">
+            <h3 class="sidebar-title">🔥 热门话题</h3>
+            <div class="topics-list">
+              {hotTopics.map((topic) => (
+                <a href="#" class="topic-item">
+                  <span class="topic-icon">{topic.icon}</span>
+                  <div class="topic-info">
+                    <span class="topic-title">{topic.title}</span>
+                    <span class="topic-participants">{topic.participants} 人参与</span>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+          
+          <!-- 社区公告 -->
+          <div class="sidebar-section">
+            <h3 class="sidebar-title">📢 社区公告</h3>
+            <div class="announcements-list">
+              {announcements.map((announcement) => (
+                <div class={`announcement-item ${announcement.important ? 'important' : ''}`}>
+                  <span class="announcement-title">{announcement.title}</span>
+                  <span class="announcement-date">{announcement.date}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          
+          <!-- 社区规则 -->
+          <div class="sidebar-section">
+            <h3 class="sidebar-title">📋 社区规则</h3>
+            <div class="rules-list">
+              <div class="rule-item">
+                <span class="rule-icon">✅</span>
+                <span>分享原创作品，尊重他人版权</span>
+              </div>
+              <div class="rule-item">
+                <span class="rule-icon">✅</span>
+                <span>友善交流，互相帮助学习</span>
+              </div>
+              <div class="rule-item">
+                <span class="rule-icon">❌</span>
+                <span>禁止发布广告和无关内容</span>
+              </div>
+              <div class="rule-item">
+                <span class="rule-icon">❌</span>
+                <span>禁止人身攻击和不当言论</span>
+              </div>
+            </div>
+          </div>
+        </aside>
       </div>
+      
+      <!-- 互动区域 -->
+      <section class="interaction-section">
+        <div class="interaction-card">
+          <div class="interaction-icon">💌</div>
+          <h2>加入我们的社区</h2>
+          <p>分享您的拼豆作品，获得灵感和反馈<br/>与其他爱好者一起交流成长</p>
+          <div class="interaction-buttons">
+            <button class="pixel-btn primary" onclick="alert('功能开发中，敬请期待！')">
+              立即加入
+            </button>
+            <a href="/patterns" class="pixel-btn">
+              浏览图纸
+            </a>
+          </div>
+        </div>
+      </section>
     </div>
   </main>
   
   <Footer />
 </Layout>
 
-<script>
-  function subscribeCommunity() {
-    alert('感谢您的关注！社区上线后我们会第一时间通知您。');
-  }
-</script>
-
 <style>
   .community-page {
-    padding: var(--spacing-2xl) 0;
-    min-height: calc(100vh - 70px - 300px);
+    padding: var(--spacing-xl) 0;
+    background: linear-gradient(180deg, var(--color-white) 0%, var(--color-background) 100%);
+    min-height: calc(100vh - 200px);
   }
   
-  .coming-soon-container {
-    max-width: 800px;
-    margin: 0 auto;
-  }
-  
-  /* 社区动画 */
-  .community-animation {
-    position: relative;
-    height: 120px;
-    margin-bottom: var(--spacing-xl);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .avatar-group {
-    position: relative;
-    width: 200px;
-    height: 100px;
-  }
-  
-  .avatar {
-    position: absolute;
-    width: 48px;
-    height: 48px;
-    background-color: var(--color-white);
-    border: 3px solid var(--color-border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    box-shadow: 3px 3px 0 var(--color-shadow);
-    animation: avatarFloat 2s ease-in-out infinite;
-  }
-  
-  .avatar-main {
-    width: 60px;
-    height: 60px;
-    font-size: 2rem;
-    background-color: var(--color-accent);
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 10;
-    animation: avatarPulse 2s ease-in-out infinite;
-  }
-  
-  .avatar-1 {
-    left: 10%;
-    top: 20%;
-    animation-delay: 0s;
-  }
-  
-  .avatar-2 {
-    right: 10%;
-    top: 20%;
-    animation-delay: 0.3s;
-  }
-  
-  .avatar-3 {
-    left: 50%;
-    bottom: 0;
-    transform: translateX(-50%);
-    animation-delay: 0.6s;
-  }
-  
-  @keyframes avatarFloat {
-    0%, 100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-8px);
-    }
-  }
-  
-  @keyframes avatarPulse {
-    0%, 100% {
-      transform: translate(-50%, -50%) scale(1);
-    }
-    50% {
-      transform: translate(-50%, -50%) scale(1.1);
-    }
-  }
-  
-  /* 内容卡片 */
-  .content-card {
+  .page-header {
     text-align: center;
     margin-bottom: var(--spacing-xl);
   }
   
   .page-title {
-    font-size: 1.5rem;
-    color: var(--color-primary);
-    margin-bottom: var(--spacing-md);
-  }
-  
-  .page-subtitle {
-    font-size: 1rem;
-    color: var(--color-text);
-    opacity: 0.8;
-    line-height: 1.8;
-    margin-bottom: var(--spacing-xl);
-  }
-  
-  /* 功能预告 */
-  .features-section {
-    border-top: 3px dashed var(--color-border);
-    padding-top: var(--spacing-xl);
-  }
-  
-  .features-title {
     font-family: var(--font-pixel);
-    font-size: 0.875rem;
-    color: var(--color-text);
-    margin-bottom: var(--spacing-lg);
-  }
-  
-  .features-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--spacing-md);
-    margin-bottom: var(--spacing-xl);
-  }
-  
-  @media (min-width: 600px) {
-    .features-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-  
-  .feature-card {
-    background-color: var(--color-background);
-    border: 3px solid var(--color-border);
-    padding: var(--spacing-lg);
-    transition: all 0.2s ease;
-  }
-  
-  .feature-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 4px 4px 0 var(--color-shadow);
-    background-color: var(--color-white);
-  }
-  
-  .feature-icon {
-    font-size: 2rem;
+    font-size: clamp(1.25rem, 4vw, 1.75rem);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
     margin-bottom: var(--spacing-sm);
   }
   
-  .feature-name {
-    font-family: var(--font-pixel);
-    font-size: 0.625rem;
-    color: var(--color-text);
-    margin-bottom: var(--spacing-xs);
+  .title-icon {
+    font-size: 1.5em;
   }
   
-  .feature-desc {
-    font-size: 0.75rem;
+  .page-desc {
     color: var(--color-text);
     opacity: 0.7;
     margin: 0;
   }
   
-  /* 倒计时提示 */
-  .countdown-hint {
-    margin-top: var(--spacing-xl);
-  }
-  
-  .hint-box {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    background-color: var(--color-secondary);
-    padding: var(--spacing-sm) var(--spacing-md);
-    border: 3px solid var(--color-border);
-  }
-  
-  .hourglass {
-    font-size: 1.25rem;
-    animation: hourglassFlip 2s ease-in-out infinite;
-  }
-  
-  @keyframes hourglassFlip {
-    0%, 100% {
-      transform: rotate(0deg);
-    }
-    50% {
-      transform: rotate(180deg);
-    }
-  }
-  
-  .hint-text {
-    font-family: var(--font-pixel);
-    font-size: 0.625rem;
-    color: var(--color-white);
-    margin: 0;
-  }
-  
-  /* 行动区域 */
-  .action-area {
+  /* 统计区域 */
+  .stats-section {
     margin-bottom: var(--spacing-xl);
   }
   
-  .action-card {
-    background-color: var(--color-accent);
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-md);
+  }
+  
+  @media (min-width: 640px) {
+    .stats-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  
+  .stat-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--spacing-lg);
+    background: var(--color-white);
     border: 3px solid var(--color-border);
     box-shadow: 4px 4px 0 var(--color-border);
+    transition: all 0.2s;
+  }
+  
+  .stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 6px 6px 0 var(--color-border);
+  }
+  
+  .stat-icon {
+    font-size: 2rem;
+    margin-bottom: var(--spacing-sm);
+  }
+  
+  .stat-number {
+    font-family: var(--font-pixel);
+    font-size: 1.25rem;
+    color: var(--color-primary);
+  }
+  
+  .stat-label {
+    font-size: 0.625rem;
+    opacity: 0.7;
+    margin-top: var(--spacing-xs);
+  }
+  
+  /* 主要内容区 */
+  .main-content {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-xl);
+    margin-bottom: var(--spacing-xl);
+  }
+  
+  @media (min-width: 1024px) {
+    .main-content {
+      grid-template-columns: 2fr 1fr;
+    }
+  }
+  
+  /* 作品展示 */
+  .showcase-section {
+    background: var(--color-white);
+    border: 3px solid var(--color-border);
     padding: var(--spacing-lg);
-    text-align: center;
   }
   
-  .action-text {
-    font-size: 0.875rem;
-    color: var(--color-text);
-    margin-bottom: var(--spacing-md);
-  }
-  
-  .action-btn {
-    font-size: 0.875rem;
-    display: inline-flex;
+  .section-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
     align-items: center;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 2px solid var(--color-border);
+  }
+  
+  .section-title {
+    font-family: var(--font-pixel);
+    font-size: 1rem;
+    margin: 0;
+  }
+  
+  .filter-tabs {
+    display: flex;
+    gap: var(--spacing-xs);
+  }
+  
+  .tab-btn {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-family: var(--font-pixel);
+    font-size: 0.5rem;
+    background: var(--color-white);
+    border: 2px solid var(--color-border);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .tab-btn:hover,
+  .tab-btn.active {
+    background: var(--color-primary);
+    color: var(--color-white);
+  }
+  
+  .works-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+  }
+  
+  @media (min-width: 640px) {
+    .works-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  .work-card {
+    border: 3px solid var(--color-border);
+    overflow: hidden;
+    transition: all 0.2s;
+  }
+  
+  .work-card:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: 4px 4px 0 var(--card-color);
+    border-color: var(--card-color);
+  }
+  
+  .work-image {
+    position: relative;
+    aspect-ratio: 1;
+    background: var(--color-background);
+  }
+  
+  .placeholder-image {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     gap: var(--spacing-sm);
+  }
+  
+  .placeholder-icon {
+    font-size: 3rem;
+    opacity: 0.5;
+  }
+  
+  .placeholder-text {
+    font-family: var(--font-pixel);
+    font-size: 0.625rem;
+    opacity: 0.7;
+  }
+  
+  .work-overlay {
+    position: absolute;
+    top: var(--spacing-sm);
+    right: var(--spacing-sm);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  
+  .work-card:hover .work-overlay {
+    opacity: 1;
+  }
+  
+  .like-btn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    background: var(--color-white);
+    border: 2px solid var(--color-border);
+    font-family: var(--font-pixel);
+    font-size: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .like-btn:hover {
+    background: #FF6B6B;
+    color: white;
+  }
+  
+  .work-content {
+    padding: var(--spacing-md);
+  }
+  
+  .work-title {
+    font-family: var(--font-pixel);
+    font-size: 0.75rem;
+    margin: 0 0 var(--spacing-xs) 0;
+  }
+  
+  .work-desc {
+    font-size: 0.75rem;
+    opacity: 0.8;
+    margin: 0 0 var(--spacing-sm) 0;
+    line-height: 1.5;
+  }
+  
+  .work-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: var(--spacing-sm);
+  }
+  
+  .tag {
+    padding: 2px 8px;
+    font-size: 0.5rem;
+    background: var(--color-background);
+    border: 1px solid var(--color-border);
+  }
+  
+  .work-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: var(--spacing-sm);
+    border-top: 1px solid var(--color-border);
+  }
+  
+  .author {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+  }
+  
+  .author-avatar {
+    font-size: 1.25rem;
+  }
+  
+  .author-name {
+    font-size: 0.625rem;
+    opacity: 0.8;
+  }
+  
+  .work-stats {
+    display: flex;
+    gap: var(--spacing-sm);
+  }
+  
+  .stat {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.5rem;
+    opacity: 0.7;
+  }
+  
+  .load-more-btn {
+    display: block;
+    width: 100%;
+    padding: var(--spacing-md);
+    font-family: var(--font-pixel);
+    font-size: 0.625rem;
+    background: var(--color-white);
+    border: 3px solid var(--color-border);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .load-more-btn:hover {
+    background: var(--color-primary);
+    color: white;
+  }
+  
+  /* 侧边栏 */
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+  }
+  
+  .sidebar-section {
+    background: var(--color-white);
+    border: 3px solid var(--color-border);
+    padding: var(--spacing-md);
+  }
+  
+  .publish-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    width: 100%;
+    padding: var(--spacing-md);
+    font-family: var(--font-pixel);
+    font-size: 0.75rem;
+    background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
+    color: white;
+    border: 3px solid var(--color-border);
+    box-shadow: 4px 4px 0 var(--color-border);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .publish-btn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--color-border);
   }
   
   .btn-icon {
     font-size: 1.25rem;
   }
   
-  /* 导航链接 */
-  .nav-links {
-    display: flex;
-    justify-content: center;
-    gap: var(--spacing-md);
-    flex-wrap: wrap;
-  }
-  
-  .nav-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    padding: var(--spacing-md) var(--spacing-lg);
-    background-color: var(--color-primary);
-    color: var(--color-white);
+  .sidebar-title {
     font-family: var(--font-pixel);
     font-size: 0.625rem;
-    text-decoration: none;
-    border: 3px solid var(--color-border);
-    box-shadow: 4px 4px 0 var(--color-border);
-    transition: all 0.1s ease;
+    margin: 0 0 var(--spacing-md) 0;
+    padding-bottom: var(--spacing-xs);
+    border-bottom: 2px solid var(--color-border);
   }
   
-  .nav-btn:hover {
+  .topics-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+  
+  .topic-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm);
+    text-decoration: none;
+    color: var(--color-text);
+    border: 2px solid transparent;
+    transition: all 0.2s;
+  }
+  
+  .topic-item:hover {
+    background: var(--color-background);
+    border-color: var(--color-border);
+  }
+  
+  .topic-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+  }
+  
+  .topic-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  
+  .topic-title {
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+  
+  .topic-participants {
+    font-size: 0.5rem;
+    opacity: 0.6;
+  }
+  
+  .announcements-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+  
+  .announcement-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: var(--spacing-sm);
+    background: var(--color-background);
+    border-left: 3px solid var(--color-border);
+  }
+  
+  .announcement-item.important {
+    border-left-color: #FF6B6B;
+    background: rgba(255, 107, 107, 0.1);
+  }
+  
+  .announcement-title {
+    font-size: 0.75rem;
+  }
+  
+  .announcement-date {
+    font-size: 0.5rem;
+    opacity: 0.6;
+  }
+  
+  .rules-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+  
+  .rule-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    font-size: 0.75rem;
+  }
+  
+  .rule-icon {
+    font-size: 1rem;
+  }
+  
+  /* 互动区域 */
+  .interaction-section {
+    text-align: center;
+  }
+  
+  .interaction-card {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--spacing-2xl);
+    background: linear-gradient(135deg, #4ECDC4 0%, #44A08D 100%);
+    border: 4px solid var(--color-border);
+    box-shadow: 8px 8px 0 var(--color-border);
+    color: white;
+  }
+  
+  .interaction-icon {
+    font-size: 4rem;
+    margin-bottom: var(--spacing-md);
+  }
+  
+  .interaction-card h2 {
+    font-family: var(--font-pixel);
+    font-size: 1.25rem;
+    margin: 0 0 var(--spacing-sm) 0;
+  }
+  
+  .interaction-card p {
+    margin: 0 0 var(--spacing-lg) 0;
+    opacity: 0.9;
+    line-height: 1.6;
+  }
+  
+  .interaction-buttons {
+    display: flex;
+    gap: var(--spacing-md);
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .pixel-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-sm) var(--spacing-lg);
+    font-family: var(--font-pixel);
+    font-size: 0.625rem;
+    background: var(--color-white);
+    border: 3px solid var(--color-border);
+    box-shadow: 4px 4px 0 var(--color-border);
+    text-decoration: none;
+    color: var(--color-text);
+    cursor: pointer;
+    transition: all 0.1s;
+  }
+  
+  .pixel-btn:hover {
     transform: translate(2px, 2px);
     box-shadow: 2px 2px 0 var(--color-border);
   }
   
-  .nav-btn.secondary {
-    background-color: var(--color-secondary);
-  }
-  
-  .nav-btn.accent {
-    background-color: var(--color-accent);
+  .pixel-btn.primary {
+    background: #FFE66D;
     color: var(--color-text);
   }
   
-  .nav-btn span {
-    font-size: 1rem;
+  /* 用户作品样式 */
+  .user-work-card {
+    position: relative;
   }
   
-  /* 响应式调整 */
-  @media (max-width: 480px) {
-    .content-card {
-      margin: 0 var(--spacing-md) var(--spacing-xl);
-    }
-    
-    .features-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .nav-links {
-      flex-direction: column;
-      padding: 0 var(--spacing-md);
-    }
-    
-    .nav-btn {
-      justify-content: center;
-    }
+  .user-work-card::before {
+    content: '👤';
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-size: 0.75rem;
+    z-index: 1;
+    background: white;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--color-border);
+  }
+  
+  .no-works {
+    text-align: center;
+    padding: var(--spacing-xl);
+    opacity: 0.7;
+  }
+  
+  .no-works-icon {
+    font-size: 3rem;
+    margin-bottom: var(--spacing-sm);
   }
 </style>
+
+<script>
+  // 页面加载后加载用户作品
+  document.addEventListener('DOMContentLoaded', async () => {
+    await loadUserWorks();
+    bindFilterEvents();
+  });
+  
+  // 加载用户作品
+  async function loadUserWorks() {
+    const userWorksGrid = document.getElementById('user-works-grid');
+    if (!userWorksGrid) return;
+    
+    let userWorks = [];
+    let useApiData = false;
+    
+    // 优先从API加载
+    try {
+      const response = await fetch('/api/works?limit=50');
+      if (response.ok) {
+        const result = await response.json();
+        if (result.success && result.data && result.data.length > 0) {
+          userWorks = result.data;
+          useApiData = true;
+          
+          // 同时保存到本地缓存
+          localStorage.setItem('perlerCommunityWorksCache', JSON.stringify(userWorks));
+        }
+      }
+    } catch (e) {
+      console.log('API 加载失败，使用缓存数据');
+    }
+    
+    // 如果API失败，尝试从本地缓存加载
+    if (!useApiData) {
+      const cachedWorks = JSON.parse(localStorage.getItem('perlerCommunityWorksCache') || '[]');
+      if (cachedWorks.length > 0) {
+        userWorks = cachedWorks;
+      } else {
+        // 最后尝试从旧版本地存储加载
+        const localWorks = JSON.parse(localStorage.getItem('perlerCommunityWorks') || '[]');
+        userWorks = localWorks;
+      }
+    }
+    
+    // 渲染用户作品
+    renderUserWorks(userWorks);
+    
+    // 更新统计
+    updateStats(userWorks.length);
+  }
+  
+  // 渲染用户作品
+  function renderUserWorks(works) {
+    const userWorksGrid = document.getElementById('user-works-grid');
+    userWorksGrid.innerHTML = '';
+    
+    if (works.length === 0) {
+      userWorksGrid.innerHTML = `
+        <div class="no-works" style="grid-column: 1/-1;">
+          <div class="no-works-icon">🎨</div>
+          <p>还没有用户作品</p>
+          <p style="font-size: 0.625rem; opacity: 0.6;">成为第一个分享作品的人！</p>
+        </div>
+      `;
+      return;
+    }
+    
+    works.forEach(work => {
+      const card = document.createElement('a');
+      // 使用查询参数方式传递作品ID
+      card.href = `/design?view=${work.id}`;
+      card.className = 'work-card user-work-card';
+      card.style.setProperty('--card-color', work.colors?.[0] || '#FF6B6B');
+      
+      // 渲染缩略图
+      let thumbnailHTML = '<div class="work-image"><div class="placeholder-image"><div class="mini-canvas" style="display:grid;grid-template-columns:repeat(' + work.width + ',1fr);gap:1px;padding:8px;">';
+      
+      // 限制缩略图大小
+      const maxSize = Math.max(work.width, work.height);
+      const scale = Math.min(1, 80 / maxSize);
+      
+      for (let y = 0; y < work.height && y < 30; y++) {
+        for (let x = 0; x < work.width && x < 30; x++) {
+          const color = work.grid[y]?.[x];
+          thumbnailHTML += `<div style="width:${8*scale}px;height:${8*scale}px;background:${color?.hex || '#fff'};"></div>`;
+        }
+      }
+      thumbnailHTML += '</div></div></div>';
+      
+      card.innerHTML = `
+        ${thumbnailHTML}
+        <div class="work-content">
+          <h3 class="work-title">${escapeHtml(work.title)}</h3>
+          <p class="work-desc">${escapeHtml(work.description || '')}</p>
+          <div class="work-footer">
+            <div class="author">
+              <span class="author-name">${escapeHtml(work.author || '匿名用户')}</span>
+            </div>
+            <div class="work-stats">
+              <span class="stat"><span>❤️</span>${work.likes || 0}</span>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      userWorksGrid.appendChild(card);
+    });
+  }
+  
+  // 更新统计
+  function updateStats(userWorkCount) {
+    const totalStat = document.querySelector('.stat-number:nth-child(2)');
+    if (totalStat) {
+      const currentTotal = parseInt(totalStat.textContent.replace(/,/g, '')) || 1234;
+      totalStat.textContent = (currentTotal + userWorkCount).toLocaleString();
+    }
+  }
+  
+  // 绑定筛选事件
+  function bindFilterEvents() {
+    const tabBtns = document.querySelectorAll('.filter-tabs .tab-btn');
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        tabBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        sortWorks(btn.textContent);
+      });
+    });
+  }
+  
+  // 排序作品
+  function sortWorks(sortBy) {
+    const userWorksGrid = document.getElementById('user-works-grid');
+    const cards = Array.from(userWorksGrid.querySelectorAll('.work-card'));
+    
+    cards.sort((a, b) => {
+      if (sortBy === '热门') {
+        const likesA = parseInt(a.querySelector('.stat span')?.textContent || 0);
+        const likesB = parseInt(b.querySelector('.stat span')?.textContent || 0);
+        return likesB - likesA;
+      }
+      // 默认按时间倒序
+      return 0;
+    });
+    
+    cards.forEach(card => userWorksGrid.appendChild(card));
+  }
+  
+  // HTML转义
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+</script>

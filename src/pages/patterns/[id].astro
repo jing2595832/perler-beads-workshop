@@ -1,4 +1,6 @@
 ---
+export const prerender = true;
+
 import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
@@ -81,10 +83,10 @@ const pageTitle = `${pattern.name} - 图纸详情`;
         <div class="pattern-image-section">
           <div class="image-container pixel-card">
             <img 
-              src={`/images/patterns/${pattern.filename}`} 
+              src={`/patterns/${pattern.filename}`} 
               alt={pattern.name}
               class="pattern-image"
-              onerror="this.src='/images/placeholder.png'"
+              onerror="this.src='/images/placeholder.svg'"
             />
             <div class="pattern-number">No.{pattern.number.toString().padStart(3, '0')}</div>
           </div>
@@ -179,10 +181,10 @@ const pageTitle = `${pattern.name} - 图纸详情`;
               <a href={`/patterns/${relatedPattern.id}`} class="related-card">
                 <div class="related-image-wrapper">
                   <img 
-                    src={`/images/patterns/${relatedPattern.filename}`} 
+                    src={`/patterns/${relatedPattern.filename}`} 
                     alt={relatedPattern.name}
                     class="related-image"
-                    onerror="this.src='/images/placeholder.png'"
+                    onerror="this.src='/images/placeholder.svg'"
                   />
                 </div>
                 <div class="related-info">

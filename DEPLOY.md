@@ -1,212 +1,177 @@
-# 🚀 部署检查清单
+# 拼豆豆工坊 - Cloudflare 部署指南
 
-## 前置条件
+## 项目结构
 
-- [ ] GitHub 账号
-- [ ] Cloudflare 账号
-- [ ] 已购买域名（可选）
-
----
-
-## 第一步：本地准备
-
-### 1.1 复制图纸图片
-
-```bash
-# Windows PowerShell
-copy "d:\工作文件夹\自制软件\网站设计测试\拼豆豆网站设计\拼豆豆原创图纸\*.png" "d:\工作文件夹\自制软件\网站设计测试\拼豆豆网站设计\perler-beads-workshop\public\patterns\"
+```
+perler-beads-workshop/
+├── src/                    # 源代码
+│   ├── pages/             # 页面
+│   ├── components/        # 组件
+│   ├── data/              # 数据文件
+│   └── layouts/           # 布局模板
+├── functions/api/         # Cloudflare Pages Functions (API)
+├── dist/                  # 构建输出
+├── schema.sql             # 数据库表结构
+├── wrangler.toml          # Cloudflare 配置
+└── astro.config.mjs       # Astro 配置
 ```
 
-验证：
-```bash
-ls public/patterns/*.png | wc -l
-# 应显示 113
-```
+## 部署步骤
 
-### 1.2 本地测试
+### 1. 创建 GitHub 仓库
 
 ```bash
-npm run dev
-```
-
-检查：
-- [ ] 首页正常显示
-- [ ] 图纸库显示113个图纸
-- [ ] 图纸详情页可访问
-- [ ] 下载按钮可用
-- [ ] 所有页面无404错误
-
-### 1.3 构建测试
-
-```bash
-npm run build
-```
-
-检查：
-- [ ] 构建成功，无错误
-- [ ] `dist/` 目录生成
-- [ ] `dist/patterns/` 包含所有图片
-
----
-
-## 第二步：GitHub 仓库
-
-### 2.1 初始化 Git（如未初始化）
-
-```bash
+# 在 GitHub 创建新仓库，然后推送代码
 git init
 git add .
-git commit -m "Initial commit: Perler Beads Workshop"
-```
-
-### 2.2 创建 GitHub 仓库
-
-1. 访问 https://github.com/new
-2. 仓库名称：`perler-beads-workshop`
-3. 设置为 Public
-4. 不要初始化 README（已存在）
-
-### 2.3 推送代码
-
-```bash
-git remote add origin https://github.com/YOUR_USERNAME/perler-beads-workshop.git
+git commit -m "Initial commit"
 git branch -M main
+git remote add origin https://github.com/你的用户名/perler-beads-workshop.git
 git push -u origin main
 ```
 
+### 2. 创建 Cloudflare D1 数据库
+
+```bash
+# 安装 wrangler CLI
+npm install -g wrangler
+
+# 登录 Cloudflare
+wrangler login
+
+# 创建数据库
+wrangler d1 create perler-db
+
+# 记录输出的 database_id，更新到 wrangler.toml
+```
+
+### 3. 初始化数据库表
+
+```bash
+# 执行 SQL 脚本创建表
+wrangler d1 execute perler-db --file=./schema.sql
+```
+
+### 4. 更新 wrangler.toml
+
+```toml
+[[d1_databases]]
+binding = "DB"
+database_name = "perler-db"
+database_id = "你的-database-id"
+```
+
+### 5. 部署到 Cloudflare Pages
+
+#### 方式一：通过 Wrangler CLI
+
+```bash
+# 构建项目
+npm run build
+
+# 部署
+wrangler pages deploy dist
+```
+
+#### 方式二：通过 Git 集成（推荐）
+
+1. 登录 [Cloudflare Dashboard](https://dash.cloudflare.com)
+2. 进入 **Pages** → **创建项目**
+3. 连接 GitHub 仓库
+4. 构建设置：
+   - 构建命令：`npm run build`
+   - 构建输出目录：`dist`
+5. 添加环境变量（可选）：
+   - `NODE_VERSION`: `20`
+6. 绑定 D1 数据库：
+   - 在设置中添加 D1 绑定，变量名为 `DB`
+7. 保存并部署
+
+## API 端点
+
+部署后可通过以下 API 访问数据：
+
+| 端点 | 方法 | 说明 |
+|------|------|------|
+| `/api/works` | GET | 获取社区作品列表 |
+| `/api/works` | POST | 发布新作品 |
+| `/api/works/:id` | GET | 获取单个作品详情 |
+| `/api/works/:id` | POST | 点赞作品 |
+| `/api/stats` | GET | 获取统计数据 |
+| `/api/stats` | POST | 记录图纸下载 |
+
+## 本地开发
+
+```bash
+# 安装依赖
+npm install
+
+# 启动开发服务器
+npm run dev
+
+# 构建
+npm run build
+
+# 预览构建结果
+npm run preview
+```
+
+## 数据库管理
+
+```bash
+# 查看数据库列表
+wrangler d1 list
+
+# 执行 SQL 查询
+wrangler d1 execute perler-db --command="SELECT * FROM community_works"
+
+# 备份数据库
+wrangler d1 export perler-db --output=./backup.sql
+
+# 导入数据
+wrangler d1 execute perler-db --file=./backup.sql
+```
+
+## 注意事项
+
+1. **免费版限制**：
+   - 每日 50,000 次读取
+   - 每日 5,000 次写入
+   - 足够小型网站使用
+
+2. **图片存储**：
+   - 图纸图片存储在 `public/patterns/`
+   - 构建后会自动包含在部署包中
+
+3. **数据持久化**：
+   - 社区作品优先保存到 D1 数据库
+   - 同时保留 localStorage 作为离线缓存
+
+## 故障排除
+
+### 构建失败
+
+```bash
+# 清理缓存重新构建
+rm -rf dist node_modules .astro
+npm install
+npm run build
+```
+
+### API 返回 500 错误
+
+检查 D1 数据库绑定是否正确配置在 wrangler.toml 中。
+
+### 图片无法加载
+
+确保 `public/patterns/` 目录下的图片已正确提交到 Git。
+
+## 自定义域名（可选）
+
+1. 在 Cloudflare Pages 项目设置中添加自定义域名
+2. 按照提示配置 DNS 记录
+3. 启用 HTTPS（自动）
+
 ---
 
-## 第三步：Cloudflare Pages 部署
-
-### 3.1 创建 Pages 项目
-
-1. 登录 https://dash.cloudflare.com
-2. 点击左侧菜单 **Pages**
-3. 点击 **Create a project**
-4. 选择 **Connect to Git**
-
-### 3.2 连接 GitHub
-
-1. 授权 Cloudflare 访问 GitHub
-2. 选择 `perler-beads-workshop` 仓库
-3. 点击 **Begin setup**
-
-### 3.3 构建设置
-
-| 设置项 | 值 |
-|--------|-----|
-| Project name | perler-beads-workshop |
-| Production branch | main |
-| Build command | `npm run build` |
-| Build output directory | `dist` |
-
-### 3.4 环境变量
-
-添加以下环境变量：
-
-| 变量名 | 值 |
-|--------|-----|
-| `NODE_VERSION` | 18 |
-
-### 3.5 保存并部署
-
-点击 **Save and Deploy**
-
-等待构建完成...
-
----
-
-## 第四步：自定义域名（可选）
-
-### 4.1 添加自定义域名
-
-1. 在 Cloudflare Pages 项目设置中，点击 **Custom domains**
-2. 点击 **Set up a custom domain**
-3. 输入你的域名，例如：`perlerworkshop.com`
-4. 按照提示添加 DNS 记录
-
-### 4.2 配置 DNS
-
-在 Cloudflare DNS 设置中添加：
-
-| 类型 | 名称 | 内容 | 代理状态 |
-|------|------|------|---------|
-| CNAME | @ | perler-beads-workshop.pages.dev | 已代理 |
-| CNAME | www | perler-beads-workshop.pages.dev | 已代理 |
-
----
-
-## 第五步：验证部署
-
-### 5.1 功能测试
-
-访问你的网站，检查：
-
-- [ ] 首页加载正常
-- [ ] 所有图片显示正确
-- [ ] 图纸下载功能正常
-- [ ] 页面切换流畅
-- [ ] 移动端显示正常
-
-### 5.2 SEO 检查
-
-- [ ] 页面标题正确
-- [ ] meta description 存在
-- [ ] Open Graph 标签正确
-- [ ] 网站可被搜索引擎索引
-
-### 5.3 性能检查
-
-使用 Lighthouse 检查：
-- [ ] Performance > 80
-- [ ] Accessibility > 90
-- [ ] Best Practices > 90
-- [ ] SEO > 90
-
----
-
-## 第六步：后续维护
-
-### 6.1 自动部署
-
-每次推送到 `main` 分支，Cloudflare 会自动重新部署。
-
-### 6.2 添加新图纸
-
-1. 将新图纸 PNG 文件放入 `public/patterns/`
-2. 在 `src/data/patterns.ts` 中添加图纸数据
-3. 提交并推送：`git add . && git commit -m "feat: add new patterns" && git push`
-
-### 6.3 监控
-
-在 Cloudflare Dashboard 查看：
-- 网站访问量
-- 错误率
-- 性能指标
-
----
-
-## 常见问题
-
-### Q: 构建失败，提示 "patterns not found"
-
-A: 确保 `public/patterns/` 目录包含所有113张图片，并已提交到 Git。
-
-### Q: 图片显示404
-
-A: 检查图片路径是否正确，应为 `/patterns/filename.png`。
-
-### Q: 中文显示乱码
-
-A: 确保 HTML 文件设置了正确的 charset：`<meta charset="UTF-8">`。
-
-### Q: 如何更新网站？
-
-A: 修改代码后，执行 `git add . && git commit -m "update" && git push`，Cloudflare 会自动重新部署。
-
----
-
-## 联系方式
-
-如有部署问题，请联系：
-- 邮箱：jing2595832@163.com
+如有问题，请查看 [Cloudflare 文档](https://developers.cloudflare.com/pages/) 或提交 Issue。

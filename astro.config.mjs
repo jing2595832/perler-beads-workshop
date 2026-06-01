@@ -6,6 +6,7 @@ import tailwind from '@astrojs/tailwind';
 // https://astro.build/config
 export default defineConfig({
   integrations: [react(), tailwind()],
+  output: 'static',
   i18n: {
     defaultLocale: 'zh',
     locales: ['zh', 'en', 'ja'],
@@ -13,6 +14,5 @@ export default defineConfig({
       prefixDefaultLocale: false
     }
   },
-  site: 'https://perler-beads-workshop.com',
-  output: 'static'
+  site: 'https://perler-beads-workshop.pages.dev',
 });

@@ -2,369 +2,522 @@
 import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
+
+const tutorials = [
+  {
+    id: 'basics',
+    title: '拼豆入门基础',
+    description: '从零开始学习拼豆，了解材料、工具和基本技巧',
+    icon: '🌱',
+    level: '初级',
+    steps: 5,
+    time: '30分钟',
+    color: '#4ECDC4'
+  },
+  {
+    id: 'ironing',
+    title: '熨烫技巧详解',
+    description: '掌握正确的熨烫方法，让作品平整美观',
+    icon: '🔥',
+    level: '中级',
+    steps: 8,
+    time: '45分钟',
+    color: '#FF6B6B'
+  },
+  {
+    id: 'color-matching',
+    title: '颜色搭配指南',
+    description: '学习如何选择和搭配颜色，创作出和谐的作品',
+    icon: '🎨',
+    level: '中级',
+    steps: 6,
+    time: '40分钟',
+    color: '#9B59B6'
+  },
+  {
+    id: '3d-techniques',
+    title: '立体拼豆制作',
+    description: '进阶技巧：制作立体拼豆作品和可拼接模型',
+    icon: '📦',
+    level: '高级',
+    steps: 12,
+    time: '2小时',
+    color: '#FF8E53'
+  },
+  {
+    id: 'keychain',
+    title: '钥匙扣制作',
+    description: '制作实用的拼豆钥匙扣，从设计到成品',
+    icon: '🔑',
+    level: '初级',
+    steps: 4,
+    time: '25分钟',
+    color: '#5B8DEF'
+  },
+  {
+    id: 'coaster',
+    title: '杯垫制作教程',
+    description: '制作美观实用的拼豆杯垫，适合初学者',
+    icon: '☕',
+    level: '初级',
+    steps: 5,
+    time: '35分钟',
+    color: '#45B7D1'
+  }
+];
+
+const tips = [
+  { icon: '💡', title: '选择拼豆', content: '优质拼豆颜色鲜艳、大小均匀，建议选择知名品牌' },
+  { icon: '📐', title: '模板使用', content: '使用透明模板板，方便查看图纸和定位' },
+  { icon: '🔥', title: '熨烫温度', content: '中低温熨烫，温度过高会导致拼豆变形' },
+  { icon: '⏰', title: '冷却时间', content: '熨烫后充分冷却再揭下，避免变形' },
+  { icon: '🧹', title: '清洁保养', content: '用湿布轻轻擦拭，避免浸泡' },
+  { icon: '🎁', title: '创意应用', content: '可以制作钥匙扣、冰箱贴、杯垫等实用物品' }
+];
 ---
 
-<Layout title="教程中心">
+<Layout title="教程" description="学习拼豆制作技巧，从入门到精通">
   <Header activeNav="tutorials" />
   
   <main class="tutorials-page">
     <div class="container">
-      <div class="coming-soon-container">
-        <!-- 顶部装饰 -->
-        <div class="header-decoration">
-          <div class="decoration-line">
-            <span class="deco-pixel" style="--color: #FF6B6B;"></span>
-            <span class="deco-pixel" style="--color: #4ECDC4;"></span>
-            <span class="deco-pixel" style="--color: #FFE66D;"></span>
-            <span class="deco-pixel" style="--color: #FF6B6B;"></span>
-            <span class="deco-pixel" style="--color: #4ECDC4;"></span>
-            <span class="deco-pixel" style="--color: #FFE66D;"></span>
-            <span class="deco-pixel" style="--color: #FF6B6B;"></span>
-          </div>
-        </div>
-        
-        <!-- 主内容卡片 -->
-        <div class="main-card pixel-card">
-          <div class="card-header">
-            <span class="header-icon">📚</span>
-            <h1 class="page-title">教程中心即将上线</h1>
-          </div>
-          
-          <div class="card-body">
-            <p class="description">
-              我们正在精心准备一系列拼豆制作教程<br/>
-              从入门基础到进阶技巧，帮助您成为拼豆达人
-            </p>
-            
-            <!-- 教程预览网格 -->
-            <div class="preview-grid">
-              <div class="preview-item">
-                <div class="preview-icon">🎯</div>
-                <h3 class="preview-title">入门指南</h3>
-                <p class="preview-desc">拼豆基础工具与材料介绍</p>
-              </div>
-              
-              <div class="preview-item">
-                <div class="preview-icon">🔥</div>
-                <h3 class="preview-title">熨烫技巧</h3>
-                <p class="preview-desc">掌握完美的熨烫方法</p>
-              </div>
-              
-              <div class="preview-item">
-                <div class="preview-icon">🎨</div>
-                <h3 class="preview-title">配色方案</h3>
-                <p class="preview-desc">学习专业的颜色搭配</p>
-              </div>
-              
-              <div class="preview-item">
-                <div class="preview-icon">✨</div>
-                <h3 class="preview-title">进阶技法</h3>
-                <p class="preview-desc">立体造型与组合技巧</p>
-              </div>
-            </div>
-            
-            <!-- 通知订阅 -->
-            <div class="subscribe-section">
-              <div class="subscribe-box">
-                <span class="bell-icon">🔔</span>
-                <p class="subscribe-text">上线后第一时间通知您</p>
-                <button class="pixel-btn subscribe-btn" onclick="notifyMe()">
-                  提醒我
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <!-- 底部装饰 -->
-        <div class="footer-decoration">
-          <div class="book-stack">
-            <div class="book book-1"></div>
-            <div class="book book-2"></div>
-            <div class="book book-3"></div>
-          </div>
-        </div>
-        
-        <!-- 返回导航 -->
-        <div class="nav-section">
-          <a href="/patterns" class="nav-link">
-            <span class="link-icon">🎨</span>
-            浏览图纸库
-          </a>
-          <a href="/" class="nav-link secondary">
-            <span class="link-icon">🏠</span>
-            返回首页
-          </a>
-        </div>
+      <!-- 页面标题 -->
+      <div class="page-header">
+        <h1 class="page-title">
+          <span class="title-icon">📖</span>
+          拼豆教程
+        </h1>
+        <p class="page-desc">从入门到精通，一步步学会拼豆制作</p>
       </div>
+      
+      <!-- 快速开始 -->
+      <section class="quick-start">
+        <div class="start-card">
+          <div class="start-icon">🚀</div>
+          <div class="start-content">
+            <h2>新手入门？从这里开始！</h2>
+            <p>推荐先学习《拼豆入门基础》，了解材料工具和基本技巧</p>
+            <a href="#tutorial-basics" class="pixel-btn primary">
+              立即开始
+            </a>
+          </div>
+        </div>
+      </section>
+      
+      <!-- 教程列表 -->
+      <section class="tutorials-section">
+        <h2 class="section-title">📚 全部教程</h2>
+        <div class="tutorials-grid">
+          {tutorials.map((tutorial) => (
+            <a href={`/tutorials/${tutorial.id}`} class="tutorial-card" style={`--card-color: ${tutorial.color}`} id={`tutorial-${tutorial.id}`}>
+              <div class="card-header">
+                <span class="card-icon">{tutorial.icon}</span>
+                <span class="card-level">{tutorial.level}</span>
+              </div>
+              <h3 class="card-title">{tutorial.title}</h3>
+              <p class="card-desc">{tutorial.description}</p>
+              <div class="card-meta">
+                <span class="meta-item">
+                  <span class="meta-icon">📋</span>
+                  {tutorial.steps} 个步骤
+                </span>
+                <span class="meta-item">
+                  <span class="meta-icon">⏱️</span>
+                  {tutorial.time}
+                </span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </section>
+      
+      <!-- 制作技巧 -->
+      <section class="tips-section">
+        <h2 class="section-title">💡 制作小技巧</h2>
+        <div class="tips-grid">
+          {tips.map((tip) => (
+            <div class="tip-card">
+              <span class="tip-icon">{tip.icon}</span>
+              <h3 class="tip-title">{tip.title}</h3>
+              <p class="tip-content">{tip.content}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+      
+      <!-- 常见问题 -->
+      <section class="faq-section">
+        <h2 class="section-title">❓ 常见问题</h2>
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary class="faq-question">拼豆需要哪些基础材料？</summary>
+            <div class="faq-answer">
+              <p>基础材料包括：拼豆（建议5mm规格）、模板板（透明款）、熨斗、烘焙纸/熨烫纸、镊子。初学者可以购买入门套装，包含所有必需品。</p>
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary class="faq-question">熨烫时为什么拼豆会变形？</summary>
+            <div class="faq-answer">
+              <p>变形通常是因为温度过高或熨烫时间过长。建议使用中低温，熨烫时轻轻移动熨斗，不要在一个位置停留太久。不同品牌的拼豆熔点略有不同，需要适当调整。</p>
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary class="faq-question">作品完成后如何保存？</summary>
+            <div class="faq-answer">
+              <p>完成的拼豆作品应避免阳光直射和高温环境，防止褪色和变形。可以用密封袋保存，或用软布包裹防止刮花。如果是钥匙扣等常用物品，建议定期检查连接处。</p>
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary class="faq-question">没有熨斗可以用什么代替？</summary>
+            <div class="faq-answer">
+              <p>可以使用直发夹板代替熨斗，效果类似。但需要注意温度控制和均匀加热。不建议使用微波炉或烤箱，温度难以控制，容易损坏作品。</p>
+            </div>
+          </details>
+        </div>
+      </section>
+      
+      <!-- 需要帮助 -->
+      <section class="help-section">
+        <div class="help-card">
+          <span class="help-icon">🙋</span>
+          <h2>还有疑问？</h2>
+          <p>如果您有其他问题，欢迎联系我们获取帮助</p>
+          <a href="/contact" class="pixel-btn">联系我们</a>
+        </div>
+      </section>
     </div>
   </main>
   
   <Footer />
 </Layout>
 
-<script>
-  function notifyMe() {
-    alert('感谢您的关注！教程中心上线后我们会通知您。');
-  }
-</script>
-
 <style>
   .tutorials-page {
-    padding: var(--spacing-2xl) 0;
-    min-height: calc(100vh - 70px - 300px);
-    display: flex;
-    align-items: center;
+    padding: var(--spacing-xl) 0;
+    background: linear-gradient(180deg, var(--color-white) 0%, var(--color-background) 100%);
+    min-height: calc(100vh - 200px);
   }
   
-  .coming-soon-container {
-    max-width: 700px;
-    margin: 0 auto;
-  }
-  
-  /* 顶部装饰 */
-  .header-decoration {
-    display: flex;
-    justify-content: center;
-    margin-bottom: var(--spacing-lg);
-  }
-  
-  .decoration-line {
-    display: flex;
-    gap: 8px;
-  }
-  
-  .deco-pixel {
-    width: 20px;
-    height: 20px;
-    background-color: var(--color);
-    border: 3px solid var(--color-border);
-    animation: bouncePixel 1s ease-in-out infinite alternate;
-  }
-  
-  .deco-pixel:nth-child(1) { animation-delay: 0s; }
-  .deco-pixel:nth-child(2) { animation-delay: 0.1s; }
-  .deco-pixel:nth-child(3) { animation-delay: 0.2s; }
-  .deco-pixel:nth-child(4) { animation-delay: 0.3s; }
-  .deco-pixel:nth-child(5) { animation-delay: 0.4s; }
-  .deco-pixel:nth-child(6) { animation-delay: 0.5s; }
-  .deco-pixel:nth-child(7) { animation-delay: 0.6s; }
-  
-  @keyframes bouncePixel {
-    0% {
-      transform: translateY(0);
-    }
-    100% {
-      transform: translateY(-8px);
-    }
-  }
-  
-  /* 主卡片 */
-  .main-card {
+  .page-header {
     text-align: center;
     margin-bottom: var(--spacing-xl);
   }
   
-  .card-header {
-    border-bottom: 3px dashed var(--color-border);
-    padding-bottom: var(--spacing-lg);
-    margin-bottom: var(--spacing-xl);
-  }
-  
-  .header-icon {
-    font-size: 3rem;
-    display: block;
-    margin-bottom: var(--spacing-md);
-  }
-  
   .page-title {
-    font-size: 1.5rem;
-    color: var(--color-primary);
-    margin: 0;
-  }
-  
-  .description {
-    font-size: 1rem;
-    color: var(--color-text);
-    opacity: 0.8;
-    line-height: 1.8;
-    margin-bottom: var(--spacing-xl);
-  }
-  
-  /* 预览网格 */
-  .preview-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--spacing-md);
-    margin-bottom: var(--spacing-xl);
-  }
-  
-  @media (min-width: 600px) {
-    .preview-grid {
-      grid-template-columns: repeat(4, 1fr);
-    }
-  }
-  
-  .preview-item {
-    background-color: var(--color-background);
-    border: 3px solid var(--color-border);
-    padding: var(--spacing-lg);
-    transition: all 0.2s ease;
-  }
-  
-  .preview-item:hover {
-    transform: translateY(-4px);
-    box-shadow: 4px 4px 0 var(--color-shadow);
-  }
-  
-  .preview-icon {
-    font-size: 2rem;
+    font-family: var(--font-pixel);
+    font-size: clamp(1.25rem, 4vw, 1.75rem);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
     margin-bottom: var(--spacing-sm);
   }
   
-  .preview-title {
-    font-family: var(--font-pixel);
-    font-size: 0.625rem;
-    color: var(--color-text);
-    margin-bottom: var(--spacing-xs);
+  .title-icon {
+    font-size: 1.5em;
   }
   
-  .preview-desc {
-    font-size: 0.75rem;
+  .page-desc {
     color: var(--color-text);
     opacity: 0.7;
     margin: 0;
   }
   
-  /* 订阅区域 */
-  .subscribe-section {
-    margin-top: var(--spacing-xl);
-  }
-  
-  .subscribe-box {
-    background-color: var(--color-accent);
-    border: 3px solid var(--color-border);
-    padding: var(--spacing-lg);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--spacing-md);
-  }
-  
-  .bell-icon {
-    font-size: 2rem;
-    animation: bellRing 2s ease-in-out infinite;
-  }
-  
-  @keyframes bellRing {
-    0%, 100% {
-      transform: rotate(0deg);
-    }
-    10%, 30%, 50% {
-      transform: rotate(10deg);
-    }
-    20%, 40% {
-      transform: rotate(-10deg);
-    }
-  }
-  
-  .subscribe-text {
-    font-size: 0.875rem;
-    color: var(--color-text);
-    margin: 0;
-  }
-  
-  .subscribe-btn {
-    font-size: 0.75rem;
-  }
-  
-  /* 底部装饰 - 书本堆叠 */
-  .footer-decoration {
-    display: flex;
-    justify-content: center;
+  /* 快速开始 */
+  .quick-start {
     margin-bottom: var(--spacing-xl);
   }
   
-  .book-stack {
+  .start-card {
     display: flex;
-    align-items: flex-end;
-    gap: 4px;
+    align-items: center;
+    gap: var(--spacing-lg);
+    padding: var(--spacing-lg);
+    background: linear-gradient(135deg, #FFE66D 0%, #FF8E53 100%);
+    border: 4px solid var(--color-border);
+    box-shadow: 8px 8px 0 var(--color-border);
   }
   
-  .book {
-    width: 40px;
-    border: 3px solid var(--color-border);
-    box-shadow: 3px 3px 0 var(--color-shadow);
+  @media (max-width: 640px) {
+    .start-card {
+      flex-direction: column;
+      text-align: center;
+    }
   }
   
-  .book-1 {
-    height: 50px;
-    background-color: var(--color-primary);
+  .start-icon {
+    font-size: 4rem;
+    flex-shrink: 0;
   }
   
-  .book-2 {
-    height: 60px;
-    background-color: var(--color-secondary);
+  .start-content h2 {
+    font-family: var(--font-pixel);
+    font-size: 1rem;
+    margin: 0 0 var(--spacing-sm) 0;
   }
   
-  .book-3 {
-    height: 45px;
-    background-color: var(--color-accent);
+  .start-content p {
+    margin: 0 0 var(--spacing-md) 0;
+    opacity: 0.9;
   }
   
-  /* 导航区域 */
-  .nav-section {
-    display: flex;
-    justify-content: center;
-    gap: var(--spacing-md);
-    flex-wrap: wrap;
-  }
-  
-  .nav-link {
+  .pixel-btn {
     display: inline-flex;
     align-items: center;
-    gap: var(--spacing-sm);
-    padding: var(--spacing-md) var(--spacing-lg);
-    background-color: var(--color-primary);
-    color: var(--color-white);
+    justify-content: center;
+    padding: var(--spacing-sm) var(--spacing-lg);
     font-family: var(--font-pixel);
     font-size: 0.75rem;
-    text-decoration: none;
+    background: var(--color-white);
     border: 3px solid var(--color-border);
     box-shadow: 4px 4px 0 var(--color-border);
-    transition: all 0.1s ease;
+    text-decoration: none;
+    color: var(--color-text);
+    transition: all 0.1s;
   }
   
-  .nav-link:hover {
+  .pixel-btn:hover {
     transform: translate(2px, 2px);
     box-shadow: 2px 2px 0 var(--color-border);
   }
   
-  .nav-link.secondary {
-    background-color: var(--color-secondary);
+  .pixel-btn.primary {
+    background: var(--color-primary);
+    color: var(--color-white);
   }
   
-  .link-icon {
+  /* 教程列表 */
+  .tutorials-section {
+    margin-bottom: var(--spacing-xl);
+  }
+  
+  .section-title {
+    font-family: var(--font-pixel);
+    font-size: 1.125rem;
+    margin-bottom: var(--spacing-lg);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+  }
+  
+  .tutorials-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: var(--spacing-md);
+  }
+  
+  @media (min-width: 640px) {
+    .tutorials-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .tutorials-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+  .tutorial-card {
+    display: flex;
+    flex-direction: column;
+    padding: var(--spacing-lg);
+    background: var(--color-white);
+    border: 3px solid var(--color-border);
+    box-shadow: 4px 4px 0 var(--color-border);
+    text-decoration: none;
+    color: var(--color-text);
+    transition: all 0.2s;
+  }
+  
+  .tutorial-card:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: 8px 8px 0 var(--card-color);
+    border-color: var(--card-color);
+  }
+  
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-sm);
+  }
+  
+  .card-icon {
+    font-size: 2rem;
+  }
+  
+  .card-level {
+    font-family: var(--font-pixel);
+    font-size: 0.5rem;
+    padding: 4px 8px;
+    background: var(--card-color);
+    color: white;
+    border: 2px solid var(--color-border);
+  }
+  
+  .card-title {
+    font-family: var(--font-pixel);
+    font-size: 0.875rem;
+    margin: 0 0 var(--spacing-sm) 0;
+  }
+  
+  .card-desc {
+    font-size: 0.875rem;
+    opacity: 0.8;
+    margin: 0 0 var(--spacing-md) 0;
+    flex-grow: 1;
+  }
+  
+  .card-meta {
+    display: flex;
+    gap: var(--spacing-md);
+    font-size: 0.625rem;
+    font-family: var(--font-pixel);
+  }
+  
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    opacity: 0.7;
+  }
+  
+  .meta-icon {
+    font-size: 0.875rem;
+  }
+  
+  /* 技巧区域 */
+  .tips-section {
+    margin-bottom: var(--spacing-xl);
+  }
+  
+  .tips-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-md);
+  }
+  
+  @media (min-width: 768px) {
+    .tips-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+  .tip-card {
+    padding: var(--spacing-md);
+    background: var(--color-white);
+    border: 3px solid var(--color-border);
+    text-align: center;
+    transition: all 0.2s;
+  }
+  
+  .tip-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 4px 4px 0 var(--color-border);
+  }
+  
+  .tip-icon {
+    font-size: 2rem;
+    display: block;
+    margin-bottom: var(--spacing-sm);
+  }
+  
+  .tip-title {
+    font-family: var(--font-pixel);
+    font-size: 0.625rem;
+    margin: 0 0 var(--spacing-xs) 0;
+  }
+  
+  .tip-content {
+    font-size: 0.75rem;
+    opacity: 0.8;
+    margin: 0;
+  }
+  
+  /* FAQ */
+  .faq-section {
+    margin-bottom: var(--spacing-xl);
+  }
+  
+  .faq-list {
+    background: var(--color-white);
+    border: 3px solid var(--color-border);
+  }
+  
+  .faq-item {
+    border-bottom: 2px solid var(--color-border);
+  }
+  
+  .faq-item:last-child {
+    border-bottom: none;
+  }
+  
+  .faq-question {
+    font-family: var(--font-pixel);
+    font-size: 0.75rem;
+    padding: var(--spacing-md);
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.2s;
+  }
+  
+  .faq-question:hover {
+    background: var(--color-background);
+  }
+  
+  .faq-question::after {
+    content: '▼';
+    font-size: 0.625rem;
+    transition: transform 0.2s;
+  }
+  
+  details[open] .faq-question::after {
+    transform: rotate(180deg);
+  }
+  
+  .faq-answer {
+    padding: 0 var(--spacing-md) var(--spacing-md);
+  }
+  
+  .faq-answer p {
+    margin: 0;
+    font-size: 0.875rem;
+    opacity: 0.8;
+    line-height: 1.6;
+  }
+  
+  /* 帮助区域 */
+  .help-section {
+    text-align: center;
+  }
+  
+  .help-card {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--spacing-xl);
+    background: var(--color-white);
+    border: 3px solid var(--color-border);
+    box-shadow: 4px 4px 0 var(--color-border);
+  }
+  
+  .help-icon {
+    font-size: 3rem;
+    margin-bottom: var(--spacing-sm);
+  }
+  
+  .help-card h2 {
+    font-family: var(--font-pixel);
     font-size: 1rem;
+    margin: 0 0 var(--spacing-sm) 0;
   }
   
-  /* 响应式调整 */
-  @media (max-width: 480px) {
-    .main-card {
-      margin: 0 var(--spacing-md) var(--spacing-xl);
-    }
-    
-    .preview-grid {
-      grid-template-columns: 1fr 1fr;
-    }
-    
-    .nav-section {
-      flex-direction: column;
-      padding: 0 var(--spacing-md);
-    }
-    
-    .nav-link {
-      justify-content: center;
-    }
+  .help-card p {
+    margin: 0 0 var(--spacing-md) 0;
+    opacity: 0.8;
   }
 </style>

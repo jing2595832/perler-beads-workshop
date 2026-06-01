@@ -1,0 +1,473 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout title="404 - 页面走丢啦" description="哎呀！这个页面好像被拼豆精灵藏起来了" noindex={true}>
+  <Header />
+  
+  <main class="error-page">
+    <div class="container">
+      <!-- 像素艺术 404 -->
+      <div class="pixel-404">
+        <div class="pixel-number">
+          <div class="digit" data-digit="4">
+            <div class="pixel-grid">
+              <span class="p"></span><span class="p"></span><span class="p"></span><span class="p"></span>
+              <span class="p"></span><span class="e"></span><span class="e"></span><span class="p"></span>
+              <span class="p"></span><span class="e"></span><span class="e"></span><span class="p"></span>
+              <span class="p"></span><span class="p"></span><span class="p"></span><span class="p"></span>
+              <span class="e"></span><span class="e"></span><span class="p"></span><span class="p"></span>
+              <span class="e"></span><span class="e"></span><span class="p"></span><span class="p"></span>
+            </div>
+          </div>
+          <div class="digit" data-digit="0">
+            <div class="pixel-grid">
+              <span class="p"></span><span class="p"></span><span class="p"></span><span class="p"></span>
+              <span class="p"></span><span class="e"></span><span class="e"></span><span class="p"></span>
+              <span class="p"></span><span class="e"></span><span class="e"></span><span class="p"></span>
+              <span class="p"></span><span class="e"></span><span class="e"></span><span class="p"></span>
+              <span class="p"></span><span class="e"></span><span class="e"></span><span class="p"></span>
+              <span class="p"></span><span class="p"></span><span class="p"></span><span class="p"></span>
+            </div>
+          </div>
+          <div class="digit" data-digit="4">
+            <div class="pixel-grid">
+              <span class="p"></span><span class="p"></span><span class="p"></span><span class="p"></span>
+              <span class="p"></span><span class="e"></span><span class="e"></span><span class="p"></span>
+              <span class="p"></span><span class="e"></span><span class="e"></span><span class="p"></span>
+              <span class="p"></span><span class="p"></span><span class="p"></span><span class="p"></span>
+              <span class="e"></span><span class="e"></span><span class="p"></span><span class="p"></span>
+              <span class="e"></span><span class="e"></span><span class="p"></span><span class="p"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 伤心的拼豆精灵 -->
+      <div class="sad-sprite">
+        <div class="sprite-face">
+          <div class="sprite-eyes">
+            <span class="eye"></span>
+            <span class="eye"></span>
+          </div>
+          <div class="sprite-tears">
+            <span class="tear"></span>
+            <span class="tear"></span>
+          </div>
+          <div class="sprite-mouth">⌢</div>
+        </div>
+        <div class="sprite-body">
+          <span class="bead"></span>
+          <span class="bead"></span>
+          <span class="bead"></span>
+          <span class="bead"></span>
+          <span class="bead"></span>
+          <span class="bead"></span>
+        </div>
+      </div>
+      
+      <!-- 错误信息 -->
+      <div class="error-content">
+        <h1 class="error-title">
+          <span class="title-icon">😢</span>
+          哎呀！页面走丢啦
+        </h1>
+        <p class="error-desc">
+          这个页面好像被拼豆精灵藏起来了<br/>
+          或者它从来没有存在过...
+        </p>
+        
+        <!-- 搜索建议 -->
+        <div class="search-tips">
+          <h2 class="tips-title">试试这些地方？</h2>
+          <div class="tips-grid">
+            <a href="/patterns" class="tip-card">
+              <span class="tip-icon">📚</span>
+              <span class="tip-text">浏览图纸库</span>
+            </a>
+            <a href="/design" class="tip-card">
+              <span class="tip-icon">🎨</span>
+              <span class="tip-text">去设计工具</span>
+            </a>
+            <a href="/tutorials" class="tip-card">
+              <span class="tip-icon">📖</span>
+              <span class="tip-text">学习教程</span>
+            </a>
+            <a href="/" class="tip-card primary">
+              <span class="tip-icon">🏠</span>
+              <span class="tip-text">返回首页</span>
+            </a>
+          </div>
+        </div>
+        
+        <!-- 趣味提示 -->
+        <div class="fun-fact">
+          <span class="fact-icon">💡</span>
+          <p class="fact-text">
+            小知识：404错误代码源于CERN的Room 404，那里存放着丢失的网页文件
+          </p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 背景装饰 -->
+    <div class="bg-decoration">
+      <div class="floating-bead" style="--x: 10%; --y: 20%; --color: #FF6B6B; --delay: 0s;"></div>
+      <div class="floating-bead" style="--x: 20%; --y: 60%; --color: #4ECDC4; --delay: 0.5s;"></div>
+      <div class="floating-bead" style="--x: 80%; --y: 30%; --color: #FFE66D; --delay: 1s;"></div>
+      <div class="floating-bead" style="--x: 70%; --y: 70%; --color: #FF6B6B; --delay: 1.5s;"></div>
+      <div class="floating-bead" style="--x: 90%; --y: 50%; --color: #4ECDC4; --delay: 2s;"></div>
+      <div class="floating-bead" style="--x: 5%; --y: 80%; --color: #FFE66D; --delay: 2.5s;"></div>
+    </div>
+  </main>
+  
+  <Footer />
+</Layout>
+
+<style>
+  .error-page {
+    min-height: calc(100vh - 200px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-2xl) 0;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(180deg, var(--color-white) 0%, var(--color-background) 100%);
+  }
+  
+  .container {
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+  
+  /* 像素 404 数字 */
+  .pixel-404 {
+    margin-bottom: var(--spacing-xl);
+  }
+  
+  .pixel-number {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-md);
+    flex-wrap: wrap;
+  }
+  
+  .digit {
+    padding: var(--spacing-sm);
+    background: var(--color-white);
+    border: 4px solid var(--color-border);
+    box-shadow: 8px 8px 0 var(--color-border);
+  }
+  
+  .pixel-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 16px);
+    grid-template-rows: repeat(6, 16px);
+    gap: 2px;
+  }
+  
+  .pixel-grid span {
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--color-border);
+  }
+  
+  .pixel-grid .p {
+    background-color: #FF6B6B;
+    animation: pixelBlink 2s ease-in-out infinite;
+  }
+  
+  .pixel-grid .e {
+    background-color: transparent;
+  }
+  
+  .digit:nth-child(1) .p { animation-delay: 0s; }
+  .digit:nth-child(2) .p { animation-delay: 0.3s; }
+  .digit:nth-child(3) .p { animation-delay: 0.6s; }
+  
+  @keyframes pixelBlink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+  
+  /* 伤心的拼豆精灵 */
+  .sad-sprite {
+    margin-bottom: var(--spacing-xl);
+    display: inline-block;
+  }
+  
+  .sprite-face {
+    width: 80px;
+    height: 80px;
+    background: #FFE66D;
+    border: 4px solid var(--color-border);
+    margin: 0 auto var(--spacing-sm);
+    position: relative;
+    animation: spriteShake 3s ease-in-out infinite;
+  }
+  
+  @keyframes spriteShake {
+    0%, 100% { transform: rotate(-2deg); }
+    50% { transform: rotate(2deg); }
+  }
+  
+  .sprite-eyes {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    padding-top: 20px;
+  }
+  
+  .eye {
+    width: 12px;
+    height: 12px;
+    background: var(--color-border);
+    border-radius: 50%;
+    animation: eyeBlink 4s ease-in-out infinite;
+  }
+  
+  @keyframes eyeBlink {
+    0%, 96%, 100% { transform: scaleY(1); }
+    98% { transform: scaleY(0.1); }
+  }
+  
+  .sprite-tears {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    position: absolute;
+    top: 32px;
+    left: 0;
+    right: 0;
+  }
+  
+  .tear {
+    width: 6px;
+    height: 10px;
+    background: #4ECDC4;
+    border-radius: 0 0 50% 50%;
+    animation: tearDrop 2s ease-in-out infinite;
+  }
+  
+  .tear:nth-child(2) {
+    animation-delay: 0.5s;
+  }
+  
+  @keyframes tearDrop {
+    0%, 100% { transform: translateY(0); opacity: 1; }
+    50% { transform: translateY(8px); opacity: 0.6; }
+  }
+  
+  .sprite-mouth {
+    font-size: 24px;
+    color: var(--color-border);
+    margin-top: 8px;
+    transform: rotate(180deg);
+    display: inline-block;
+  }
+  
+  .sprite-body {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+  }
+  
+  .bead {
+    width: 16px;
+    height: 16px;
+    background: #4ECDC4;
+    border: 2px solid var(--color-border);
+    animation: beadBounce 1s ease-in-out infinite;
+  }
+  
+  .bead:nth-child(1) { animation-delay: 0s; background: #FF6B6B; }
+  .bead:nth-child(2) { animation-delay: 0.1s; background: #4ECDC4; }
+  .bead:nth-child(3) { animation-delay: 0.2s; background: #FFE66D; }
+  .bead:nth-child(4) { animation-delay: 0.3s; background: #FF6B6B; }
+  .bead:nth-child(5) { animation-delay: 0.4s; background: #4ECDC4; }
+  .bead:nth-child(6) { animation-delay: 0.5s; background: #FFE66D; }
+  
+  @keyframes beadBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+  }
+  
+  /* 错误内容 */
+  .error-content {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .error-title {
+    font-family: var(--font-pixel);
+    font-size: clamp(1.25rem, 4vw, 1.75rem);
+    margin-bottom: var(--spacing-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+  }
+  
+  .title-icon {
+    font-size: 1.5em;
+    animation: iconWiggle 2s ease-in-out infinite;
+  }
+  
+  @keyframes iconWiggle {
+    0%, 100% { transform: rotate(-10deg); }
+    50% { transform: rotate(10deg); }
+  }
+  
+  .error-desc {
+    font-size: 1rem;
+    color: var(--color-text);
+    opacity: 0.8;
+    margin-bottom: var(--spacing-xl);
+    line-height: 1.8;
+  }
+  
+  /* 搜索建议 */
+  .search-tips {
+    margin-bottom: var(--spacing-xl);
+  }
+  
+  .tips-title {
+    font-family: var(--font-pixel);
+    font-size: 0.875rem;
+    margin-bottom: var(--spacing-md);
+    color: var(--color-text);
+  }
+  
+  .tips-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-md);
+  }
+  
+  @media (min-width: 640px) {
+    .tips-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  
+  .tip-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md);
+    background: var(--color-white);
+    border: 3px solid var(--color-border);
+    box-shadow: 4px 4px 0 var(--color-border);
+    text-decoration: none;
+    color: var(--color-text);
+    transition: all 0.2s ease;
+  }
+  
+  .tip-card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--color-primary);
+    border-color: var(--color-primary);
+  }
+  
+  .tip-card.primary {
+    background: var(--color-primary);
+    color: var(--color-white);
+  }
+  
+  .tip-card.primary:hover {
+    box-shadow: 6px 6px 0 var(--color-border);
+  }
+  
+  .tip-icon {
+    font-size: 1.5rem;
+  }
+  
+  .tip-text {
+    font-family: var(--font-pixel);
+    font-size: 0.625rem;
+  }
+  
+  /* 趣味提示 */
+  .fun-fact {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md);
+    background: rgba(78, 205, 196, 0.1);
+    border: 2px dashed var(--color-secondary);
+    border-radius: 8px;
+  }
+  
+  .fact-icon {
+    font-size: 1.25rem;
+    animation: factPulse 2s ease-in-out infinite;
+  }
+  
+  @keyframes factPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+  }
+  
+  .fact-text {
+    font-size: 0.75rem;
+    color: var(--color-text);
+    opacity: 0.8;
+    margin: 0;
+    text-align: left;
+  }
+  
+  /* 背景装饰 */
+  .bg-decoration {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+  
+  .floating-bead {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    width: 24px;
+    height: 24px;
+    background: var(--color);
+    border: 3px solid var(--color-border);
+    opacity: 0.3;
+    animation: float 6s ease-in-out infinite;
+    animation-delay: var(--delay);
+  }
+  
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0) rotate(0deg);
+      opacity: 0.3;
+    }
+    50% {
+      transform: translateY(-20px) rotate(180deg);
+      opacity: 0.6;
+    }
+  }
+  
+  /* 减少动画 */
+  @media (prefers-reduced-motion: reduce) {
+    .pixel-grid .p,
+    .sprite-face,
+    .eye,
+    .tear,
+    .bead,
+    .title-icon,
+    .fact-icon,
+    .floating-bead {
+      animation: none;
+    }
+  }
+</style>
