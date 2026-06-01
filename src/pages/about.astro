@@ -1,0 +1,585 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout title="关于我们">
+  <Header />
+  
+  <main class="about-page">
+    <div class="container">
+      <!-- 页面标题 -->
+      <div class="page-header">
+        <div class="header-decoration">
+          <span class="deco-item">🎨</span>
+          <span class="deco-item">✨</span>
+          <span class="deco-item">🎯</span>
+        </div>
+        <h1 class="page-title">关于我们</h1>
+        <p class="page-subtitle">用心创作每一份像素艺术</p>
+      </div>
+      
+      <!-- 网站介绍 -->
+      <section class="intro-section">
+        <div class="intro-card pixel-card">
+          <div class="card-icon">🏠</div>
+          <h2 class="card-title">欢迎来到拼豆豆工坊</h2>
+          <div class="card-content">
+            <p>
+              拼豆豆工坊是一个专注于拼豆（Perler Beads / 熨烫珠）像素艺术的设计与分享平台。
+              我们致力于为手工爱好者提供优质的拼豆图纸资源，让每个人都能轻松创作出属于自己的像素艺术作品。
+            </p>
+            <p>
+              无论您是刚接触拼豆的新手，还是经验丰富的手工达人，这里都有适合您的图纸和灵感。
+              从简单的表情符号到复杂的风景画，我们的图纸库涵盖了各种风格和难度等级。
+            </p>
+          </div>
+        </div>
+      </section>
+      
+      <!-- 特色介绍 -->
+      <section class="features-section">
+        <h2 class="section-title">我们的特色</h2>
+        <div class="features-grid">
+          <div class="feature-item">
+            <div class="feature-icon-wrapper">
+              <span class="feature-icon">🎨</span>
+            </div>
+            <h3 class="feature-title">原创设计</h3>
+            <p class="feature-desc">所有图纸均为团队原创设计，独特且精美</p>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-icon-wrapper">
+              <span class="feature-icon">📐</span>
+            </div>
+            <h3 class="feature-title">详细标注</h3>
+            <p class="feature-desc">每个图纸都标注了尺寸、颜色和难度等级</p>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-icon-wrapper">
+              <span class="feature-icon">🌍</span>
+            </div>
+            <h3 class="feature-title">多语言支持</h3>
+            <p class="feature-desc">支持中文、英文、日文三种语言界面</p>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-icon-wrapper">
+              <span class="feature-icon">💎</span>
+            </div>
+            <h3 class="feature-title">免费下载</h3>
+            <p class="feature-desc">所有图纸均可免费下载使用</p>
+          </div>
+        </div>
+      </section>
+      
+      <!-- 版权声明 -->
+      <section class="copyright-section">
+        <div class="copyright-card pixel-card">
+          <div class="copyright-header">
+            <span class="copyright-icon">©️</span>
+            <h2 class="copyright-title">版权声明</h2>
+          </div>
+          <div class="copyright-content">
+            <div class="copyright-notice">
+              <h3>原创内容声明</h3>
+              <p>
+                拼豆豆工坊网站上的所有图纸均为原创设计，版权归拼豆豆工坊所有。
+                我们投入大量时间和精力创作每一份图纸，确保其独特性和可制作性。
+              </p>
+            </div>
+            
+            <div class="usage-rights">
+              <h3>使用授权</h3>
+              <ul class="rights-list">
+                <li>✅ 个人学习、欣赏和制作使用</li>
+                <li>✅ 在社交媒体上分享成品（请注明出处）</li>
+                <li>✅ 用于非商业性质的教学活动</li>
+                <li>❌ 未经授权的商业销售</li>
+                <li>❌ 转载、复制或修改后声称原创</li>
+                <li>❌ 用于任何违法违规用途</li>
+              </ul>
+            </div>
+            
+            <div class="infringement-notice">
+              <h3>侵权处理</h3>
+              <p>
+                如发现任何侵犯我们知识产权的行为，请及时与我们联系。
+                我们将依法维护自身合法权益，追究侵权者的法律责任。
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- 联系方式 -->
+      <section class="contact-section">
+        <h2 class="section-title">联系我们</h2>
+        <div class="contact-grid">
+          <div class="contact-card">
+            <div class="contact-icon">📧</div>
+            <h3 class="contact-type">电子邮箱</h3>
+            <p class="contact-value">hello@perlerworkshop.com</p>
+            <p class="contact-desc">商务合作、内容投稿</p>
+          </div>
+          
+          <div class="contact-card">
+            <div class="contact-icon">💬</div>
+            <h3 class="contact-type">微信公众号</h3>
+            <p class="contact-value">拼豆豆工坊</p>
+            <p class="contact-desc">获取最新图纸资讯</p>
+          </div>
+          
+          <div class="contact-card">
+            <div class="contact-icon">📱</div>
+            <h3 class="contact-type">社交媒体</h3>
+            <div class="social-links">
+              <a href="#" class="social-item" title="微博">微博</a>
+              <a href="#" class="social-item" title="小红书">小红书</a>
+              <a href="#" class="social-item" title="B站">B站</a>
+            </div>
+            <p class="contact-desc">关注我们的动态</p>
+          </div>
+        </div>
+        
+        <!-- 反馈表单提示 -->
+        <div class="feedback-hint">
+          <div class="hint-box pixel-card">
+            <span class="hint-icon">💡</span>
+            <div class="hint-content">
+              <h3>有建议或反馈？</h3>
+              <p>我们非常重视您的意见，欢迎通过邮件与我们联系</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- 底部装饰 -->
+      <div class="page-footer">
+        <div class="footer-message">
+          <p class="thank-you">感谢您的支持与喜爱 💕</p>
+          <p class="slogan">让我们一起创造更多美好的像素艺术！</p>
+        </div>
+        <div class="footer-pixels">
+          <span class="f-pixel" style="--color: #FF6B6B;"></span>
+          <span class="f-pixel" style="--color: #4ECDC4;"></span>
+          <span class="f-pixel" style="--color: #FFE66D;"></span>
+          <span class="f-pixel" style="--color: #FF6B6B;"></span>
+          <span class="f-pixel" style="--color: #4ECDC4;"></span>
+        </div>
+      </div>
+    </div>
+  </main>
+  
+  <Footer />
+</Layout>
+
+<style>
+  .about-page {
+    padding: var(--spacing-2xl) 0;
+  }
+  
+  /* 页面标题 */
+  .page-header {
+    text-align: center;
+    margin-bottom: var(--spacing-2xl);
+  }
+  
+  .header-decoration {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+  }
+  
+  .deco-item {
+    font-size: 2rem;
+    animation: bounce 1s ease-in-out infinite alternate;
+  }
+  
+  .deco-item:nth-child(1) { animation-delay: 0s; }
+  .deco-item:nth-child(2) { animation-delay: 0.2s; }
+  .deco-item:nth-child(3) { animation-delay: 0.4s; }
+  
+  @keyframes bounce {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-10px); }
+  }
+  
+  .page-title {
+    font-size: 2rem;
+    color: var(--color-primary);
+    margin-bottom: var(--spacing-sm);
+  }
+  
+  .page-subtitle {
+    font-size: 1rem;
+    color: var(--color-text);
+    opacity: 0.7;
+  }
+  
+  /* 网站介绍 */
+  .intro-section {
+    margin-bottom: var(--spacing-2xl);
+  }
+  
+  .intro-card {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  
+  .card-icon {
+    font-size: 3rem;
+    margin-bottom: var(--spacing-md);
+  }
+  
+  .card-title {
+    font-size: 1.25rem;
+    color: var(--color-text);
+    margin-bottom: var(--spacing-lg);
+  }
+  
+  .card-content {
+    text-align: left;
+  }
+  
+  .card-content p {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--color-text);
+    margin-bottom: var(--spacing-md);
+  }
+  
+  /* 特色介绍 */
+  .features-section {
+    margin-bottom: var(--spacing-2xl);
+  }
+  
+  .section-title {
+    font-size: 1.25rem;
+    text-align: center;
+    color: var(--color-text);
+    margin-bottom: var(--spacing-xl);
+    position: relative;
+  }
+  
+  .section-title::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 4px;
+    background-color: var(--color-primary);
+    margin: var(--spacing-sm) auto 0;
+  }
+  
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-lg);
+  }
+  
+  @media (min-width: 768px) {
+    .features-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  
+  .feature-item {
+    text-align: center;
+    padding: var(--spacing-lg);
+    background-color: var(--color-white);
+    border: 3px solid var(--color-border);
+    box-shadow: 4px 4px 0 var(--color-shadow);
+    transition: all 0.2s ease;
+  }
+  
+  .feature-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 6px 6px 0 var(--color-shadow);
+  }
+  
+  .feature-icon-wrapper {
+    width: 64px;
+    height: 64px;
+    background-color: var(--color-accent);
+    border: 3px solid var(--color-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto var(--spacing-md);
+  }
+  
+  .feature-icon {
+    font-size: 2rem;
+  }
+  
+  .feature-title {
+    font-family: var(--font-pixel);
+    font-size: 0.75rem;
+    color: var(--color-text);
+    margin-bottom: var(--spacing-sm);
+  }
+  
+  .feature-desc {
+    font-size: 0.875rem;
+    color: var(--color-text);
+    opacity: 0.8;
+    margin: 0;
+  }
+  
+  /* 版权声明 */
+  .copyright-section {
+    margin-bottom: var(--spacing-2xl);
+  }
+  
+  .copyright-card {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .copyright-header {
+    text-align: center;
+    border-bottom: 3px dashed var(--color-border);
+    padding-bottom: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
+  }
+  
+  .copyright-icon {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: var(--spacing-md);
+  }
+  
+  .copyright-title {
+    font-size: 1.25rem;
+    color: var(--color-primary);
+    margin: 0;
+  }
+  
+  .copyright-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xl);
+  }
+  
+  .copyright-content h3 {
+    font-family: var(--font-pixel);
+    font-size: 0.75rem;
+    color: var(--color-text);
+    margin-bottom: var(--spacing-md);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    background-color: var(--color-background);
+    border-left: 4px solid var(--color-primary);
+    display: inline-block;
+  }
+  
+  .copyright-content p {
+    font-size: 0.9375rem;
+    line-height: 1.8;
+    color: var(--color-text);
+    margin: 0;
+  }
+  
+  .rights-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-sm);
+  }
+  
+  @media (min-width: 600px) {
+    .rights-list {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  
+  .rights-list li {
+    font-size: 0.875rem;
+    padding: var(--spacing-sm);
+    background-color: var(--color-background);
+    border: 2px solid var(--color-border);
+  }
+  
+  /* 联系方式 */
+  .contact-section {
+    margin-bottom: var(--spacing-2xl);
+  }
+  
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
+  }
+  
+  @media (min-width: 768px) {
+    .contact-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+  .contact-card {
+    text-align: center;
+    padding: var(--spacing-xl);
+    background-color: var(--color-white);
+    border: 3px solid var(--color-border);
+    box-shadow: 4px 4px 0 var(--color-shadow);
+  }
+  
+  .contact-icon {
+    font-size: 2.5rem;
+    margin-bottom: var(--spacing-md);
+  }
+  
+  .contact-type {
+    font-family: var(--font-pixel);
+    font-size: 0.75rem;
+    color: var(--color-text);
+    margin-bottom: var(--spacing-sm);
+  }
+  
+  .contact-value {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--color-primary);
+    margin-bottom: var(--spacing-xs);
+  }
+  
+  .contact-desc {
+    font-size: 0.75rem;
+    color: var(--color-text);
+    opacity: 0.7;
+    margin: 0;
+  }
+  
+  .social-links {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-xs);
+  }
+  
+  .social-item {
+    font-family: var(--font-pixel);
+    font-size: 0.625rem;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    background-color: var(--color-secondary);
+    color: var(--color-white);
+    text-decoration: none;
+    border: 2px solid var(--color-border);
+    transition: all 0.2s ease;
+  }
+  
+  .social-item:hover {
+    background-color: var(--color-primary);
+    transform: translateY(-2px);
+  }
+  
+  /* 反馈提示 */
+  .feedback-hint {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .hint-box {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    background-color: var(--color-accent);
+  }
+  
+  .hint-icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+  }
+  
+  .hint-content h3 {
+    font-family: var(--font-pixel);
+    font-size: 0.75rem;
+    color: var(--color-text);
+    margin-bottom: var(--spacing-xs);
+  }
+  
+  .hint-content p {
+    font-size: 0.875rem;
+    color: var(--color-text);
+    opacity: 0.8;
+    margin: 0;
+  }
+  
+  /* 页面底部 */
+  .page-footer {
+    text-align: center;
+    padding-top: var(--spacing-xl);
+    border-top: 3px solid var(--color-border);
+  }
+  
+  .footer-message {
+    margin-bottom: var(--spacing-lg);
+  }
+  
+  .thank-you {
+    font-family: var(--font-pixel);
+    font-size: 1rem;
+    color: var(--color-primary);
+    margin-bottom: var(--spacing-sm);
+  }
+  
+  .slogan {
+    font-size: 0.875rem;
+    color: var(--color-text);
+    opacity: 0.8;
+    margin: 0;
+  }
+  
+  .footer-pixels {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+  }
+  
+  .f-pixel {
+    width: 16px;
+    height: 16px;
+    background-color: var(--color);
+    border: 2px solid var(--color-border);
+    animation: pixelFade 1.5s ease-in-out infinite alternate;
+  }
+  
+  .f-pixel:nth-child(1) { animation-delay: 0s; }
+  .f-pixel:nth-child(2) { animation-delay: 0.2s; }
+  .f-pixel:nth-child(3) { animation-delay: 0.4s; }
+  .f-pixel:nth-child(4) { animation-delay: 0.6s; }
+  .f-pixel:nth-child(5) { animation-delay: 0.8s; }
+  
+  @keyframes pixelFade {
+    0% { opacity: 1; }
+    100% { opacity: 0.5; }
+  }
+  
+  /* 响应式调整 */
+  @media (max-width: 768px) {
+    .page-title {
+      font-size: 1.5rem;
+    }
+    
+    .intro-card,
+    .copyright-card {
+      margin: 0 var(--spacing-md);
+    }
+    
+    .features-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .contact-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,416 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout title="社区">
+  <Header activeNav="community" />
+  
+  <main class="community-page">
+    <div class="container">
+      <div class="coming-soon-container">
+        <!-- 社区图标动画 -->
+        <div class="community-animation">
+          <div class="avatar-group">
+            <div class="avatar avatar-1">👤</div>
+            <div class="avatar avatar-2">👤</div>
+            <div class="avatar avatar-3">👤</div>
+            <div class="avatar avatar-main">🎨</div>
+          </div>
+          <div class="connection-lines">
+            <span class="line line-1"></span>
+            <span class="line line-2"></span>
+            <span class="line line-3"></span>
+          </div>
+        </div>
+        
+        <!-- 主内容区 -->
+        <div class="content-card pixel-card">
+          <h1 class="page-title">社区功能开发中...</h1>
+          <p class="page-subtitle">
+            一个属于拼豆爱好者的交流空间即将诞生<br/>
+            在这里分享作品、交流心得、结识同好
+          </p>
+          
+          <!-- 功能预告 -->
+          <div class="features-section">
+            <h2 class="features-title">即将开放功能</h2>
+            <div class="features-grid">
+              <div class="feature-card">
+                <div class="feature-icon">📸</div>
+                <h3 class="feature-name">作品展示</h3>
+                <p class="feature-desc">分享您的拼豆作品</p>
+              </div>
+              
+              <div class="feature-card">
+                <div class="feature-icon">💬</div>
+                <h3 class="feature-name">话题讨论</h3>
+                <p class="feature-desc">参与热门话题交流</p>
+              </div>
+              
+              <div class="feature-card">
+                <div class="feature-icon">❓</div>
+                <h3 class="feature-name">问答互助</h3>
+                <p class="feature-desc">解决制作中的疑惑</p>
+              </div>
+              
+              <div class="feature-card">
+                <div class="feature-icon">🏆</div>
+                <h3 class="feature-name">挑战活动</h3>
+                <p class="feature-desc">参与主题创作挑战</p>
+              </div>
+              
+              <div class="feature-card">
+                <div class="feature-icon">📦</div>
+                <h3 class="feature-name">材料交易</h3>
+                <p class="feature-desc">拼豆材料交换分享</p>
+              </div>
+              
+              <div class="feature-card">
+                <div class="feature-icon">🌟</div>
+                <h3 class="feature-name">达人认证</h3>
+                <p class="feature-desc">成为社区认证达人</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 倒计时提示 -->
+          <div class="countdown-hint">
+            <div class="hint-box">
+              <span class="hourglass">⏳</span>
+              <p class="hint-text">预计开放时间：2024年Q2</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 底部行动区 -->
+        <div class="action-area">
+          <div class="action-card">
+            <p class="action-text">不想错过社区上线？</p>
+            <button class="pixel-btn action-btn" onclick="subscribeCommunity()">
+              <span class="btn-icon">✉️</span>
+              订阅通知
+            </button>
+          </div>
+        </div>
+        
+        <!-- 导航链接 -->
+        <div class="nav-links">
+          <a href="/patterns" class="nav-btn">
+            <span>🎨</span> 浏览图纸
+          </a>
+          <a href="/tutorials" class="nav-btn secondary">
+            <span>📚</span> 查看教程
+          </a>
+          <a href="/" class="nav-btn accent">
+            <span>🏠</span> 返回首页
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+  
+  <Footer />
+</Layout>
+
+<script>
+  function subscribeCommunity() {
+    alert('感谢您的关注！社区上线后我们会第一时间通知您。');
+  }
+</script>
+
+<style>
+  .community-page {
+    padding: var(--spacing-2xl) 0;
+    min-height: calc(100vh - 70px - 300px);
+  }
+  
+  .coming-soon-container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  /* 社区动画 */
+  .community-animation {
+    position: relative;
+    height: 120px;
+    margin-bottom: var(--spacing-xl);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .avatar-group {
+    position: relative;
+    width: 200px;
+    height: 100px;
+  }
+  
+  .avatar {
+    position: absolute;
+    width: 48px;
+    height: 48px;
+    background-color: var(--color-white);
+    border: 3px solid var(--color-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    box-shadow: 3px 3px 0 var(--color-shadow);
+    animation: avatarFloat 2s ease-in-out infinite;
+  }
+  
+  .avatar-main {
+    width: 60px;
+    height: 60px;
+    font-size: 2rem;
+    background-color: var(--color-accent);
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    animation: avatarPulse 2s ease-in-out infinite;
+  }
+  
+  .avatar-1 {
+    left: 10%;
+    top: 20%;
+    animation-delay: 0s;
+  }
+  
+  .avatar-2 {
+    right: 10%;
+    top: 20%;
+    animation-delay: 0.3s;
+  }
+  
+  .avatar-3 {
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    animation-delay: 0.6s;
+  }
+  
+  @keyframes avatarFloat {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+  
+  @keyframes avatarPulse {
+    0%, 100% {
+      transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+      transform: translate(-50%, -50%) scale(1.1);
+    }
+  }
+  
+  /* 内容卡片 */
+  .content-card {
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+  }
+  
+  .page-title {
+    font-size: 1.5rem;
+    color: var(--color-primary);
+    margin-bottom: var(--spacing-md);
+  }
+  
+  .page-subtitle {
+    font-size: 1rem;
+    color: var(--color-text);
+    opacity: 0.8;
+    line-height: 1.8;
+    margin-bottom: var(--spacing-xl);
+  }
+  
+  /* 功能预告 */
+  .features-section {
+    border-top: 3px dashed var(--color-border);
+    padding-top: var(--spacing-xl);
+  }
+  
+  .features-title {
+    font-family: var(--font-pixel);
+    font-size: 0.875rem;
+    color: var(--color-text);
+    margin-bottom: var(--spacing-lg);
+  }
+  
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-xl);
+  }
+  
+  @media (min-width: 600px) {
+    .features-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+  .feature-card {
+    background-color: var(--color-background);
+    border: 3px solid var(--color-border);
+    padding: var(--spacing-lg);
+    transition: all 0.2s ease;
+  }
+  
+  .feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 4px 4px 0 var(--color-shadow);
+    background-color: var(--color-white);
+  }
+  
+  .feature-icon {
+    font-size: 2rem;
+    margin-bottom: var(--spacing-sm);
+  }
+  
+  .feature-name {
+    font-family: var(--font-pixel);
+    font-size: 0.625rem;
+    color: var(--color-text);
+    margin-bottom: var(--spacing-xs);
+  }
+  
+  .feature-desc {
+    font-size: 0.75rem;
+    color: var(--color-text);
+    opacity: 0.7;
+    margin: 0;
+  }
+  
+  /* 倒计时提示 */
+  .countdown-hint {
+    margin-top: var(--spacing-xl);
+  }
+  
+  .hint-box {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    background-color: var(--color-secondary);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 3px solid var(--color-border);
+  }
+  
+  .hourglass {
+    font-size: 1.25rem;
+    animation: hourglassFlip 2s ease-in-out infinite;
+  }
+  
+  @keyframes hourglassFlip {
+    0%, 100% {
+      transform: rotate(0deg);
+    }
+    50% {
+      transform: rotate(180deg);
+    }
+  }
+  
+  .hint-text {
+    font-family: var(--font-pixel);
+    font-size: 0.625rem;
+    color: var(--color-white);
+    margin: 0;
+  }
+  
+  /* 行动区域 */
+  .action-area {
+    margin-bottom: var(--spacing-xl);
+  }
+  
+  .action-card {
+    background-color: var(--color-accent);
+    border: 3px solid var(--color-border);
+    box-shadow: 4px 4px 0 var(--color-border);
+    padding: var(--spacing-lg);
+    text-align: center;
+  }
+  
+  .action-text {
+    font-size: 0.875rem;
+    color: var(--color-text);
+    margin-bottom: var(--spacing-md);
+  }
+  
+  .action-btn {
+    font-size: 0.875rem;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+  }
+  
+  .btn-icon {
+    font-size: 1.25rem;
+  }
+  
+  /* 导航链接 */
+  .nav-links {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-md);
+    flex-wrap: wrap;
+  }
+  
+  .nav-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md) var(--spacing-lg);
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    font-family: var(--font-pixel);
+    font-size: 0.625rem;
+    text-decoration: none;
+    border: 3px solid var(--color-border);
+    box-shadow: 4px 4px 0 var(--color-border);
+    transition: all 0.1s ease;
+  }
+  
+  .nav-btn:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 var(--color-border);
+  }
+  
+  .nav-btn.secondary {
+    background-color: var(--color-secondary);
+  }
+  
+  .nav-btn.accent {
+    background-color: var(--color-accent);
+    color: var(--color-text);
+  }
+  
+  .nav-btn span {
+    font-size: 1rem;
+  }
+  
+  /* 响应式调整 */
+  @media (max-width: 480px) {
+    .content-card {
+      margin: 0 var(--spacing-md) var(--spacing-xl);
+    }
+    
+    .features-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .nav-links {
+      flex-direction: column;
+      padding: 0 var(--spacing-md);
+    }
+    
+    .nav-btn {
+      justify-content: center;
+    }
+  }
+</style>

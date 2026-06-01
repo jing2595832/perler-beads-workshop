@@ -1,0 +1,597 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { patterns, categories, getPatternsByCategory, getCategoryById } from '../../data/patterns';
+import type { Pattern } from '../../data/patterns';
+
+// 生成所有静态路径
+export async function getStaticPaths() {
+  return patterns.map((pattern) => ({
+    params: { id: pattern.id },
+    props: { pattern },
+  }));
+}
+
+interface Props {
+  pattern: Pattern;
+}
+
+const { pattern } = Astro.props;
+const category = getCategoryById(pattern.category);
+
+// 获取同分类的其他图纸（排除当前图纸）
+const relatedPatterns = getPatternsByCategory(pattern.category)
+  .filter((p) => p.id !== pattern.id)
+  .slice(0, 4);
+
+// 难度等级显示
+const difficultyLabels = ['', '入门', '简单', '中等', '困难', '专家'];
+const difficultyLabel = difficultyLabels[pattern.difficulty] || '未知';
+
+// 颜色映射（用于显示颜色名称）
+const colorMap: Record<string, string> = {
+  red: '红色',
+  pink: '粉色',
+  yellow: '黄色',
+  orange: '橙色',
+  green: '绿色',
+  lightgreen: '浅绿',
+  blue: '蓝色',
+  lightblue: '浅蓝',
+  navy: '深蓝',
+  purple: '紫色',
+  white: '白色',
+  black: '黑色',
+  gray: '灰色',
+  brown: '棕色',
+  beige: '米色',
+  gold: '金色',
+  silver: '银色',
+};
+
+const pageTitle = `${pattern.name} - 图纸详情`;
+---
+
+<Layout title={pageTitle}>
+  <Header activeNav="patterns" />
+  
+  <main class="pattern-detail-page">
+    <div class="container">
+      <!-- 面包屑导航 -->
+      <nav class="breadcrumb" aria-label="面包屑导航">
+        <ol class="breadcrumb-list">
+          <li class="breadcrumb-item">
+            <a href="/" class="breadcrumb-link">首页</a>
+          </li>
+          <li class="breadcrumb-separator">&gt;</li>
+          <li class="breadcrumb-item">
+            <a href="/patterns" class="breadcrumb-link">图纸库</a>
+          </li>
+          <li class="breadcrumb-separator">&gt;</li>
+          <li class="breadcrumb-item">
+            <span class="breadcrumb-current">{pattern.name}</span>
+          </li>
+        </ol>
+      </nav>
+      
+      <!-- 主要内容区 -->
+      <div class="pattern-content">
+        <!-- 左侧：大图展示 -->
+        <div class="pattern-image-section">
+          <div class="image-container pixel-card">
+            <img 
+              src={`/images/patterns/${pattern.filename}`} 
+              alt={pattern.name}
+              class="pattern-image"
+              onerror="this.src='/images/placeholder.png'"
+            />
+            <div class="pattern-number">No.{pattern.number.toString().padStart(3, '0')}</div>
+          </div>
+          
+          <!-- 下载按钮 -->
+          <div class="download-section">
+            <button class="pixel-btn download-btn" onclick="downloadPattern()">
+              <span class="btn-icon">📥</span>
+              下载图纸
+            </button>
+            <p class="download-hint">支持 PNG / PDF 格式</p>
+          </div>
+        </div>
+        
+        <!-- 右侧：图纸信息 -->
+        <div class="pattern-info-section">
+          <div class="info-card pixel-card">
+            <h1 class="pattern-name">{pattern.name}</h1>
+            <p class="pattern-name-en">{pattern.nameEn} / {pattern.nameJa}</p>
+            
+            <div class="info-grid">
+              <div class="info-item">
+                <span class="info-label">分类</span>
+                <span class="info-value category-tag">{category?.name || pattern.category}</span>
+              </div>
+              
+              <div class="info-item">
+                <span class="info-label">难度</span>
+                <span class="info-value">
+                  <span class="difficulty-stars">
+                    {Array.from({ length: 5 }, (_, i) => (
+                      <span class={`star ${i < pattern.difficulty ? 'filled' : ''}`}>★</span>
+                    ))}
+                  </span>
+                  <span class="difficulty-label">{difficultyLabel}</span>
+                </span>
+              </div>
+              
+              <div class="info-item">
+                <span class="info-label">尺寸</span>
+                <span class="info-value">{pattern.size.width} × {pattern.size.height} 格</span>
+              </div>
+              
+              <div class="info-item">
+                <span class="info-label">编号</span>
+                <span class="info-value">#{pattern.number.toString().padStart(3, '0')}</span>
+              </div>
+            </div>
+            
+            <!-- 所需颜色 -->
+            <div class="colors-section">
+              <h3 class="section-title">所需颜色</h3>
+              <div class="colors-list">
+                {pattern.colors.map((color) => (
+                  <div class="color-item">
+                    <span class="color-dot" style={`background-color: ${color};`}></span>
+                    <span class="color-name">{colorMap[color] || color}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+          
+          <!-- 制作提示 -->
+          <div class="tips-card pixel-card">
+            <h3 class="tips-title">💡 制作提示</h3>
+            <ul class="tips-list">
+              <li>建议使用 5mm 拼豆豆</li>
+              <li>熨烫时温度控制在 160-180°C</li>
+              <li>单面无孔效果更平整</li>
+              <li>制作完成后可添加钥匙扣配件</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 相关图纸推荐 -->
+      {relatedPatterns.length > 0 && (
+        <section class="related-section">
+          <h2 class="section-heading">
+            <span class="heading-icon">🎨</span>
+            相关图纸推荐
+          </h2>
+          <p class="section-subtitle">同分类的其他精彩图纸</p>
+          
+          <div class="related-grid">
+            {relatedPatterns.map((relatedPattern) => (
+              <a href={`/patterns/${relatedPattern.id}`} class="related-card">
+                <div class="related-image-wrapper">
+                  <img 
+                    src={`/images/patterns/${relatedPattern.filename}`} 
+                    alt={relatedPattern.name}
+                    class="related-image"
+                    onerror="this.src='/images/placeholder.png'"
+                  />
+                </div>
+                <div class="related-info">
+                  <h3 class="related-name">{relatedPattern.name}</h3>
+                  <div class="related-meta">
+                    <span class="difficulty-badge">Lv.{relatedPattern.difficulty}</span>
+                    <span class="size-badge">{relatedPattern.size.width}×{relatedPattern.size.height}</span>
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
+    </div>
+  </main>
+  
+  <Footer />
+</Layout>
+
+<script>
+  function downloadPattern() {
+    alert('下载功能开发中，敬请期待！');
+  }
+</script>
+
+<style>
+  .pattern-detail-page {
+    padding: var(--spacing-xl) 0;
+  }
+  
+  /* 面包屑导航 */
+  .breadcrumb {
+    margin-bottom: var(--spacing-xl);
+  }
+  
+  .breadcrumb-list {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .breadcrumb-link {
+    font-family: var(--font-pixel);
+    font-size: 0.625rem;
+    color: var(--color-primary);
+    text-decoration: none;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border: 2px solid var(--color-primary);
+    background-color: var(--color-white);
+    transition: all 0.2s ease;
+  }
+  
+  .breadcrumb-link:hover {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+  }
+  
+  .breadcrumb-separator {
+    font-family: var(--font-pixel);
+    font-size: 0.625rem;
+    color: var(--color-text);
+    opacity: 0.5;
+  }
+  
+  .breadcrumb-current {
+    font-family: var(--font-pixel);
+    font-size: 0.625rem;
+    color: var(--color-text);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    background-color: var(--color-accent);
+    border: 2px solid var(--color-border);
+  }
+  
+  /* 主要内容区 */
+  .pattern-content {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-xl);
+    margin-bottom: var(--spacing-2xl);
+  }
+  
+  @media (min-width: 992px) {
+    .pattern-content {
+      grid-template-columns: 1.2fr 1fr;
+    }
+  }
+  
+  /* 左侧图片区 */
+  .pattern-image-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+  }
+  
+  .image-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+    background-color: var(--color-background);
+  }
+  
+  .pattern-image {
+    max-width: 100%;
+    max-height: 500px;
+    object-fit: contain;
+    image-rendering: pixelated;
+  }
+  
+  .pattern-number {
+    position: absolute;
+    top: var(--spacing-md);
+    left: var(--spacing-md);
+    font-family: var(--font-pixel);
+    font-size: 0.75rem;
+    color: var(--color-white);
+    background-color: var(--color-primary);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 2px solid var(--color-border);
+  }
+  
+  /* 下载区域 */
+  .download-section {
+    text-align: center;
+  }
+  
+  .download-btn {
+    font-size: 1rem;
+    padding: var(--spacing-md) var(--spacing-xl);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+  }
+  
+  .btn-icon {
+    font-size: 1.25rem;
+  }
+  
+  .download-hint {
+    font-size: 0.75rem;
+    color: var(--color-text);
+    opacity: 0.6;
+    margin-top: var(--spacing-sm);
+    margin-bottom: 0;
+  }
+  
+  /* 右侧信息区 */
+  .pattern-info-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+  }
+  
+  .info-card {
+    flex: 1;
+  }
+  
+  .pattern-name {
+    font-size: 1.5rem;
+    color: var(--color-primary);
+    margin-bottom: var(--spacing-xs);
+  }
+  
+  .pattern-name-en {
+    font-size: 0.875rem;
+    color: var(--color-text);
+    opacity: 0.7;
+    margin-bottom: var(--spacing-lg);
+  }
+  
+  /* 信息网格 */
+  .info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+  }
+  
+  .info-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+  }
+  
+  .info-label {
+    font-family: var(--font-pixel);
+    font-size: 0.5rem;
+    color: var(--color-text);
+    opacity: 0.7;
+    text-transform: uppercase;
+  }
+  
+  .info-value {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-text);
+  }
+  
+  .category-tag {
+    display: inline-block;
+    background-color: var(--color-secondary);
+    color: var(--color-white);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-family: var(--font-pixel);
+    font-size: 0.625rem;
+    border: 2px solid var(--color-border);
+    width: fit-content;
+  }
+  
+  .difficulty-stars {
+    display: flex;
+    gap: 2px;
+  }
+  
+  .star {
+    color: #ddd;
+    font-size: 1rem;
+  }
+  
+  .star.filled {
+    color: var(--color-accent);
+  }
+  
+  .difficulty-label {
+    margin-left: var(--spacing-sm);
+    font-size: 0.75rem;
+    color: var(--color-text);
+    opacity: 0.8;
+  }
+  
+  /* 颜色区域 */
+  .colors-section {
+    border-top: 2px dashed var(--color-border);
+    padding-top: var(--spacing-lg);
+  }
+  
+  .section-title {
+    font-family: var(--font-pixel);
+    font-size: 0.75rem;
+    color: var(--color-text);
+    margin-bottom: var(--spacing-md);
+  }
+  
+  .colors-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+  }
+  
+  .color-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    background-color: var(--color-background);
+    border: 2px solid var(--color-border);
+  }
+  
+  .color-dot {
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--color-border);
+  }
+  
+  .color-name {
+    font-size: 0.75rem;
+    color: var(--color-text);
+  }
+  
+  /* 提示卡片 */
+  .tips-card {
+    background-color: var(--color-accent);
+  }
+  
+  .tips-title {
+    font-family: var(--font-pixel);
+    font-size: 0.75rem;
+    color: var(--color-text);
+    margin-bottom: var(--spacing-md);
+  }
+  
+  .tips-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+  
+  .tips-list li {
+    font-size: 0.875rem;
+    color: var(--color-text);
+    padding-left: var(--spacing-md);
+    position: relative;
+  }
+  
+  .tips-list li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--color-primary);
+  }
+  
+  /* 相关图纸区域 */
+  .related-section {
+    border-top: 3px solid var(--color-border);
+    padding-top: var(--spacing-2xl);
+  }
+  
+  .section-heading {
+    font-size: 1.25rem;
+    color: var(--color-text);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-xs);
+  }
+  
+  .heading-icon {
+    font-size: 1.5rem;
+  }
+  
+  .section-subtitle {
+    font-size: 0.875rem;
+    color: var(--color-text);
+    opacity: 0.7;
+    margin-bottom: var(--spacing-xl);
+  }
+  
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-lg);
+  }
+  
+  @media (min-width: 768px) {
+    .related-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  
+  .related-card {
+    background-color: var(--color-white);
+    border: 3px solid var(--color-border);
+    box-shadow: 4px 4px 0 var(--color-shadow);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    overflow: hidden;
+  }
+  
+  .related-card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--color-shadow);
+  }
+  
+  .related-image-wrapper {
+    aspect-ratio: 1;
+    background-color: var(--color-background);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-md);
+    border-bottom: 3px solid var(--color-border);
+  }
+  
+  .related-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    image-rendering: pixelated;
+  }
+  
+  .related-info {
+    padding: var(--spacing-md);
+  }
+  
+  .related-name {
+    font-family: var(--font-pixel);
+    font-size: 0.625rem;
+    color: var(--color-text);
+    margin-bottom: var(--spacing-sm);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .related-meta {
+    display: flex;
+    gap: var(--spacing-xs);
+  }
+  
+  .difficulty-badge,
+  .size-badge {
+    font-family: var(--font-pixel);
+    font-size: 0.5rem;
+    padding: 2px 6px;
+    border: 2px solid var(--color-border);
+  }
+  
+  .difficulty-badge {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+  }
+  
+  .size-badge {
+    background-color: var(--color-secondary);
+    color: var(--color-white);
+  }
+</style>

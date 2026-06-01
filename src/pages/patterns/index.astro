@@ -1,0 +1,382 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import PatternCard from '../../components/PatternCard.astro';
+import { patterns, categories } from '../../data/patterns';
+
+// 获取所有图纸
+const allPatterns = patterns;
+---
+
+<Layout title="图纸库" description="浏览 113+ 精选拼豆图纸，发现创意灵感">
+  <Header activeNav="patterns" />
+  
+  <main>
+    <!-- 页面标题区 -->
+    <section class="page-header">
+      <div class="container">
+        <h1 class="page-title">
+          <span class="title-icon">📚</span>
+          图纸库
+        </h1>
+        <p class="page-desc">
+          探索 113+ 精选拼豆图纸，涵盖表情、动物、美食、国风等 11 个分类<br/>
+          找到灵感，开始您的拼豆创作之旅
+        </p>
+      </div>
+    </section>
+
+    <!-- 筛选区域 -->
+    <section class="filter-section">
+      <div class="container">
+        <!-- 搜索框 -->
+        <div class="search-box">
+          <div class="search-input-wrapper">
+            <span class="search-icon">🔍</span>
+            <input 
+              type="text" 
+              id="search-input" 
+              class="search-input" 
+              placeholder="搜索图纸名称..."
+              autocomplete="off"
+            />
+          </div>
+        </div>
+
+        <!-- 分类筛选 -->
+        <div class="category-filter">
+          <button 
+            class="category-btn active" 
+            data-category="all"
+          >
+            全部
+            <span class="count">{patterns.length}</span>
+          </button>
+          {categories.map((category) => (
+            <button 
+              class="category-btn" 
+              data-category={category.id}
+            >
+              {category.name}
+              <span class="count">{category.count}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 图纸网格 -->
+    <section class="patterns-section">
+      <div class="container">
+        <div class="patterns-grid" id="patterns-grid">
+          {allPatterns.map((pattern) => (
+            <div class="pattern-wrapper" data-category={pattern.category} data-name={pattern.name}>
+              <PatternCard pattern={pattern} />
+            </div>
+          ))}
+        </div>
+
+        <!-- 无结果提示 -->
+        <div class="no-results" id="no-results" style="display: none;">
+          <div class="no-results-icon">🔍</div>
+          <h3 class="no-results-title">未找到相关图纸</h3>
+          <p class="no-results-desc">尝试使用其他关键词或切换分类</p>
+          <button class="pixel-btn" id="reset-filter">重置筛选</button>
+        </div>
+      </div>
+    </section>
+  </main>
+</Layout>
+
+<script>
+  // 客户端筛选功能
+  document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('search-input') as HTMLInputElement;
+    const categoryBtns = document.querySelectorAll('.category-btn');
+    const patternWrappers = document.querySelectorAll('.pattern-wrapper');
+    const noResults = document.getElementById('no-results');
+    const resetBtn = document.getElementById('reset-filter');
+
+    let currentCategory = 'all';
+    let currentSearch = '';
+
+    // 筛选函数
+    function filterPatterns() {
+      let visibleCount = 0;
+
+      patternWrappers.forEach((wrapper) => {
+        const category = wrapper.getAttribute('data-category') || '';
+        const name = wrapper.getAttribute('data-name') || '';
+
+        const matchesCategory = currentCategory === 'all' || category === currentCategory;
+        const matchesSearch = name.toLowerCase().includes(currentSearch.toLowerCase());
+
+        if (matchesCategory && matchesSearch) {
+          (wrapper as HTMLElement).style.display = '';
+          visibleCount++;
+        } else {
+          (wrapper as HTMLElement).style.display = 'none';
+        }
+      });
+
+      // 显示/隐藏无结果提示
+      if (noResults) {
+        noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+      }
+    }
+
+    // 分类按钮点击事件
+    categoryBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        // 更新按钮状态
+        categoryBtns.forEach((b) => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        // 更新当前分类
+        currentCategory = btn.getAttribute('data-category') || 'all';
+
+        // 执行筛选
+        filterPatterns();
+      });
+    });
+
+    // 搜索输入事件
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        currentSearch = (e.target as HTMLInputElement).value;
+        filterPatterns();
+      });
+    }
+
+    // 重置筛选
+    if (resetBtn) {
+      resetBtn.addEventListener('click', () => {
+        currentCategory = 'all';
+        currentSearch = '';
+
+        // 重置搜索框
+        if (searchInput) {
+          searchInput.value = '';
+        }
+
+        // 重置分类按钮
+        categoryBtns.forEach((btn) => {
+          btn.classList.remove('active');
+          if (btn.getAttribute('data-category') === 'all') {
+            btn.classList.add('active');
+          }
+        });
+
+        filterPatterns();
+      });
+    }
+  });
+</script>
+
+<style>
+  /* 页面标题区 */
+  .page-header {
+    background: linear-gradient(135deg, var(--color-white) 0%, var(--color-background) 100%);
+    padding: var(--spacing-2xl) 0 var(--spacing-xl);
+    text-align: center;
+    border-bottom: var(--border-width) solid var(--color-border);
+  }
+
+  .page-title {
+    font-family: var(--font-pixel);
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    margin-bottom: var(--spacing-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+  }
+
+  .title-icon {
+    font-size: 1.2em;
+  }
+
+  .page-desc {
+    font-size: 1rem;
+    color: var(--color-text);
+    opacity: 0.8;
+    line-height: 1.8;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  /* 筛选区域 */
+  .filter-section {
+    background-color: var(--color-white);
+    padding: var(--spacing-lg) 0;
+    border-bottom: var(--border-width) solid var(--color-border);
+    position: sticky;
+    top: 70px;
+    z-index: 50;
+  }
+
+  /* 搜索框 */
+  .search-box {
+    margin-bottom: var(--spacing-md);
+  }
+
+  .search-input-wrapper {
+    position: relative;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  .search-icon {
+    position: absolute;
+    left: var(--spacing-md);
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.25rem;
+    pointer-events: none;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: var(--spacing-sm) var(--spacing-md) var(--spacing-sm) 2.5rem;
+    font-family: var(--font-body-zh);
+    font-size: 1rem;
+    border: var(--border-width) solid var(--color-border);
+    background-color: var(--color-background);
+    outline: none;
+    transition: all 0.2s ease;
+  }
+
+  .search-input:focus {
+    background-color: var(--color-white);
+    box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-shadow);
+  }
+
+  .search-input::placeholder {
+    color: var(--color-text);
+    opacity: 0.5;
+  }
+
+  /* 分类筛选 */
+  .category-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+    justify-content: center;
+  }
+
+  .category-btn {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-family: var(--font-pixel);
+    font-size: 0.625rem;
+    background-color: var(--color-white);
+    border: 2px solid var(--color-border);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .category-btn:hover {
+    background-color: var(--color-background);
+    transform: translateY(-1px);
+  }
+
+  .category-btn.active {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    border-color: var(--color-border);
+    box-shadow: 2px 2px 0 var(--color-border);
+  }
+
+  .category-btn .count {
+    display: inline-block;
+    padding: 2px 6px;
+    background-color: var(--color-background);
+    color: var(--color-text);
+    font-size: 0.5rem;
+    border: 1px solid var(--color-border);
+  }
+
+  .category-btn.active .count {
+    background-color: var(--color-white);
+    color: var(--color-primary);
+  }
+
+  /* 图纸网格 */
+  .patterns-section {
+    padding: var(--spacing-xl) 0 var(--spacing-2xl);
+    background-color: var(--color-background);
+    min-height: 400px;
+  }
+
+  .patterns-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-md);
+  }
+
+  @media (min-width: 640px) {
+    .patterns-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .patterns-grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--spacing-lg);
+    }
+  }
+
+  .pattern-wrapper {
+    transition: opacity 0.2s ease;
+  }
+
+  /* 无结果提示 */
+  .no-results {
+    text-align: center;
+    padding: var(--spacing-2xl) 0;
+  }
+
+  .no-results-icon {
+    font-size: 4rem;
+    margin-bottom: var(--spacing-md);
+  }
+
+  .no-results-title {
+    font-family: var(--font-pixel);
+    font-size: 1rem;
+    color: var(--color-text);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .no-results-desc {
+    color: var(--color-text);
+    opacity: 0.7;
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .pixel-btn {
+    display: inline-block;
+    padding: var(--spacing-sm) var(--spacing-lg);
+    font-family: var(--font-pixel);
+    font-size: 0.75rem;
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    border: var(--border-width) solid var(--color-border);
+    box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-border);
+    cursor: pointer;
+    transition: all 0.1s ease;
+  }
+
+  .pixel-btn:hover {
+    transform: translate(2px, 2px);
+    box-shadow: calc(var(--shadow-offset) - 2px) calc(var(--shadow-offset) - 2px) 0 var(--color-border);
+  }
+
+  .pixel-btn:active {
+    transform: translate(var(--shadow-offset), var(--shadow-offset));
+    box-shadow: 0 0 0 var(--color-border);
+  }
+</style>

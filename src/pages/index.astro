@@ -1,17 +1,528 @@
 ---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import PatternCard from '../components/PatternCard.astro';
+import { patterns, categories } from '../data/patterns';
 
+// 获取前8个图纸作为热门图纸
+const hotPatterns = patterns.slice(0, 8);
+
+// 统计数据
+const stats = {
+  patterns: patterns.length,
+  categories: categories.length,
+  downloads: '10K+'
+};
+
+// 功能入口数据
+const features = [
+  {
+    id: 'patterns',
+    title: '图纸库',
+    titleEn: 'Patterns',
+    description: '浏览 113+ 精选拼豆图纸',
+    icon: '📚',
+    href: '/patterns',
+    color: '#FF6B6B'
+  },
+  {
+    id: 'designer',
+    title: '设计工具',
+    titleEn: 'Designer',
+    description: '在线创作专属作品',
+    icon: '🎨',
+    href: '/designer',
+    color: '#4ECDC4'
+  },
+  {
+    id: 'tutorials',
+    title: '教程',
+    titleEn: 'Tutorials',
+    description: '学习拼豆制作技巧',
+    icon: '📖',
+    href: '/tutorials',
+    color: '#FFE66D'
+  },
+  {
+    id: 'community',
+    title: '社区',
+    titleEn: 'Community',
+    description: '分享作品交流心得',
+    icon: '👥',
+    href: '/community',
+    color: '#FF6B6B'
+  }
+];
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout title="首页" description="拼豆豆工坊 - 创意像素艺术设计与分享平台">
+  <Header activeNav="home" />
+  
+  <main>
+    <!-- Hero 区域 -->
+    <section class="hero">
+      <div class="container">
+        <div class="hero-content">
+          <div class="hero-text">
+            <h1 class="hero-title">
+              <span class="title-line">让创意</span>
+              <span class="title-line highlight">在指尖绽放</span>
+            </h1>
+            <p class="hero-subtitle">
+              拼豆豆工坊是您的创意像素艺术平台<br/>
+              发现精美图纸 · 设计专属作品 · 分享手工乐趣
+            </p>
+            <div class="hero-actions">
+              <a href="/patterns" class="pixel-btn primary">
+                浏览图纸
+              </a>
+              <a href="/designer" class="pixel-btn secondary">
+                开始创作
+              </a>
+            </div>
+          </div>
+          <div class="hero-visual">
+            <div class="pixel-grid">
+              <div class="grid-row">
+                <span class="grid-cell" style="--delay: 0s; --color: #FF6B6B;"></span>
+                <span class="grid-cell" style="--delay: 0.1s; --color: #4ECDC4;"></span>
+                <span class="grid-cell" style="--delay: 0.2s; --color: #FFE66D;"></span>
+              </div>
+              <div class="grid-row">
+                <span class="grid-cell" style="--delay: 0.3s; --color: #4ECDC4;"></span>
+                <span class="grid-cell" style="--delay: 0.4s; --color: #FF6B6B;"></span>
+                <span class="grid-cell" style="--delay: 0.5s; --color: #4ECDC4;"></span>
+              </div>
+              <div class="grid-row">
+                <span class="grid-cell" style="--delay: 0.6s; --color: #FFE66D;"></span>
+                <span class="grid-cell" style="--delay: 0.7s; --color: #4ECDC4;"></span>
+                <span class="grid-cell" style="--delay: 0.8s; --color: #FF6B6B;"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 像素装饰边框 -->
+      <div class="hero-decoration">
+        <div class="pixel-border-top"></div>
+        <div class="pixel-border-bottom"></div>
+      </div>
+    </section>
+
+    <!-- 热门图纸区 -->
+    <section class="hot-patterns">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">
+            <span class="title-icon">🔥</span>
+            热门图纸
+          </h2>
+          <p class="section-desc">精选 8 款最受欢迎的拼豆图纸</p>
+        </div>
+        
+        <div class="patterns-grid">
+          {hotPatterns.map((pattern) => (
+            <PatternCard pattern={pattern} />
+          ))}
+        </div>
+        
+        <div class="section-footer">
+          <a href="/patterns" class="pixel-btn">
+            查看全部图纸
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 功能入口 -->
+    <section class="features">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">
+            <span class="title-icon">✨</span>
+            探索功能
+          </h2>
+          <p class="section-desc">开始您的拼豆创作之旅</p>
+        </div>
+        
+        <div class="features-grid">
+          {features.map((feature) => (
+            <a href={feature.href} class="feature-card" style={`--card-color: ${feature.color}`}>
+              <div class="feature-icon">{feature.icon}</div>
+              <h3 class="feature-title">{feature.title}</h3>
+              <span class="feature-title-en">{feature.titleEn}</span>
+              <p class="feature-desc">{feature.description}</p>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 数据统计 -->
+    <section class="stats">
+      <div class="container">
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-number">{stats.patterns}</div>
+            <div class="stat-label">精选图纸</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">{stats.categories}</div>
+            <div class="stat-label">分类主题</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">{stats.downloads}</div>
+            <div class="stat-label">累计下载</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  
+  <Footer />
+</Layout>
+
+<style>
+  /* Hero 区域 */
+  .hero {
+    background: linear-gradient(135deg, var(--color-white) 0%, var(--color-background) 100%);
+    padding: var(--spacing-2xl) 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-content {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-xl);
+    align-items: center;
+  }
+
+  @media (min-width: 768px) {
+    .hero-content {
+      grid-template-columns: 1.2fr 0.8fr;
+    }
+  }
+
+  .hero-text {
+    text-align: center;
+  }
+
+  @media (min-width: 768px) {
+    .hero-text {
+      text-align: left;
+    }
+  }
+
+  .hero-title {
+    font-family: var(--font-pixel);
+    font-size: clamp(1.5rem, 5vw, 2.5rem);
+    line-height: 1.3;
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .title-line {
+    display: block;
+  }
+
+  .title-line.highlight {
+    color: var(--color-primary);
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+    color: var(--color-text);
+    opacity: 0.8;
+    margin-bottom: var(--spacing-xl);
+    line-height: 1.8;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+    justify-content: center;
+  }
+
+  @media (min-width: 768px) {
+    .hero-actions {
+      justify-content: flex-start;
+    }
+  }
+
+  .pixel-btn {
+    display: inline-block;
+    padding: var(--spacing-sm) var(--spacing-lg);
+    font-family: var(--font-pixel);
+    font-size: 0.75rem;
+    border: var(--border-width) solid var(--color-border);
+    box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-border);
+    transition: all 0.1s ease;
+    text-decoration: none;
+  }
+
+  .pixel-btn.primary {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+  }
+
+  .pixel-btn.secondary {
+    background-color: var(--color-secondary);
+    color: var(--color-white);
+  }
+
+  .pixel-btn:hover {
+    transform: translate(2px, 2px);
+    box-shadow: calc(var(--shadow-offset) - 2px) calc(var(--shadow-offset) - 2px) 0 var(--color-border);
+  }
+
+  .pixel-btn:active {
+    transform: translate(var(--shadow-offset), var(--shadow-offset));
+    box-shadow: 0 0 0 var(--color-border);
+  }
+
+  /* Hero 视觉区域 */
+  .hero-visual {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .pixel-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: var(--spacing-lg);
+    background-color: var(--color-white);
+    border: var(--border-width) solid var(--color-border);
+    box-shadow: 8px 8px 0 var(--color-border);
+  }
+
+  .grid-row {
+    display: flex;
+    gap: 8px;
+  }
+
+  .grid-cell {
+    width: 60px;
+    height: 60px;
+    background-color: var(--color);
+    border: 3px solid var(--color-border);
+    animation: cellPulse 2s ease-in-out infinite;
+    animation-delay: var(--delay);
+  }
+
+  @keyframes cellPulse {
+    0%, 100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(0.9);
+      opacity: 0.8;
+    }
+  }
+
+  /* Hero 装饰 */
+  .hero-decoration {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+  }
+
+  .pixel-border-top,
+  .pixel-border-bottom {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 8px;
+    background-image: repeating-linear-gradient(
+      90deg,
+      var(--color-primary) 0px,
+      var(--color-primary) 16px,
+      var(--color-secondary) 16px,
+      var(--color-secondary) 32px,
+      var(--color-accent) 32px,
+      var(--color-accent) 48px
+    );
+  }
+
+  .pixel-border-top {
+    top: 0;
+  }
+
+  .pixel-border-bottom {
+    bottom: 0;
+  }
+
+  /* 热门图纸区 */
+  .hot-patterns {
+    padding: var(--spacing-2xl) 0;
+    background-color: var(--color-white);
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+  }
+
+  .section-title {
+    font-family: var(--font-pixel);
+    font-size: clamp(1.25rem, 3vw, 1.75rem);
+    margin-bottom: var(--spacing-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+  }
+
+  .title-icon {
+    font-size: 1.5em;
+  }
+
+  .section-desc {
+    color: var(--color-text);
+    opacity: 0.7;
+    margin: 0;
+  }
+
+  .patterns-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-xl);
+  }
+
+  @media (min-width: 640px) {
+    .patterns-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .patterns-grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--spacing-lg);
+    }
+  }
+
+  .section-footer {
+    text-align: center;
+  }
+
+  /* 功能入口 */
+  .features {
+    padding: var(--spacing-2xl) 0;
+    background-color: var(--color-background);
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-md);
+  }
+
+  @media (min-width: 768px) {
+    .features-grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--spacing-lg);
+    }
+  }
+
+  .feature-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: var(--spacing-lg);
+    background-color: var(--color-white);
+    border: var(--border-width) solid var(--color-border);
+    box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-shadow);
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .feature-card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--card-color);
+    border-color: var(--card-color);
+  }
+
+  .feature-icon {
+    font-size: 2.5rem;
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .feature-title {
+    font-family: var(--font-pixel);
+    font-size: 0.875rem;
+    color: var(--color-text);
+    margin-bottom: var(--spacing-xs);
+  }
+
+  .feature-title-en {
+    font-family: var(--font-pixel);
+    font-size: 0.5rem;
+    color: var(--color-text);
+    opacity: 0.5;
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .feature-desc {
+    font-size: 0.875rem;
+    color: var(--color-text);
+    opacity: 0.7;
+    margin: 0;
+  }
+
+  /* 数据统计 */
+  .stats {
+    padding: var(--spacing-2xl) 0;
+    background-color: var(--color-white);
+    border-top: var(--border-width) solid var(--color-border);
+    border-bottom: var(--border-width) solid var(--color-border);
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-md);
+  }
+
+  @media (min-width: 768px) {
+    .stats-grid {
+      gap: var(--spacing-xl);
+    }
+  }
+
+  .stat-item {
+    text-align: center;
+    padding: var(--spacing-md);
+  }
+
+  .stat-number {
+    font-family: var(--font-pixel);
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    color: var(--color-primary);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .stat-label {
+    font-family: var(--font-pixel);
+    font-size: 0.625rem;
+    color: var(--color-text);
+    opacity: 0.8;
+  }
+
+  /* 减少动画 */
+  @media (prefers-reduced-motion: reduce) {
+    .grid-cell {
+      animation: none;
+    }
+  }
+</style>

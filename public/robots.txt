@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://perler-beads-workshop.com/sitemap-index.xml
