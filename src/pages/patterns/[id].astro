@@ -91,11 +91,15 @@ const pageTitle = `${pattern.name} - 图纸详情`;
           
           <!-- 下载按钮 -->
           <div class="download-section">
-            <button class="pixel-btn download-btn" onclick="downloadPattern()">
+            <a 
+              href={`/patterns/${pattern.filename}`} 
+              download={pattern.filename}
+              class="pixel-btn download-btn"
+            >
               <span class="btn-icon">📥</span>
-              下载图纸
-            </button>
-            <p class="download-hint">支持 PNG / PDF 格式</p>
+              下载图纸 (PNG)
+            </a>
+            <p class="download-hint">右键另存为或点击下载</p>
           </div>
         </div>
         
@@ -198,12 +202,6 @@ const pageTitle = `${pattern.name} - 图纸详情`;
   
   <Footer />
 </Layout>
-
-<script>
-  function downloadPattern() {
-    alert('下载功能开发中，敬请期待！');
-  }
-</script>
 
 <style>
   .pattern-detail-page {

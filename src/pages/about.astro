@@ -122,24 +122,24 @@ import Footer from '../components/Footer.astro';
           <div class="contact-card">
             <div class="contact-icon">📧</div>
             <h3 class="contact-type">电子邮箱</h3>
-            <p class="contact-value">hello@perlerworkshop.com</p>
+            <a href="mailto:jing2595832@163.com" class="contact-value contact-link">jing2595832@163.com</a>
             <p class="contact-desc">商务合作、内容投稿</p>
           </div>
           
-          <div class="contact-card">
+          <div class="contact-card contact-coming-soon" onclick="alert('微信公众号建设中，敬请期待！')">
             <div class="contact-icon">💬</div>
             <h3 class="contact-type">微信公众号</h3>
-            <p class="contact-value">拼豆豆工坊</p>
+            <p class="contact-value">建设中...</p>
             <p class="contact-desc">获取最新图纸资讯</p>
           </div>
           
-          <div class="contact-card">
+          <div class="contact-card contact-coming-soon" onclick="alert('社交媒体账号建设中，敬请期待！')">
             <div class="contact-icon">📱</div>
             <h3 class="contact-type">社交媒体</h3>
             <div class="social-links">
-              <a href="#" class="social-item" title="微博">微博</a>
-              <a href="#" class="social-item" title="小红书">小红书</a>
-              <a href="#" class="social-item" title="B站">B站</a>
+              <span class="social-item" title="微博（建设中）">微博</span>
+              <span class="social-item" title="小红书（建设中）">小红书</span>
+              <span class="social-item" title="B站（建设中）">B站</span>
             </div>
             <p class="contact-desc">关注我们的动态</p>
           </div>
@@ -430,6 +430,26 @@ import Footer from '../components/Footer.astro';
     background-color: var(--color-white);
     border: 3px solid var(--color-border);
     box-shadow: 4px 4px 0 var(--color-shadow);
+  }
+
+  .contact-card.contact-coming-soon {
+    cursor: pointer;
+    opacity: 0.7;
+    border-style: dashed;
+  }
+
+  .contact-card.contact-coming-soon:hover {
+    opacity: 1;
+    background-color: var(--color-accent);
+  }
+
+  .contact-link {
+    color: var(--color-primary);
+    text-decoration: none;
+  }
+
+  .contact-link:hover {
+    text-decoration: underline;
   }
   
   .contact-icon {

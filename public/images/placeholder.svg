@@ -1,0 +1,20 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景 -->
+  <rect width="200" height="200" fill="#F7F7F7"/>
+  
+  <!-- 像素风格边框 -->
+  <rect x="10" y="10" width="180" height="180" fill="none" stroke="#2C3E50" stroke-width="4"/>
+  
+  <!-- 像素装饰 -->
+  <rect x="20" y="20" width="160" height="160" fill="#FFE66D" opacity="0.3"/>
+  
+  <!-- 问号图标 -->
+  <text x="100" y="95" font-family="monospace" font-size="60" font-weight="bold" fill="#2C3E50" text-anchor="middle">?</text>
+  <text x="100" y="135" font-family="monospace" font-size="16" fill="#2C3E50" text-anchor="middle">Loading...</text>
+  
+  <!-- 像素点缀 -->
+  <rect x="30" y="30" width="8" height="8" fill="#FF6B6B"/>
+  <rect x="162" y="30" width="8" height="8" fill="#4ECDC4"/>
+  <rect x="30" y="162" width="8" height="8" fill="#4ECDC4"/>
+  <rect x="162" y="162" width="8" height="8" fill="#FF6B6B"/>
+</svg>

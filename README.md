@@ -1,43 +1,162 @@
-# Astro Starter Kit: Minimal
+# 拼豆豆工坊 (Perler Beads Workshop)
 
-```sh
-npm create astro@latest -- --template minimal
+一个专注于拼豆（Perler Beads / 熨烫珠）像素艺术的设计与分享平台。
+
+![拼豆豆工坊](public/favicon.svg)
+
+## 🌟 功能特色
+
+- **113个原创图纸** - 涵盖表情、动物、美食、中国风等11个分类
+- **免费下载** - 所有图纸均可免费下载使用
+- **多语言支持** - 中文、英文、日文三语界面
+- **响应式设计** - 完美适配桌面和移动设备
+- **像素风格** - 独特的复古像素艺术风格
+
+## 🚀 技术栈
+
+- [Astro](https://astro.build/) - 静态站点生成器
+- [React](https://react.dev/) - 交互组件
+- [TypeScript](https://www.typescriptlang.org/) - 类型安全
+- [Tailwind CSS](https://tailwindcss.com/) - 样式框架
+
+## 📦 安装与运行
+
+### 前置要求
+
+- Node.js 18+
+- npm 9+
+
+### 安装依赖
+
+```bash
+npm install
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+### 复制图纸资源
 
-## 🚀 Project Structure
+**重要**：在运行前需要复制图纸图片到项目目录
 
-Inside of your Astro project, you'll see the following folders and files:
+```bash
+# Windows
+copy "..\拼豆豆原创图纸\*.png" "public\patterns\"
 
-```text
-/
+# 或手动复制
+# 将 d:\工作文件夹\自制软件\网站设计测试\拼豆豆网站设计\拼豆豆原创图纸\ 下的所有PNG文件
+# 复制到 public\patterns\ 目录
+```
+
+### 开发服务器
+
+```bash
+npm run dev
+```
+
+访问 http://localhost:4321
+
+### 构建
+
+```bash
+npm run build
+```
+
+构建输出在 `dist/` 目录
+
+## 📁 项目结构
+
+```
+perler-beads-workshop/
 ├── public/
+│   ├── patterns/          # 图纸图片（需手动复制）
+│   ├── images/            # 静态图片资源
+│   └── favicon.svg        # 网站图标
 ├── src/
-│   └── pages/
-│       └── index.astro
+│   ├── components/        # 可复用组件
+│   ├── data/              # 数据文件（113个图纸数据）
+│   ├── layouts/           # 布局组件
+│   └── pages/             # 页面路由
+├── astro.config.mjs       # Astro配置
 └── package.json
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## 🌐 页面路由
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+| 页面 | 路径 | 说明 |
+|------|------|------|
+| 首页 | `/` | 网站入口，展示热门图纸 |
+| 图纸库 | `/patterns` | 浏览所有113个图纸 |
+| 图纸详情 | `/patterns/[id]` | 单个图纸详情和下载 |
+| 设计工具 | `/design` | 在线设计工具（开发中） |
+| 教程中心 | `/tutorials` | 拼豆教程（开发中） |
+| 社区 | `/community` | 用户社区（开发中） |
+| 关于我们 | `/about` | 网站介绍和版权声明 |
+| 联系我们 | `/contact` | 联系方式 |
+| 隐私政策 | `/privacy` | 隐私政策 |
+| 使用条款 | `/terms` | 使用条款 |
 
-Any static assets, like images, can be placed in the `public/` directory.
+## 🎨 图纸分类
 
-## 🧞 Commands
+1. **表情符号** (10个) - 爱心、星星、彩虹等
+2. **小动物** (12个) - 猫咪、小狗、熊猫等
+3. **美食** (12个) - 披萨、汉堡、甜甜圈等
+4. **文字** (8个) - 开心、加油、你好等
+5. **几何** (8个) - 条纹、棋盘格、波点等
+6. **中国风** (12个) - 祥云、锦鲤、太极等
+7. **植物** (9个) - 玫瑰、向日葵、仙人掌等
+8. **节日** (12个) - 圣诞树、灯笼、月饼等
+9. **日常** (12个) - 钥匙扣、眼镜、手机等
+10. **交通工具** (10个) - 汽车、飞机、火箭等
+11. **进阶挑战** (8个) - 城堡、摩天轮等复杂图案
 
-All commands are run from the root of the project, from a terminal:
+## 📄 版权说明
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+本网站所有图纸均为**原创设计**，版权归拼豆豆工坊所有。
 
-## 👀 Want to learn more?
+### 允许的使用方式
+- ✅ 个人学习、欣赏和制作拼豆作品
+- ✅ 在社交媒体上分享成品（请注明出处：拼豆豆工坊）
+- ✅ 用于非商业性质的教学活动
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+### 禁止的使用方式
+- ❌ 未经授权的商业销售
+- ❌ 转载、复制或修改后声称原创
+- ❌ 用于任何违法违规用途
+
+## 📞 联系我们
+
+- 邮箱：[jing2595832@163.com](mailto:jing2595832@163.com)
+- 微信公众号：建设中...
+
+## 🚀 部署
+
+### Cloudflare Pages
+
+1. 推送代码到 GitHub
+2. 在 Cloudflare Dashboard 创建 Pages 项目
+3. 连接 GitHub 仓库
+4. 设置构建命令：`npm run build`
+5. 设置输出目录：`dist`
+
+### 环境变量
+
+在 Cloudflare Pages 设置以下环境变量：
+- `NODE_VERSION`: 18
+
+## 📝 更新日志
+
+### 2024年
+- 初始版本发布
+- 113个原创图纸上线
+- 支持中/英/日三语
+- 响应式设计完成
+
+## 🤝 贡献
+
+欢迎提交 Issue 和 Pull Request！
+
+## 📄 许可证
+
+本项目采用 MIT 许可证 - 详见 [LICENSE](LICENSE) 文件
+
+---
+
+Made with ❤️ & 🎨 by 拼豆豆工坊

@@ -1,0 +1,89 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout 
+  title="隐私政策" 
+  description="拼豆豆工坊隐私政策 - 我们如何收集、使用和保护您的个人信息"
+>
+  <Header />
+  
+  <main class="max-w-4xl mx-auto px-4 py-12">
+    <h1 class="font-pixel text-2xl mb-8 text-center">隐私政策</h1>
+    
+    <div class="pixel-card p-8 space-y-6">
+      <section>
+        <h2 class="font-pixel text-sm mb-4">📋 信息收集</h2>
+        <p class="text-gray-700 leading-relaxed">
+          我们重视您的隐私。本网站不会收集任何个人身份信息。
+          我们使用cookies来改善您的浏览体验，这些信息仅用于网站功能分析。
+        </p>
+      </section>
+      
+      <section>
+        <h2 class="font-pixel text-sm mb-4">🔒 信息使用</h2>
+        <p class="text-gray-700 leading-relaxed">
+          我们收集的信息仅用于：
+        </p>
+        <ul class="list-disc list-inside text-gray-700 mt-2 space-y-1">
+          <li>分析网站使用情况以改进服务</li>
+          <li>记住您的语言偏好设置</li>
+          <li>显示相关内容和推荐</li>
+        </ul>
+      </section>
+      
+      <section>
+        <h2 class="font-pixel text-sm mb-4">🍪 Cookies</h2>
+        <p class="text-gray-700 leading-relaxed">
+          我们使用cookies来记住您的语言设置和浏览偏好。
+          您可以在浏览器设置中禁用cookies，但这可能影响部分网站功能。
+        </p>
+      </section>
+      
+      <section>
+        <h2 class="font-pixel text-sm mb-4">📤 第三方服务</h2>
+        <p class="text-gray-700 leading-relaxed">
+          本网站可能使用以下第三方服务：
+        </p>
+        <ul class="list-disc list-inside text-gray-700 mt-2 space-y-1">
+          <li>Cloudflare（网站托管和安全）</li>
+          <li>Google Analytics（网站分析，可选）</li>
+        </ul>
+      </section>
+      
+      <section>
+        <h2 class="font-pixel text-sm mb-4">📞 联系我们</h2>
+        <p class="text-gray-700 leading-relaxed">
+          如有任何隐私相关问题，请通过以下方式联系我们：<br>
+          邮箱：<a href="mailto:jing2595832@163.com" class="text-primary hover:underline">jing2595832@163.com</a>
+        </p>
+      </section>
+      
+      <section>
+        <h2 class="font-pixel text-sm mb-4">📅 政策更新</h2>
+        <p class="text-gray-700 leading-relaxed">
+          我们可能会不时更新本隐私政策。更新后的政策将在本页面发布。
+          最后更新日期：2024年
+        </p>
+      </section>
+    </div>
+    
+    <div class="text-center mt-8">
+      <a href="/about" class="pixel-btn secondary">
+        ← 返回关于我们
+      </a>
+    </div>
+  </main>
+  
+  <Footer />
+</Layout>
+
+<style>
+  .pixel-card {
+    background: white;
+    border: 4px solid var(--color-border);
+    box-shadow: 6px 6px 0 var(--color-shadow);
+  }
+</style>

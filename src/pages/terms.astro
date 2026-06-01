@@ -1,0 +1,110 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout 
+  title="使用条款" 
+  description="拼豆豆工坊使用条款 - 用户协议、版权声明、免责声明"
+>
+  <Header />
+  
+  <main class="max-w-4xl mx-auto px-4 py-12">
+    <h1 class="font-pixel text-2xl mb-8 text-center">使用条款</h1>
+    
+    <div class="pixel-card p-8 space-y-8">
+      <section>
+        <h2 class="font-pixel text-sm mb-4">📋 接受条款</h2>
+        <p class="text-gray-700 leading-relaxed">
+          欢迎使用拼豆豆工坊！访问和使用本网站，即表示您同意遵守以下使用条款。
+          如果您不同意这些条款，请勿使用本网站。
+        </p>
+      </section>
+      
+      <section>
+        <h2 class="font-pixel text-sm mb-4">🎨 图纸使用许可</h2>
+        <div class="space-y-3 text-gray-700">
+          <p class="font-medium text-green-700">✅ 允许的使用方式：</p>
+          <ul class="list-disc list-inside space-y-1 ml-4">
+            <li>个人学习、欣赏和制作拼豆作品</li>
+            <li>在社交媒体上分享成品（请注明来源：拼豆豆工坊）</li>
+            <li>用于非商业性质的教学活动</li>
+            <li>个人收藏和打印</li>
+          </ul>
+          
+          <p class="font-medium text-red-700 mt-4">❌ 禁止的使用方式：</p>
+          <ul class="list-disc list-inside space-y-1 ml-4">
+            <li>未经授权的商业销售</li>
+            <li>转载、复制或修改后声称原创</li>
+            <li>用于任何违法违规用途</li>
+            <li>大规模批量复制和分发</li>
+          </ul>
+        </div>
+      </section>
+      
+      <section>
+        <h2 class="font-pixel text-sm mb-4">©️ 知识产权</h2>
+        <p class="text-gray-700 leading-relaxed">
+          本网站上的所有图纸、文字、图片、标识等内容均为拼豆豆工坊原创或已获得授权使用。
+          未经书面许可，任何个人或组织不得转载、复制、修改、分发或用于商业用途。
+          所有原创内容受版权法保护。
+        </p>
+      </section>
+      
+      <section>
+        <h2 class="font-pixel text-sm mb-4">⚠️ 免责声明</h2>
+        <div class="space-y-3 text-gray-700">
+          <p>
+            <strong>内容准确性：</strong>我们尽力确保图纸的准确性，但不保证100%无误。
+            使用图纸制作作品时，请根据实际情况调整。
+          </p>
+          <p>
+            <strong>安全风险：</strong>拼豆制作涉及熨斗等高温工具，请在成人监护下进行，
+            注意安全。我们不对因使用本网站内容而造成的任何损失承担责任。
+          </p>
+          <p>
+            <strong>第三方链接：</strong>本网站可能包含指向第三方网站的链接，
+            我们不对这些网站的内容和隐私政策负责。
+          </p>
+        </div>
+      </section>
+      
+      <section>
+        <h2 class="font-pixel text-sm mb-4">🔄 条款修改</h2>
+        <p class="text-gray-700 leading-relaxed">
+          我们保留随时修改这些使用条款的权利。修改后的条款将在本页面发布，
+          继续使用本网站即表示您接受修改后的条款。
+        </p>
+      </section>
+      
+      <section>
+        <h2 class="font-pixel text-sm mb-4">📞 联系我们</h2>
+        <p class="text-gray-700 leading-relaxed">
+          如有任何问题或疑虑，请通过以下方式联系我们：<br>
+          邮箱：<a href="mailto:jing2595832@163.com" class="text-primary hover:underline">jing2595832@163.com</a>
+        </p>
+      </section>
+      
+      <div class="text-center text-sm text-gray-500 pt-4 border-t-2 border-border">
+        最后更新日期：2024年
+      </div>
+    </div>
+    
+    <div class="text-center mt-8">
+      <a href="/about" class="pixel-btn secondary">
+        ← 返回关于我们
+      </a>
+    </div>
+  </main>
+  
+  <Footer />
+</Layout>
+
+<style>
+  .pixel-card {
+    background: white;
+    border: 4px solid var(--color-border);
+    box-shadow: 6px 6px 0 var(--color-shadow);
+  }
+</style>

@@ -33,6 +33,8 @@ const difficultyLabel = `难度 ${pattern.difficulty}`;
       alt={pattern.name}
       class="pattern-image"
       loading="lazy"
+      decoding="async"
+      onerror="this.src='/images/placeholder.svg'; this.onerror=null;"
     />
   </div>
 
