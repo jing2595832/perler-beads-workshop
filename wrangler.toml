@@ -1,22 +1,8 @@
 # Cloudflare Pages 配置
 name = "perler-beads-workshop"
 compatibility_date = "2024-04-03"
-
-# D1 数据库绑定
-[[d1_databases]]
-binding = "DB"
-database_name = "perler-db"
-# 部署后请替换为实际的数据库 ID
-database_id = "0f361054-d670-46cb-91f2-e1cb9f0b8606"
+pages_build_output_dir = "dist"
 
 # 环境变量
 [vars]
 SITE_URL = "https://perler-beads-workshop.pages.dev"
-
-# 生产环境配置
-[env.production]
-name = "perler-beads-workshop-prod"
-
-# 开发环境配置
-[env.development]
-name = "perler-beads-workshop-dev"
