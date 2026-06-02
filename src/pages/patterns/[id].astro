@@ -1,597 +1,387 @@
 ---
-export const prerender = true;
-
 import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
-import { patterns, categories, getPatternsByCategory, getCategoryById } from '../../data/patterns';
-import type { Pattern } from '../../data/patterns';
+import PatternCard from '../../components/PatternCard.astro';
+import { patterns } from '../../data/patterns';
 
-// 生成所有静态路径
-export async function getStaticPaths() {
+export function getStaticPaths() {
   return patterns.map((pattern) => ({
     params: { id: pattern.id },
     props: { pattern },
   }));
 }
 
-interface Props {
-  pattern: Pattern;
-}
-
 const { pattern } = Astro.props;
-const category = getCategoryById(pattern.category);
 
-// 获取同分类的其他图纸（排除当前图纸）
-const relatedPatterns = getPatternsByCategory(pattern.category)
-  .filter((p) => p.id !== pattern.id)
-  .slice(0, 4);
+// 难度星星
+const stars = '⭐'.repeat(pattern.difficulty);
 
-// 难度等级显示
-const difficultyLabels = ['', '入门', '简单', '中等', '困难', '专家'];
-const difficultyLabel = difficultyLabels[pattern.difficulty] || '未知';
+// 同分类的其他图纸（排除当前，最多6个）
+const relatedPatterns = patterns
+  .filter((p) => p.category === pattern.category && p.id !== pattern.id)
+  .slice(0, 6);
 
-// 颜色映射（用于显示颜色名称）
-const colorMap: Record<string, string> = {
-  red: '红色',
-  pink: '粉色',
-  yellow: '黄色',
-  orange: '橙色',
-  green: '绿色',
-  lightgreen: '浅绿',
-  blue: '蓝色',
-  lightblue: '浅蓝',
-  navy: '深蓝',
-  purple: '紫色',
-  white: '白色',
-  black: '黑色',
-  gray: '灰色',
-  brown: '棕色',
-  beige: '米色',
-  gold: '金色',
-  silver: '银色',
+// 分类名称映射
+const categoryMap: Record<string, string> = {
+  emoji: '表情符号',
+  animal: '动物',
+  food: '美食',
+  text: '文字',
+  geo: '几何',
+  chinese: '国风',
+  plant: '植物',
+  holiday: '节日',
+  daily: '日常',
+  vehicle: '交通工具',
+  advanced: '进阶',
 };
-
-const pageTitle = `${pattern.name} - 图纸详情`;
 ---
 
-<Layout title={pageTitle}>
+<Layout title={`${pattern.name} - 图纸详情`} description={`${pattern.name}(${pattern.nameEn}) 拼豆图纸详情，难度${pattern.difficulty}星，尺寸${pattern.width}x${pattern.height}`}>
   <Header activeNav="patterns" />
-  
-  <main class="pattern-detail-page">
-    <div class="container">
-      <!-- 面包屑导航 -->
-      <nav class="breadcrumb" aria-label="面包屑导航">
-        <ol class="breadcrumb-list">
-          <li class="breadcrumb-item">
-            <a href="/" class="breadcrumb-link">首页</a>
-          </li>
-          <li class="breadcrumb-separator">&gt;</li>
-          <li class="breadcrumb-item">
-            <a href="/patterns" class="breadcrumb-link">图纸库</a>
-          </li>
-          <li class="breadcrumb-separator">&gt;</li>
-          <li class="breadcrumb-item">
-            <span class="breadcrumb-current">{pattern.name}</span>
-          </li>
-        </ol>
-      </nav>
-      
-      <!-- 主要内容区 -->
-      <div class="pattern-content">
-        <!-- 左侧：大图展示 -->
-        <div class="pattern-image-section">
-          <div class="image-container pixel-card">
-            <img 
-              src={`/patterns/${pattern.filename}`} 
-              alt={pattern.name}
-              class="pattern-image"
-              onerror="this.src='/images/placeholder.svg'"
-            />
-            <div class="pattern-number">No.{pattern.number.toString().padStart(3, '0')}</div>
+
+  <main>
+    <!-- 面包屑导航 -->
+    <nav class="breadcrumb" aria-label="面包屑导航">
+      <div class="container">
+        <a href="/patterns">图纸库</a>
+        <span class="breadcrumb-sep">/</span>
+        <a href={`/patterns?category=${pattern.category}`}>{categoryMap[pattern.category] || pattern.category}</a>
+        <span class="breadcrumb-sep">/</span>
+        <span class="breadcrumb-current">{pattern.name}</span>
+      </div>
+    </nav>
+
+    <!-- 图纸详情区 -->
+    <section class="pattern-detail">
+      <div class="container">
+        <div class="detail-layout">
+          <!-- 左侧：图纸大图 -->
+          <div class="detail-image-section">
+            <div class="image-wrapper">
+              <img
+                src={`/patterns/${pattern.filename}`}
+                alt={pattern.name}
+                class="pattern-detail-image"
+                loading="lazy"
+                decoding="async"
+                onerror={`this.src='/images/placeholder.svg'; this.onerror=null;`}
+              />
+            </div>
+
+            <!-- 下载按钮 -->
+            <div class="download-actions">
+              <a
+                href={`/patterns/${pattern.filename}`}
+                download={pattern.filename}
+                class="pixel-btn download-btn"
+              >
+                <span class="btn-icon">📥</span>
+                下载图纸 PNG
+              </a>
+            </div>
           </div>
-          
-          <!-- 下载按钮 -->
-          <div class="download-section">
-            <a 
-              href={`/patterns/${pattern.filename}`} 
-              download={pattern.filename}
-              class="pixel-btn download-btn"
-            >
-              <span class="btn-icon">📥</span>
-              下载图纸 (PNG)
-            </a>
-            <p class="download-hint">右键另存为或点击下载</p>
-          </div>
-        </div>
-        
-        <!-- 右侧：图纸信息 -->
-        <div class="pattern-info-section">
-          <div class="info-card pixel-card">
-            <h1 class="pattern-name">{pattern.name}</h1>
-            <p class="pattern-name-en">{pattern.nameEn} / {pattern.nameJa}</p>
-            
-            <div class="info-grid">
-              <div class="info-item">
+
+          <!-- 右侧：图纸信息 -->
+          <div class="detail-info-section">
+            <h1 class="detail-title">{pattern.name}</h1>
+            <p class="detail-title-en">{pattern.nameEn}</p>
+            <p class="detail-title-ja">{pattern.nameJa}</p>
+
+            <!-- 信息卡片 -->
+            <div class="info-cards">
+              <div class="info-card">
                 <span class="info-label">分类</span>
-                <span class="info-value category-tag">{category?.name || pattern.category}</span>
+                <span class="info-value">{categoryMap[pattern.category] || pattern.category}</span>
               </div>
-              
-              <div class="info-item">
+              <div class="info-card">
                 <span class="info-label">难度</span>
-                <span class="info-value">
-                  <span class="difficulty-stars">
-                    {Array.from({ length: 5 }, (_, i) => (
-                      <span class={`star ${i < pattern.difficulty ? 'filled' : ''}`}>★</span>
-                    ))}
-                  </span>
-                  <span class="difficulty-label">{difficultyLabel}</span>
-                </span>
+                <span class="info-value">{stars} ({pattern.difficulty}/5)</span>
               </div>
-              
-              <div class="info-item">
+              <div class="info-card">
                 <span class="info-label">尺寸</span>
-                <span class="info-value">{pattern.size.width} × {pattern.size.height} 格</span>
+                <span class="info-value">{pattern.width} x {pattern.height} 格</span>
               </div>
-              
-              <div class="info-item">
-                <span class="info-label">编号</span>
-                <span class="info-value">#{pattern.number.toString().padStart(3, '0')}</span>
-              </div>
-            </div>
-            
-            <!-- 所需颜色 -->
-            <div class="colors-section">
-              <h3 class="section-title">所需颜色</h3>
-              <div class="colors-list">
-                {pattern.colors.map((color) => (
-                  <div class="color-item">
-                    <span class="color-dot" style={`background-color: ${color};`}></span>
-                    <span class="color-name">{colorMap[color] || color}</span>
-                  </div>
-                ))}
+              <div class="info-card">
+                <span class="info-label">颜色数</span>
+                <span class="info-value">{pattern.colors.length} 种</span>
               </div>
             </div>
-          </div>
-          
-          <!-- 制作提示 -->
-          <div class="tips-card pixel-card">
-            <h3 class="tips-title">💡 制作提示</h3>
-            <ul class="tips-list">
-              <li>建议使用 5mm 拼豆豆</li>
-              <li>熨烫时温度控制在 160-180°C</li>
-              <li>单面无孔效果更平整</li>
-              <li>制作完成后可添加钥匙扣配件</li>
-            </ul>
+
+            <!-- 颜色数量 -->
+            <div class="color-section">
+              <h3 class="section-label">使用颜色</h3>
+              <span class="color-count">{pattern.colors} 种颜色</span>
+            </div>
+
+            <!-- 返回按钮 -->
+            <div class="back-actions">
+              <a href="/patterns" class="pixel-btn secondary">
+                <span class="btn-icon">←</span>
+                返回图纸库
+              </a>
+            </div>
           </div>
         </div>
       </div>
-      
-      <!-- 相关图纸推荐 -->
-      {relatedPatterns.length > 0 && (
-        <section class="related-section">
-          <h2 class="section-heading">
-            <span class="heading-icon">🎨</span>
-            相关图纸推荐
+    </section>
+
+    <!-- 相关图纸推荐 -->
+    {relatedPatterns.length > 0 && (
+      <section class="related-section">
+        <div class="container">
+          <h2 class="section-title">
+            <span class="title-icon">💡</span>
+            同类图纸推荐
           </h2>
-          <p class="section-subtitle">同分类的其他精彩图纸</p>
-          
           <div class="related-grid">
-            {relatedPatterns.map((relatedPattern) => (
-              <a href={`/patterns/${relatedPattern.id}`} class="related-card">
-                <div class="related-image-wrapper">
-                  <img 
-                    src={`/patterns/${relatedPattern.filename}`} 
-                    alt={relatedPattern.name}
-                    class="related-image"
-                    onerror="this.src='/images/placeholder.svg'"
-                  />
-                </div>
-                <div class="related-info">
-                  <h3 class="related-name">{relatedPattern.name}</h3>
-                  <div class="related-meta">
-                    <span class="difficulty-badge">Lv.{relatedPattern.difficulty}</span>
-                    <span class="size-badge">{relatedPattern.size.width}×{relatedPattern.size.height}</span>
-                  </div>
-                </div>
-              </a>
+            {relatedPatterns.map((p) => (
+              <PatternCard pattern={p} />
             ))}
           </div>
-        </section>
-      )}
-    </div>
+        </div>
+      </section>
+    )}
   </main>
-  
+
   <Footer />
 </Layout>
 
 <style>
-  .pattern-detail-page {
-    padding: var(--spacing-xl) 0;
-  }
-  
   /* 面包屑导航 */
   .breadcrumb {
-    margin-bottom: var(--spacing-xl);
+    padding: var(--spacing-md) 0;
+    background-color: var(--color-white);
+    border-bottom: 2px solid var(--color-border);
+    font-family: var(--font-pixel);
+    font-size: 0.5rem;
   }
-  
-  .breadcrumb-list {
+
+  .breadcrumb .container {
     display: flex;
     align-items: center;
-    flex-wrap: wrap;
     gap: var(--spacing-sm);
-    list-style: none;
-    margin: 0;
-    padding: 0;
+    flex-wrap: wrap;
   }
-  
-  .breadcrumb-link {
-    font-family: var(--font-pixel);
-    font-size: 0.625rem;
-    color: var(--color-primary);
+
+  .breadcrumb a {
+    color: var(--color-secondary);
     text-decoration: none;
-    padding: var(--spacing-xs) var(--spacing-sm);
-    border: 2px solid var(--color-primary);
-    background-color: var(--color-white);
-    transition: all 0.2s ease;
+    transition: color 0.2s;
   }
-  
-  .breadcrumb-link:hover {
-    background-color: var(--color-primary);
-    color: var(--color-white);
+
+  .breadcrumb a:hover {
+    color: var(--color-primary);
   }
-  
-  .breadcrumb-separator {
-    font-family: var(--font-pixel);
-    font-size: 0.625rem;
+
+  .breadcrumb-sep {
     color: var(--color-text);
-    opacity: 0.5;
+    opacity: 0.4;
   }
-  
+
   .breadcrumb-current {
-    font-family: var(--font-pixel);
-    font-size: 0.625rem;
     color: var(--color-text);
-    padding: var(--spacing-xs) var(--spacing-sm);
-    background-color: var(--color-accent);
-    border: 2px solid var(--color-border);
+    opacity: 0.7;
   }
-  
-  /* 主要内容区 */
-  .pattern-content {
+
+  /* 图纸详情区 */
+  .pattern-detail {
+    padding: var(--spacing-xl) 0;
+    background-color: var(--color-background);
+  }
+
+  .detail-layout {
     display: grid;
     grid-template-columns: 1fr;
     gap: var(--spacing-xl);
-    margin-bottom: var(--spacing-2xl);
   }
-  
-  @media (min-width: 992px) {
-    .pattern-content {
-      grid-template-columns: 1.2fr 1fr;
+
+  @media (min-width: 768px) {
+    .detail-layout {
+      grid-template-columns: 1fr 1fr;
+      align-items: start;
     }
   }
-  
-  /* 左侧图片区 */
-  .pattern-image-section {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-lg);
-  }
-  
-  .image-container {
-    position: relative;
+
+  /* 图纸大图 */
+  .image-wrapper {
+    background-color: var(--color-white);
+    border: var(--border-width) solid var(--color-border);
+    box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-shadow);
+    padding: var(--spacing-lg);
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 400px;
-    background-color: var(--color-background);
+    aspect-ratio: 1;
+    overflow: hidden;
   }
-  
-  .pattern-image {
+
+  .pattern-detail-image {
     max-width: 100%;
-    max-height: 500px;
-    object-fit: contain;
+    max-height: 100%;
     image-rendering: pixelated;
+    object-fit: contain;
   }
-  
-  .pattern-number {
-    position: absolute;
-    top: var(--spacing-md);
-    left: var(--spacing-md);
-    font-family: var(--font-pixel);
-    font-size: 0.75rem;
-    color: var(--color-white);
-    background-color: var(--color-primary);
-    padding: var(--spacing-sm) var(--spacing-md);
-    border: 2px solid var(--color-border);
-  }
-  
-  /* 下载区域 */
-  .download-section {
+
+  /* 下载按钮 */
+  .download-actions {
+    margin-top: var(--spacing-md);
     text-align: center;
   }
-  
+
   .download-btn {
-    font-size: 1rem;
-    padding: var(--spacing-md) var(--spacing-xl);
     display: inline-flex;
     align-items: center;
     gap: var(--spacing-sm);
-  }
-  
-  .btn-icon {
-    font-size: 1.25rem;
-  }
-  
-  .download-hint {
+    text-decoration: none;
     font-size: 0.75rem;
-    color: var(--color-text);
-    opacity: 0.6;
-    margin-top: var(--spacing-sm);
-    margin-bottom: 0;
+    padding: var(--spacing-sm) var(--spacing-lg);
   }
-  
-  /* 右侧信息区 */
-  .pattern-info-section {
+
+  .btn-icon {
+    font-size: 1em;
+  }
+
+  /* 图纸信息 */
+  .detail-info-section {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-lg);
+    gap: var(--spacing-sm);
   }
-  
-  .info-card {
-    flex: 1;
+
+  .detail-title {
+    font-family: var(--font-pixel);
+    font-size: clamp(1.25rem, 3vw, 2rem);
+    color: var(--color-text);
+    margin-bottom: 0;
   }
-  
-  .pattern-name {
-    font-size: 1.5rem;
-    color: var(--color-primary);
-    margin-bottom: var(--spacing-xs);
+
+  .detail-title-en {
+    font-family: var(--font-body-en);
+    font-size: 1rem;
+    color: var(--color-text);
+    opacity: 0.6;
+    margin-bottom: 0;
   }
-  
-  .pattern-name-en {
+
+  .detail-title-ja {
+    font-family: var(--font-body-ja);
     font-size: 0.875rem;
     color: var(--color-text);
-    opacity: 0.7;
-    margin-bottom: var(--spacing-lg);
+    opacity: 0.5;
+    margin-bottom: 0;
   }
-  
-  /* 信息网格 */
-  .info-grid {
+
+  /* 信息卡片 */
+  .info-cards {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: var(--spacing-md);
-    margin-bottom: var(--spacing-lg);
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-md);
   }
-  
-  .info-item {
+
+  .info-card {
+    background-color: var(--color-white);
+    border: var(--border-width) solid var(--color-border);
+    box-shadow: 3px 3px 0 var(--color-border);
+    padding: var(--spacing-sm) var(--spacing-md);
     display: flex;
     flex-direction: column;
     gap: var(--spacing-xs);
   }
-  
+
   .info-label {
     font-family: var(--font-pixel);
     font-size: 0.5rem;
     color: var(--color-text);
-    opacity: 0.7;
+    opacity: 0.6;
     text-transform: uppercase;
   }
-  
+
   .info-value {
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: var(--color-text);
-  }
-  
-  .category-tag {
-    display: inline-block;
-    background-color: var(--color-secondary);
-    color: var(--color-white);
-    padding: var(--spacing-xs) var(--spacing-sm);
     font-family: var(--font-pixel);
     font-size: 0.625rem;
-    border: 2px solid var(--color-border);
-    width: fit-content;
-  }
-  
-  .difficulty-stars {
-    display: flex;
-    gap: 2px;
-  }
-  
-  .star {
-    color: #ddd;
-    font-size: 1rem;
-  }
-  
-  .star.filled {
-    color: var(--color-accent);
-  }
-  
-  .difficulty-label {
-    margin-left: var(--spacing-sm);
-    font-size: 0.75rem;
-    color: var(--color-text);
-    opacity: 0.8;
-  }
-  
-  /* 颜色区域 */
-  .colors-section {
-    border-top: 2px dashed var(--color-border);
-    padding-top: var(--spacing-lg);
-  }
-  
-  .section-title {
-    font-family: var(--font-pixel);
-    font-size: 0.75rem;
-    color: var(--color-text);
-    margin-bottom: var(--spacing-md);
-  }
-  
-  .colors-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--spacing-sm);
-  }
-  
-  .color-item {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-xs);
-    padding: var(--spacing-xs) var(--spacing-sm);
-    background-color: var(--color-background);
-    border: 2px solid var(--color-border);
-  }
-  
-  .color-dot {
-    width: 16px;
-    height: 16px;
-    border: 2px solid var(--color-border);
-  }
-  
-  .color-name {
-    font-size: 0.75rem;
     color: var(--color-text);
   }
-  
-  /* 提示卡片 */
-  .tips-card {
-    background-color: var(--color-accent);
+
+  /* 颜色列表 */
+  .color-section {
+    margin-top: var(--spacing-md);
   }
-  
-  .tips-title {
-    font-family: var(--font-pixel);
-    font-size: 0.75rem;
-    color: var(--color-text);
-    margin-bottom: var(--spacing-md);
-  }
-  
-  .tips-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-sm);
-  }
-  
-  .tips-list li {
-    font-size: 0.875rem;
-    color: var(--color-text);
-    padding-left: var(--spacing-md);
-    position: relative;
-  }
-  
-  .tips-list li::before {
-    content: '▸';
-    position: absolute;
-    left: 0;
-    color: var(--color-primary);
-  }
-  
-  /* 相关图纸区域 */
-  .related-section {
-    border-top: 3px solid var(--color-border);
-    padding-top: var(--spacing-2xl);
-  }
-  
-  .section-heading {
-    font-size: 1.25rem;
-    color: var(--color-text);
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    margin-bottom: var(--spacing-xs);
-  }
-  
-  .heading-icon {
-    font-size: 1.5rem;
-  }
-  
-  .section-subtitle {
-    font-size: 0.875rem;
-    color: var(--color-text);
-    opacity: 0.7;
-    margin-bottom: var(--spacing-xl);
-  }
-  
-  .related-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--spacing-lg);
-  }
-  
-  @media (min-width: 768px) {
-    .related-grid {
-      grid-template-columns: repeat(4, 1fr);
-    }
-  }
-  
-  .related-card {
-    background-color: var(--color-white);
-    border: 3px solid var(--color-border);
-    box-shadow: 4px 4px 0 var(--color-shadow);
-    text-decoration: none;
-    transition: all 0.2s ease;
-    overflow: hidden;
-  }
-  
-  .related-card:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0 var(--color-shadow);
-  }
-  
-  .related-image-wrapper {
-    aspect-ratio: 1;
-    background-color: var(--color-background);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: var(--spacing-md);
-    border-bottom: 3px solid var(--color-border);
-  }
-  
-  .related-image {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    image-rendering: pixelated;
-  }
-  
-  .related-info {
-    padding: var(--spacing-md);
-  }
-  
-  .related-name {
+
+  .section-label {
     font-family: var(--font-pixel);
     font-size: 0.625rem;
     color: var(--color-text);
     margin-bottom: var(--spacing-sm);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
-  
-  .related-meta {
+
+  .color-list {
     display: flex;
+    flex-wrap: wrap;
     gap: var(--spacing-xs);
   }
-  
-  .difficulty-badge,
-  .size-badge {
+
+  .color-tag {
+    display: inline-block;
+    padding: var(--spacing-xs) var(--spacing-sm);
     font-family: var(--font-pixel);
     font-size: 0.5rem;
-    padding: 2px 6px;
+    background-color: var(--color-accent);
+    color: var(--color-text);
     border: 2px solid var(--color-border);
   }
-  
-  .difficulty-badge {
-    background-color: var(--color-primary);
-    color: var(--color-white);
+
+  /* 返回按钮 */
+  .back-actions {
+    margin-top: var(--spacing-lg);
   }
-  
-  .size-badge {
-    background-color: var(--color-secondary);
-    color: var(--color-white);
+
+  .back-actions .pixel-btn {
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+  }
+
+  /* 相关图纸推荐 */
+  .related-section {
+    padding: var(--spacing-xl) 0 var(--spacing-2xl);
+    background-color: var(--color-white);
+    border-top: var(--border-width) solid var(--color-border);
+  }
+
+  .section-title {
+    font-family: var(--font-pixel);
+    font-size: clamp(1rem, 2vw, 1.5rem);
+    color: var(--color-text);
+    margin-bottom: var(--spacing-lg);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+  }
+
+  .title-icon {
+    font-size: 1.2em;
+  }
+
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-md);
+  }
+
+  @media (min-width: 640px) {
+    .related-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .related-grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--spacing-lg);
+    }
   }
 </style>

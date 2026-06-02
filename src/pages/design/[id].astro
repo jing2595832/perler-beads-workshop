@@ -1,0 +1,502 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+
+export function getStaticPaths() {
+  // 作品详情页通过客户端JS动态加载，无需预渲染路径
+  return [];
+}
+
+const { id } = Astro.params;
+---
+
+<Layout title="作品详情" description="查看拼豆社区作品详情">
+  <Header activeNav="community" />
+
+  <main>
+    <!-- 面包屑 -->
+    <nav class="breadcrumb" aria-label="面包屑导航">
+      <div class="container">
+        <a href="/community">拼豆社区</a>
+        <span class="breadcrumb-sep">/</span>
+        <span class="breadcrumb-current" id="breadcrumb-title">作品详情</span>
+      </div>
+    </nav>
+
+    <!-- 作品详情 -->
+    <section class="work-detail">
+      <div class="container">
+        <div class="detail-layout">
+          <!-- 左侧：像素画布 -->
+          <div class="work-canvas-section">
+            <div class="canvas-wrapper">
+              <div class="pixel-canvas" id="work-canvas"></div>
+            </div>
+          </div>
+
+          <!-- 右侧：作品信息 -->
+          <div class="work-info-section">
+            <h1 class="work-title" id="work-title">加载中...</h1>
+            <div class="work-meta">
+              <span class="meta-item" id="work-author">
+                <span class="meta-icon">👤</span>
+                <span class="meta-text">-</span>
+              </span>
+              <span class="meta-item" id="work-date">
+                <span class="meta-icon">📅</span>
+                <span class="meta-text">-</span>
+              </span>
+            </div>
+            <p class="work-desc" id="work-desc"></p>
+
+            <!-- 操作按钮 -->
+            <div class="work-actions">
+              <button id="like-btn" class="pixel-btn" style="font-size:0.625rem;">
+                <span class="btn-icon">❤️</span>
+                <span class="btn-text">点赞</span>
+                <span class="btn-count" id="like-count">0</span>
+              </button>
+              <button id="copy-btn" class="pixel-btn secondary" style="font-size:0.625rem;">
+                <span class="btn-icon">📋</span>
+                复制设计
+              </button>
+              <button id="download-btn" class="pixel-btn secondary" style="font-size:0.625rem;">
+                <span class="btn-icon">📥</span>
+                下载图片
+              </button>
+            </div>
+
+            <!-- 使用的颜色 -->
+            <div class="work-colors">
+              <h3 class="section-label">使用的颜色</h3>
+              <div class="color-list" id="work-colors"></div>
+            </div>
+
+            <!-- 返回社区 -->
+            <div class="back-link">
+              <a href="/community" class="pixel-btn accent" style="font-size:0.5rem;">
+                ← 返回社区
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>
+
+<script>
+  const COMMUNITY_KEY = 'perlerCommunityWorks';
+  const DESIGNER_KEY = 'perlerDesigner';
+
+  interface WorkData {
+    id?: string;
+    title: string;
+    author: string;
+    description?: string;
+    width: number;
+    height: number;
+    grid: (string | null)[][];
+    colors?: string[];
+    likes?: number;
+    createdAt?: string;
+  }
+
+  let workData: WorkData | null = null;
+
+  // ===== 初始化 =====
+  document.addEventListener('DOMContentLoaded', () => {
+    loadWorkData();
+  });
+
+  // ===== 加载作品数据 =====
+  function loadWorkData() {
+    const params = new URLSearchParams(window.location.search);
+    const workParam = params.get('work');
+
+    if (workParam) {
+      // 从URL参数解码Base64数据
+      try {
+        const decoded = decodeURIComponent(escape(atob(workParam)));
+        workData = JSON.parse(decoded);
+      } catch {
+        showError('作品数据解析失败');
+        return;
+      }
+    } else {
+      // 尝试从localStorage加载
+      const id = window.location.pathname.split('/').pop();
+      if (id) {
+        try {
+          const works: WorkData[] = JSON.parse(localStorage.getItem(COMMUNITY_KEY) || '[]');
+          workData = works.find((w) => w.id === id) || null;
+        } catch {
+          // ignore
+        }
+      }
+    }
+
+    if (!workData || !workData.grid) {
+      showError('未找到作品数据');
+      return;
+    }
+
+    renderWork();
+  }
+
+  // ===== 渲染作品 =====
+  function renderWork() {
+    if (!workData) return;
+
+    // 标题
+    const titleEl = document.getElementById('work-title');
+    if (titleEl) titleEl.textContent = workData.title || '未命名作品';
+
+    // 面包屑
+    const breadcrumbTitle = document.getElementById('breadcrumb-title');
+    if (breadcrumbTitle) breadcrumbTitle.textContent = workData.title || '作品详情';
+
+    // 作者
+    const authorEl = document.getElementById('work-author');
+    if (authorEl) {
+      const textEl = authorEl.querySelector('.meta-text');
+      if (textEl) textEl.textContent = workData.author || '匿名';
+    }
+
+    // 日期
+    const dateEl = document.getElementById('work-date');
+    if (dateEl) {
+      const textEl = dateEl.querySelector('.meta-text');
+      if (textEl && workData.createdAt) {
+        textEl.textContent = new Date(workData.createdAt).toLocaleDateString('zh-CN');
+      }
+    }
+
+    // 描述
+    const descEl = document.getElementById('work-desc');
+    if (descEl) descEl.textContent = workData.description || '';
+
+    // 点赞数
+    const likeCountEl = document.getElementById('like-count');
+    if (likeCountEl) likeCountEl.textContent = String(workData.likes || 0);
+
+    // 渲染画布
+    renderCanvas(workData.grid, workData.width, workData.height);
+
+    // 渲染颜色列表
+    renderColors(workData.colors || extractColors(workData.grid));
+
+    // 绑定按钮事件
+    bindButtons();
+  }
+
+  // ===== 渲染像素画布 =====
+  function renderCanvas(grid: (string | null)[][], width: number, height: number) {
+    const container = document.getElementById('work-canvas')!;
+    container.innerHTML = '';
+
+    const maxCanvasSize = Math.min(500, window.innerWidth - 80);
+    const cellSize = Math.max(10, Math.min(28, Math.floor(maxCanvasSize / Math.max(width, height))));
+
+    container.style.display = 'grid';
+    container.style.gridTemplateColumns = `repeat(${width}, ${cellSize}px)`;
+    container.style.gridTemplateRows = `repeat(${height}, ${cellSize}px)`;
+    container.style.gap = '1px';
+    container.style.backgroundColor = '#2D3436';
+    container.style.border = '3px solid #2D3436';
+    container.style.boxShadow = '4px 4px 0 rgba(44,62,80,0.2)';
+
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        const cell = document.createElement('div');
+        cell.style.width = cellSize + 'px';
+        cell.style.height = cellSize + 'px';
+        cell.style.backgroundColor = grid[y]?.[x] || '#F7F7F7';
+        cell.style.imageRendering = 'pixelated';
+        container.appendChild(cell);
+      }
+    }
+  }
+
+  // ===== 提取颜色 =====
+  function extractColors(grid: (string | null)[][]): string[] {
+    const colorSet = new Set<string>();
+    for (const row of grid) {
+      for (const cell of row) {
+        if (cell) colorSet.add(cell);
+      }
+    }
+    return Array.from(colorSet);
+  }
+
+  // ===== 渲染颜色列表 =====
+  function renderColors(colors: string[]) {
+    const container = document.getElementById('work-colors')!;
+    container.innerHTML = '';
+    colors.forEach((hex) => {
+      const swatch = document.createElement('span');
+      swatch.className = 'color-swatch';
+      swatch.style.backgroundColor = hex;
+      swatch.title = hex;
+      if (hex === '#FFFFFF') {
+        swatch.style.border = '2px solid #2D3436';
+      }
+      container.appendChild(swatch);
+    });
+  }
+
+  // ===== 按钮事件 =====
+  function bindButtons() {
+    // 点赞
+    document.getElementById('like-btn')!.addEventListener('click', () => {
+      if (!workData) return;
+      workData.likes = (workData.likes || 0) + 1;
+      const likeCountEl = document.getElementById('like-count');
+      if (likeCountEl) likeCountEl.textContent = String(workData.likes);
+
+      // 更新localStorage
+      try {
+        const works: WorkData[] = JSON.parse(localStorage.getItem(COMMUNITY_KEY) || '[]');
+        const idx = works.findIndex((w) => w.id === workData!.id);
+        if (idx >= 0) {
+          works[idx].likes = workData.likes;
+          localStorage.setItem(COMMUNITY_KEY, JSON.stringify(works));
+        }
+      } catch {
+        // ignore
+      }
+    });
+
+    // 复制设计
+    document.getElementById('copy-btn')!.addEventListener('click', () => {
+      if (!workData) return;
+      try {
+        const data = {
+          width: workData.width,
+          height: workData.height,
+          grid: workData.grid,
+          currentColor: '#FF6B6B',
+          recentColors: [],
+        };
+        localStorage.setItem(DESIGNER_KEY, JSON.stringify(data));
+        window.location.href = '/design';
+      } catch {
+        alert('复制失败，请重试。');
+      }
+    });
+
+    // 下载图片
+    document.getElementById('download-btn')!.addEventListener('click', () => {
+      if (!workData) return;
+      const cellSize = 20;
+      const padding = 1;
+      const totalW = workData.width * (cellSize + padding) + padding;
+      const totalH = workData.height * (cellSize + padding) + padding;
+
+      const canvas = document.createElement('canvas');
+      canvas.width = totalW;
+      canvas.height = totalH;
+      const ctx = canvas.getContext('2d')!;
+
+      ctx.fillStyle = '#2D3436';
+      ctx.fillRect(0, 0, totalW, totalH);
+
+      for (let y = 0; y < workData.height; y++) {
+        for (let x = 0; x < workData.width; x++) {
+          const px = padding + x * (cellSize + padding);
+          const py = padding + y * (cellSize + padding);
+          ctx.fillStyle = workData.grid[y]?.[x] || '#F7F7F7';
+          ctx.fillRect(px, py, cellSize, cellSize);
+        }
+      }
+
+      const link = document.createElement('a');
+      link.download = `${workData.title || 'perler-work'}-${Date.now()}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    });
+  }
+
+  // ===== 错误提示 =====
+  function showError(msg: string) {
+    const titleEl = document.getElementById('work-title');
+    if (titleEl) titleEl.textContent = msg;
+    const canvasEl = document.getElementById('work-canvas');
+    if (canvasEl) {
+      canvasEl.innerHTML = `<div style="padding: var(--spacing-xl); text-align: center; grid-column: 1/-1;">
+        <p style="font-family: var(--font-pixel); font-size: 0.75rem; color: var(--color-text); opacity: 0.6;">${msg}</p>
+        <a href="/community" class="pixel-btn accent" style="font-size:0.5rem; display:inline-block; margin-top: var(--spacing-md);">返回社区</a>
+      </div>`;
+    }
+  }
+</script>
+
+<style>
+  /* 面包屑 */
+  .breadcrumb {
+    padding: var(--spacing-md) 0;
+    background-color: var(--color-white);
+    border-bottom: 2px solid var(--color-border);
+    font-family: var(--font-pixel);
+    font-size: 0.5rem;
+  }
+
+  .breadcrumb .container {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+  }
+
+  .breadcrumb a {
+    color: var(--color-secondary);
+    text-decoration: none;
+  }
+
+  .breadcrumb a:hover {
+    color: var(--color-primary);
+  }
+
+  .breadcrumb-sep {
+    color: var(--color-text);
+    opacity: 0.4;
+  }
+
+  .breadcrumb-current {
+    color: var(--color-text);
+    opacity: 0.7;
+  }
+
+  /* 作品详情 */
+  .work-detail {
+    padding: var(--spacing-xl) 0 var(--spacing-2xl);
+    background-color: var(--color-background);
+  }
+
+  .detail-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-xl);
+  }
+
+  @media (min-width: 768px) {
+    .detail-layout {
+      grid-template-columns: 1fr 1fr;
+      align-items: start;
+    }
+  }
+
+  /* 画布区域 */
+  .canvas-wrapper {
+    background-color: var(--color-white);
+    border: var(--border-width) solid var(--color-border);
+    box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-shadow);
+    padding: var(--spacing-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+  }
+
+  .pixel-canvas {
+    display: inline-grid;
+    user-select: none;
+  }
+
+  /* 作品信息 */
+  .work-info-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+
+  .work-title {
+    font-family: var(--font-pixel);
+    font-size: clamp(1.25rem, 3vw, 1.75rem);
+    color: var(--color-text);
+    margin-bottom: 0;
+  }
+
+  .work-meta {
+    display: flex;
+    gap: var(--spacing-md);
+    flex-wrap: wrap;
+  }
+
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    font-family: var(--font-pixel);
+    font-size: 0.5rem;
+    color: var(--color-text);
+    opacity: 0.7;
+  }
+
+  .meta-icon {
+    font-size: 1em;
+  }
+
+  .work-desc {
+    font-size: 1rem;
+    color: var(--color-text);
+    line-height: 1.8;
+    margin: 0;
+  }
+
+  /* 操作按钮 */
+  .work-actions {
+    display: flex;
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
+  }
+
+  .work-actions .pixel-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    text-decoration: none;
+  }
+
+  .btn-icon {
+    font-size: 1em;
+  }
+
+  /* 颜色列表 */
+  .work-colors {
+    margin-top: var(--spacing-sm);
+  }
+
+  .section-label {
+    font-family: var(--font-pixel);
+    font-size: 0.5rem;
+    color: var(--color-text);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .color-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-xs);
+  }
+
+  .color-swatch {
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    border: 2px solid var(--color-border);
+    box-shadow: 1px 1px 0 var(--color-border);
+  }
+
+  /* 返回链接 */
+  .back-link {
+    margin-top: var(--spacing-lg);
+  }
+
+  .back-link .pixel-btn {
+    text-decoration: none;
+    display: inline-block;
+  }
+</style>

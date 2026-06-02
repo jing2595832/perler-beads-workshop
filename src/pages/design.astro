@@ -4,1386 +4,1177 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 ---
 
-<Layout title="设计工具" description="在线创作您的专属拼豆图纸">
+<Layout title="设计工具" description="在线拼豆设计工具，自由创作像素艺术作品">
   <Header activeNav="design" />
-  
-  <main class="design-page">
-    <div class="container">
-      <!-- 页面标题 -->
-      <div class="page-header">
+
+  <main>
+    <!-- 页面标题 -->
+    <section class="page-header">
+      <div class="container">
         <h1 class="page-title">
           <span class="title-icon">🎨</span>
-          拼豆设计工具
+          设计工具
         </h1>
-        <p class="page-desc">在线创作您的专属拼豆作品，支持导出打印</p>
+        <p class="page-desc">在线创作专属拼豆作品，支持导出PNG、打印和分享</p>
       </div>
-      
-      <!-- 设计器主体 -->
-      <div class="designer-container">
-        <!-- 工具栏 -->
-        <div class="toolbar">
-          <div class="tool-group">
-            <h3 class="group-title">画布设置</h3>
-            <div class="input-row">
-              <label>宽度:</label>
-              <input type="number" id="gridWidth" value="20" min="5" max="50" class="pixel-input">
-              <span>格</span>
+    </section>
+
+    <!-- 设计工具主体 -->
+    <section class="design-section">
+      <div class="container">
+        <div class="design-layout">
+          <!-- 左侧工具栏 -->
+          <aside class="toolbar">
+            <!-- 画布设置 -->
+            <div class="tool-group">
+              <h3 class="tool-group-title">画布设置</h3>
+              <div class="canvas-settings">
+                <label class="setting-label">
+                  宽
+                  <input type="number" id="canvas-width" min="5" max="50" value="20" class="setting-input" />
+                </label>
+                <span class="setting-x">x</span>
+                <label class="setting-label">
+                  高
+                  <input type="number" id="canvas-height" min="5" max="50" value="20" class="setting-input" />
+                </label>
+                <button id="apply-size-btn" class="pixel-btn accent" style="font-size:0.5rem; padding: var(--spacing-xs) var(--spacing-sm);">
+                  应用
+                </button>
+              </div>
             </div>
-            <div class="input-row">
-              <label>高度:</label>
-              <input type="number" id="gridHeight" value="20" min="5" max="50" class="pixel-input">
-              <span>格</span>
+
+            <!-- 工具 -->
+            <div class="tool-group">
+              <h3 class="tool-group-title">工具</h3>
+              <div class="tool-buttons">
+                <button class="tool-btn active" data-tool="brush" title="画笔 (B)">
+                  <span class="tool-icon">✏️</span>
+                  <span class="tool-name">画笔</span>
+                </button>
+                <button class="tool-btn" data-tool="eraser" title="橡皮擦 (E)">
+                  <span class="tool-icon">🧼</span>
+                  <span class="tool-name">橡皮擦</span>
+                </button>
+                <button class="tool-btn" data-tool="fill" title="填充 (F)">
+                  <span class="tool-icon">🪣</span>
+                  <span class="tool-name">填充</span>
+                </button>
+                <button class="tool-btn" data-tool="picker" title="取色器 (I)">
+                  <span class="tool-icon">💧</span>
+                  <span class="tool-name">取色器</span>
+                </button>
+              </div>
             </div>
-            <button id="resizeGrid" class="pixel-btn small">应用</button>
-          </div>
-          
-          <div class="tool-group">
-            <h3 class="group-title">工具</h3>
-            <div class="tool-buttons">
-              <button id="toolPen" class="tool-btn active" data-tool="pen" title="画笔">
-                <span>✏️</span>
-              </button>
-              <button id="toolEraser" class="tool-btn" data-tool="eraser" title="橡皮擦">
-                <span>🧼</span>
-              </button>
-              <button id="toolFill" class="tool-btn" data-tool="fill" title="填充">
-                <span>🪣</span>
-              </button>
-              <button id="toolPicker" class="tool-btn" data-tool="picker" title="取色器">
-                <span>💧</span>
-              </button>
+
+            <!-- 操作 -->
+            <div class="tool-group">
+              <h3 class="tool-group-title">操作</h3>
+              <div class="action-buttons">
+                <button id="undo-btn" class="action-btn" title="撤销 (Ctrl+Z)">↩ 撤销</button>
+                <button id="redo-btn" class="action-btn" title="重做 (Ctrl+Y)">↪ 重做</button>
+                <button id="clear-btn" class="action-btn danger" title="清空画布">🗑 清空</button>
+              </div>
+            </div>
+
+            <!-- 导出 -->
+            <div class="tool-group">
+              <h3 class="tool-group-title">导出</h3>
+              <div class="export-buttons">
+                <button id="export-png-btn" class="pixel-btn secondary" style="font-size:0.5rem; width:100%;">
+                  📥 下载 PNG
+                </button>
+                <button id="export-pdf-btn" class="pixel-btn secondary" style="font-size:0.5rem; width:100%;">
+                  🖨 打印 PDF
+                </button>
+                <button id="export-json-btn" class="pixel-btn secondary" style="font-size:0.5rem; width:100%;">
+                  📋 导出 JSON
+                </button>
+                <button id="share-btn" class="pixel-btn" style="font-size:0.5rem; width:100%;">
+                  🌐 分享作品
+                </button>
+              </div>
+            </div>
+
+            <!-- 使用提示 -->
+            <div class="tool-group">
+              <h3 class="tool-group-title">使用提示</h3>
+              <div class="tips-area">
+                <p>左键绘制，右键擦除</p>
+                <p>拖拽可连续绘制</p>
+                <p>Ctrl+Z 撤销 / Ctrl+Y 重做</p>
+                <p>作品自动保存到本地</p>
+              </div>
+            </div>
+          </aside>
+
+          <!-- 中间画布区 -->
+          <div class="canvas-area">
+            <div class="canvas-wrapper" id="canvas-wrapper">
+              <div class="pixel-canvas" id="pixel-canvas"></div>
             </div>
           </div>
-          
-          <div class="tool-group">
-            <h3 class="group-title">操作</h3>
-            <div class="action-buttons">
-              <button id="undoBtn" class="pixel-btn small">↩️ 撤销</button>
-              <button id="redoBtn" class="pixel-btn small">↪️ 重做</button>
-              <button id="clearBtn" class="pixel-btn small danger">🗑️ 清空</button>
+
+          <!-- 右侧颜色面板 -->
+          <aside class="color-panel">
+            <!-- 拼豆颜色 -->
+            <div class="tool-group">
+              <h3 class="tool-group-title">拼豆颜色</h3>
+              <div class="color-grid" id="color-grid"></div>
             </div>
-          </div>
-          
-          <div class="tool-group">
-            <h3 class="group-title">导出</h3>
-            <div class="export-buttons">
-              <button id="exportPNG" class="pixel-btn">📥 下载PNG</button>
-              <button id="exportPDF" class="pixel-btn secondary">📄 打印PDF</button>
+
+            <!-- 最近使用颜色 -->
+            <div class="tool-group">
+              <h3 class="tool-group-title">最近使用</h3>
+              <div class="recent-colors" id="recent-colors"></div>
             </div>
-          </div>
-          
-          <div class="tool-group">
-            <h3 class="group-title">社区</h3>
-            <div class="export-buttons">
-              <button id="shareWork" class="pixel-btn share">🌐 分享作品</button>
-              <button id="exportJSON" class="pixel-btn small">📦 导出JSON</button>
+
+            <!-- 当前颜色预览 -->
+            <div class="tool-group">
+              <h3 class="tool-group-title">当前颜色</h3>
+              <div class="current-color-preview" id="current-color-preview">
+                <div class="preview-swatch" id="preview-swatch" style="background-color: #FF6B6B;"></div>
+                <span class="preview-hex" id="preview-hex">#FF6B6B</span>
+              </div>
             </div>
-          </div>
-        </div>
-        
-        <!-- 画布区域 -->
-        <div class="canvas-area">
-          <div class="canvas-wrapper">
-            <div id="pixelGrid" class="pixel-grid"></div>
-          </div>
-          <div class="canvas-info">
-            <span id="gridInfo">20 × 20 格</span>
-            <span id="pixelCount">已用: 0 颗</span>
-          </div>
-        </div>
-        
-        <!-- 颜色面板 -->
-        <div class="color-panel">
-          <h3 class="panel-title">🎨 颜色选择</h3>
-          <div id="colorPalette" class="color-palette">
-            <!-- 颜色由JS生成 -->
-          </div>
-          <div class="current-color">
-            <span>当前颜色:</span>
-            <div id="currentColor" class="color-preview" style="background-color: #FF6B6B;"></div>
-            <span id="colorName">红色</span>
-          </div>
-          
-          <!-- 常用颜色 -->
-          <div class="quick-colors">
-            <h4 class="sub-title">最近使用</h4>
-            <div id="recentColors" class="recent-colors"></div>
-          </div>
+          </aside>
         </div>
       </div>
-      
-      <!-- 使用提示 -->
-      <div class="tips-section">
-        <h2 class="tips-title">💡 使用提示</h2>
-        <div class="tips-grid">
-          <div class="tip-item">
-            <span class="tip-icon">🖱️</span>
-            <p>左键点击绘制，右键擦除</p>
-          </div>
-          <div class="tip-item">
-            <span class="tip-icon">↔️</span>
-            <p>按住拖动连续绘制</p>
-          </div>
-          <div class="tip-item">
-            <span class="tip-icon">💾</span>
-            <p>自动保存到浏览器</p>
-          </div>
-          <div class="tip-item">
-            <span class="tip-icon">📐</span>
-            <p>建议尺寸不超过 30×30</p>
-          </div>
-        </div>
+    </section>
+  </main>
+
+  <!-- 分享模态框 -->
+  <div class="modal-overlay" id="share-modal" style="display:none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">分享作品</h2>
+        <button class="modal-close" id="modal-close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <label class="modal-label">
+          作品标题
+          <input type="text" id="share-title" class="modal-input" placeholder="给作品起个名字..." />
+        </label>
+        <label class="modal-label">
+          作者
+          <input type="text" id="share-author" class="modal-input" placeholder="你的昵称..." />
+        </label>
+        <label class="modal-label">
+          描述
+          <textarea id="share-desc" class="modal-textarea" placeholder="介绍一下你的作品..."></textarea>
+        </label>
+      </div>
+      <div class="modal-footer">
+        <button id="copy-link-btn" class="pixel-btn secondary" style="font-size:0.5rem;">📋 复制分享链接</button>
+        <button id="publish-btn" class="pixel-btn" style="font-size:0.5rem;">🚀 发布到社区</button>
       </div>
     </div>
-  </main>
-  
+  </div>
+
   <Footer />
 </Layout>
 
 <script>
-  // 拼豆颜色库
-  const beadColors = [
-    { name: '红色', hex: '#FF6B6B', code: 'R01' },
-    { name: '橙色', hex: '#FF8E53', code: 'R02' },
-    { name: '黄色', hex: '#FFE66D', code: 'Y01' },
-    { name: '绿色', hex: '#4ECDC4', code: 'G01' },
-    { name: '青色', hex: '#45B7D1', code: 'G02' },
-    { name: '蓝色', hex: '#5B8DEF', code: 'B01' },
-    { name: '紫色', hex: '#9B59B6', code: 'P01' },
-    { name: '粉色', hex: '#FF6B9D', code: 'P02' },
-    { name: '棕色', hex: '#8B4513', code: 'N01' },
-    { name: '黑色', hex: '#2D3436', code: 'K01' },
-    { name: '白色', hex: '#FFFFFF', code: 'W01' },
-    { name: '灰色', hex: '#636E72', code: 'N02' },
-    { name: '浅粉', hex: '#FFB8D0', code: 'P03' },
-    { name: '浅蓝', hex: '#A8E6CF', code: 'B02' },
-    { name: '米色', hex: '#FFE4C4', code: 'Y02' },
-    { name: '深红', hex: '#C0392B', code: 'R03' },
+  // ===== 拼豆颜色面板 =====
+  const BEAD_COLORS: { name: string; hex: string }[] = [
+    { name: '红', hex: '#FF6B6B' },
+    { name: '橙', hex: '#FF8E53' },
+    { name: '黄', hex: '#FFE66D' },
+    { name: '绿', hex: '#4ECDC4' },
+    { name: '青', hex: '#45B7D1' },
+    { name: '蓝', hex: '#5B8DEF' },
+    { name: '紫', hex: '#9B59B6' },
+    { name: '粉', hex: '#FF6B9D' },
+    { name: '棕', hex: '#8B4513' },
+    { name: '黑', hex: '#2D3436' },
+    { name: '白', hex: '#FFFFFF' },
+    { name: '灰', hex: '#636E72' },
+    { name: '浅粉', hex: '#FFB8D0' },
+    { name: '浅蓝', hex: '#A8E6CF' },
+    { name: '米色', hex: '#FFE4C4' },
+    { name: '深红', hex: '#C0392B' },
   ];
 
-  // 状态管理
-  let state = {
-    width: 20,
-    height: 20,
-    currentColor: beadColors[0],
-    currentTool: 'pen',
-    isDrawing: false,
-    grid: [],
-    history: [],
-    historyIndex: -1,
-    recentColors: []
-  };
+  // ===== 状态管理 =====
+  let canvasWidth = 20;
+  let canvasHeight = 20;
+  let currentColor = '#FF6B6B';
+  let currentTool: 'brush' | 'eraser' | 'fill' | 'picker' = 'brush';
+  let grid: (string | null)[][] = [];
+  let isDrawing = false;
+  let undoStack: (string | null)[][][] = [];
+  let redoStack: (string | null)[][][] = [];
+  let recentColors: string[] = [];
 
-  // DOM 元素
-  const gridEl = document.getElementById('pixelGrid');
-  const colorPaletteEl = document.getElementById('colorPalette');
-  const currentColorEl = document.getElementById('currentColor');
-  const colorNameEl = document.getElementById('colorName');
-  const recentColorsEl = document.getElementById('recentColors');
-  const gridInfoEl = document.getElementById('gridInfo');
-  const pixelCountEl = document.getElementById('pixelCount');
+  const STORAGE_KEY = 'perlerDesigner';
+  const COMMUNITY_KEY = 'perlerCommunityWorks';
 
-  // 初始化
+  // ===== 初始化 =====
   function init() {
     loadFromStorage();
-    createGrid();
-    createColorPalette();
+    renderColorGrid();
+    renderRecentColors();
+    renderCanvas();
     bindEvents();
-    updateRecentColors();
-    saveState();
+    updateCurrentColorPreview();
   }
 
-  // 创建网格
-  function createGrid() {
-    gridEl.innerHTML = '';
-    gridEl.style.gridTemplateColumns = `repeat(${state.width}, 1fr)`;
-    
-    state.grid = [];
-    for (let y = 0; y < state.height; y++) {
-      const row = [];
-      for (let x = 0; x < state.width; x++) {
-        const cell = document.createElement('div');
-        cell.className = 'grid-cell';
-        cell.dataset.x = x;
-        cell.dataset.y = y;
-        cell.addEventListener('mousedown', handleCellClick);
-        cell.addEventListener('mouseenter', handleCellHover);
-        cell.addEventListener('contextmenu', handleRightClick);
-        gridEl.appendChild(cell);
-        row.push(null);
+  // ===== 本地存储 =====
+  function loadFromStorage() {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const data = JSON.parse(saved);
+        canvasWidth = data.width || 20;
+        canvasHeight = data.height || 20;
+        grid = data.grid || createEmptyGrid(canvasWidth, canvasHeight);
+        recentColors = data.recentColors || [];
+        if (data.currentColor) currentColor = data.currentColor;
+        document.getElementById('canvas-width')!.setAttribute('value', String(canvasWidth));
+        document.getElementById('canvas-height')!.setAttribute('value', String(canvasHeight));
+      } else {
+        grid = createEmptyGrid(canvasWidth, canvasHeight);
       }
-      state.grid.push(row);
+    } catch {
+      grid = createEmptyGrid(canvasWidth, canvasHeight);
     }
-    
-    // 恢复历史数据
-    if (state.history.length > 0 && state.historyIndex >= 0) {
-      restoreGrid(state.history[state.historyIndex]);
+  }
+
+  function saveToStorage() {
+    try {
+      const data = {
+        width: canvasWidth,
+        height: canvasHeight,
+        grid: grid,
+        currentColor: currentColor,
+        recentColors: recentColors.slice(0, 8),
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    } catch {
+      // storage full or unavailable
     }
-    
-    updateGridInfo();
   }
 
-  // 创建颜色面板
-  function createColorPalette() {
-    colorPaletteEl.innerHTML = '';
-    beadColors.forEach(color => {
-      const colorBtn = document.createElement('button');
-      colorBtn.className = 'color-btn';
-      colorBtn.style.backgroundColor = color.hex;
-      colorBtn.title = `${color.name} (${color.code})`;
-      colorBtn.dataset.color = JSON.stringify(color);
-      if (color.hex === state.currentColor.hex) {
-        colorBtn.classList.add('active');
-      }
-      colorBtn.addEventListener('click', () => selectColor(color));
-      colorPaletteEl.appendChild(colorBtn);
-    });
+  function createEmptyGrid(w: number, h: number): (string | null)[][] {
+    return Array.from({ length: h }, () => Array.from({ length: w }, () => null));
   }
 
-  // 选择颜色
-  function selectColor(color) {
-    state.currentColor = color;
-    currentColorEl.style.backgroundColor = color.hex;
-    colorNameEl.textContent = color.name;
-    
-    // 更新颜色按钮状态
-    document.querySelectorAll('.color-btn').forEach(btn => {
-      btn.classList.toggle('active', btn.dataset.color === JSON.stringify(color));
-    });
-    
-    // 添加到最近使用
-    addRecentColor(color);
-  }
-
-  // 添加最近使用颜色
-  function addRecentColor(color) {
-    state.recentColors = state.recentColors.filter(c => c.hex !== color.hex);
-    state.recentColors.unshift(color);
-    if (state.recentColors.length > 8) {
-      state.recentColors.pop();
-    }
-    updateRecentColors();
-  }
-
-  // 更新最近使用颜色
-  function updateRecentColors() {
-    recentColorsEl.innerHTML = '';
-    state.recentColors.forEach(color => {
+  // ===== 颜色面板 =====
+  function renderColorGrid() {
+    const container = document.getElementById('color-grid')!;
+    container.innerHTML = '';
+    BEAD_COLORS.forEach((c) => {
       const btn = document.createElement('button');
-      btn.className = 'recent-color-btn';
-      btn.style.backgroundColor = color.hex;
-      btn.title = color.name;
-      btn.addEventListener('click', () => selectColor(color));
-      recentColorsEl.appendChild(btn);
+      btn.className = 'color-swatch';
+      btn.style.backgroundColor = c.hex;
+      btn.title = `${c.name} (${c.hex})`;
+      btn.dataset.color = c.hex;
+      if (c.hex === '#FFFFFF') {
+        btn.style.border = '2px solid #2D3436';
+      }
+      if (c.hex === currentColor) {
+        btn.classList.add('active');
+      }
+      btn.addEventListener('click', () => selectColor(c.hex));
+      container.appendChild(btn);
     });
   }
 
-  // 处理单元格点击
-  function handleCellClick(e) {
-    e.preventDefault();
-    const x = parseInt(e.target.dataset.x);
-    const y = parseInt(e.target.dataset.y);
-    
-    state.isDrawing = true;
-    
-    if (state.currentTool === 'pen') {
-      setPixel(x, y, state.currentColor);
-    } else if (state.currentTool === 'eraser') {
-      setPixel(x, y, null);
-    } else if (state.currentTool === 'fill') {
-      floodFill(x, y, state.currentColor);
-    } else if (state.currentTool === 'picker') {
-      const color = state.grid[y][x];
-      if (color) selectColor(color);
+  function renderRecentColors() {
+    const container = document.getElementById('recent-colors')!;
+    container.innerHTML = '';
+    if (recentColors.length === 0) {
+      const empty = document.createElement('span');
+      empty.className = 'empty-hint';
+      empty.textContent = '暂无';
+      container.appendChild(empty);
+      return;
     }
-    
-    saveState();
+    recentColors.forEach((hex) => {
+      const btn = document.createElement('button');
+      btn.className = 'color-swatch small';
+      btn.style.backgroundColor = hex;
+      btn.title = hex;
+      btn.dataset.color = hex;
+      if (hex === '#FFFFFF') {
+        btn.style.border = '2px solid #2D3436';
+      }
+      btn.addEventListener('click', () => selectColor(hex));
+      container.appendChild(btn);
+    });
   }
 
-  // 处理鼠标悬停
-  function handleCellHover(e) {
-    if (!state.isDrawing) return;
-    const x = parseInt(e.target.dataset.x);
-    const y = parseInt(e.target.dataset.y);
-    
-    if (state.currentTool === 'pen') {
-      setPixel(x, y, state.currentColor);
-    } else if (state.currentTool === 'eraser') {
-      setPixel(x, y, null);
-    }
-  }
-
-  // 右键擦除
-  function handleRightClick(e) {
-    e.preventDefault();
-    const x = parseInt(e.target.dataset.x);
-    const y = parseInt(e.target.dataset.y);
-    setPixel(x, y, null);
-    saveState();
-  }
-
-  // 设置像素
-  function setPixel(x, y, color) {
-    if (x < 0 || x >= state.width || y < 0 || y >= state.height) return;
-    
-    state.grid[y][x] = color;
-    const cell = gridEl.children[y * state.width + x];
-    
-    if (color) {
-      cell.style.backgroundColor = color.hex;
-      cell.classList.add('filled');
-    } else {
-      cell.style.backgroundColor = '';
-      cell.classList.remove('filled');
-    }
-    
-    updatePixelCount();
-  }
-
-  // 填充算法
-  function floodFill(startX, startY, fillColor) {
-    const targetColor = state.grid[startY][startX];
-    if (targetColor && targetColor.hex === fillColor.hex) return;
-    
-    const stack = [[startX, startY]];
-    const visited = new Set();
-    
-    while (stack.length > 0) {
-      const [x, y] = stack.pop();
-      const key = `${x},${y}`;
-      
-      if (visited.has(key)) continue;
-      if (x < 0 || x >= state.width || y < 0 || y >= state.height) continue;
-      
-      const currentColor = state.grid[y][x];
-      if (targetColor === null ? currentColor !== null : !currentColor || currentColor.hex !== targetColor.hex) continue;
-      
-      visited.add(key);
-      setPixel(x, y, fillColor);
-      
-      stack.push([x + 1, y], [x - 1, y], [x, y + 1], [x, y - 1]);
+  function selectColor(hex: string) {
+    currentColor = hex;
+    addRecentColor(hex);
+    updateCurrentColorPreview();
+    renderColorGrid();
+    renderRecentColors();
+    saveToStorage();
+    // 如果当前是橡皮擦或取色器，自动切换回画笔
+    if (currentTool === 'eraser' || currentTool === 'picker') {
+      setTool('brush');
     }
   }
 
-  // 保存状态到历史
-  function saveState() {
-    const gridCopy = state.grid.map(row => row.map(cell => cell ? { ...cell } : null));
-    
-    // 删除当前索引之后的历史
-    state.history = state.history.slice(0, state.historyIndex + 1);
-    state.history.push(gridCopy);
-    state.historyIndex++;
-    
-    // 限制历史记录数量
-    if (state.history.length > 50) {
-      state.history.shift();
-      state.historyIndex--;
+  function addRecentColor(hex: string) {
+    recentColors = recentColors.filter((c) => c !== hex);
+    recentColors.unshift(hex);
+    recentColors = recentColors.slice(0, 8);
+  }
+
+  function updateCurrentColorPreview() {
+    const swatch = document.getElementById('preview-swatch') as HTMLElement;
+    const hexLabel = document.getElementById('preview-hex') as HTMLElement;
+    if (swatch) {
+      swatch.style.backgroundColor = currentColor;
+      if (currentColor === '#FFFFFF') {
+        swatch.style.border = '2px solid #2D3436';
+      } else {
+        swatch.style.border = 'none';
+      }
     }
-    
+    if (hexLabel) hexLabel.textContent = currentColor;
+  }
+
+  // ===== 画布渲染 =====
+  function renderCanvas() {
+    const container = document.getElementById('pixel-canvas')!;
+    container.innerHTML = '';
+
+    // 计算格子大小
+    const maxCanvasSize = Math.min(600, window.innerWidth - 80);
+    const cellSize = Math.max(12, Math.min(30, Math.floor(maxCanvasSize / Math.max(canvasWidth, canvasHeight))));
+
+    container.style.display = 'grid';
+    container.style.gridTemplateColumns = `repeat(${canvasWidth}, ${cellSize}px)`;
+    container.style.gridTemplateRows = `repeat(${canvasHeight}, ${cellSize}px)`;
+    container.style.gap = '1px';
+    container.style.backgroundColor = '#2D3436';
+    container.style.border = '3px solid #2D3436';
+    container.style.boxShadow = '4px 4px 0 rgba(44,62,80,0.2)';
+
+    for (let y = 0; y < canvasHeight; y++) {
+      for (let x = 0; x < canvasWidth; x++) {
+        const cell = document.createElement('div');
+        cell.className = 'pixel-cell';
+        cell.dataset.x = String(x);
+        cell.dataset.y = String(y);
+        cell.style.width = cellSize + 'px';
+        cell.style.height = cellSize + 'px';
+        cell.style.backgroundColor = grid[y][x] || '#F7F7F7';
+        cell.style.cursor = currentTool === 'picker' ? 'crosshair' : 'pointer';
+        cell.style.imageRendering = 'pixelated';
+
+        // 鼠标事件
+        cell.addEventListener('mousedown', (e) => {
+          e.preventDefault();
+          isDrawing = true;
+          handleCellAction(x, y);
+        });
+        cell.addEventListener('mouseenter', () => {
+          if (isDrawing && (currentTool === 'brush' || currentTool === 'eraser')) {
+            handleCellAction(x, y);
+          }
+        });
+        cell.addEventListener('contextmenu', (e) => {
+          e.preventDefault();
+          eraseCell(x, y);
+        });
+
+        container.appendChild(cell);
+      }
+    }
+  }
+
+  // ===== 工具操作 =====
+  function handleCellAction(x: number, y: number) {
+    switch (currentTool) {
+      case 'brush':
+        paintCell(x, y);
+        break;
+      case 'eraser':
+        eraseCell(x, y);
+        break;
+      case 'fill':
+        floodFill(x, y, currentColor);
+        break;
+      case 'picker':
+        pickColor(x, y);
+        break;
+    }
+  }
+
+  function paintCell(x: number, y: number) {
+    if (grid[y][x] === currentColor) return;
+    pushUndo();
+    grid[y][x] = currentColor;
+    updateCell(x, y);
     saveToStorage();
   }
 
-  // 撤销
+  function eraseCell(x: number, y: number) {
+    if (grid[y][x] === null) return;
+    pushUndo();
+    grid[y][x] = null;
+    updateCell(x, y);
+    saveToStorage();
+  }
+
+  function pickColor(x: number, y: number) {
+    const color = grid[y][x];
+    if (color) {
+      selectColor(color);
+    }
+  }
+
+  function floodFill(startX: number, startY: number, fillColor: string) {
+    const targetColor = grid[startY][startX];
+    if (targetColor === fillColor) return;
+    pushUndo();
+
+    const stack: [number, number][] = [[startX, startY]];
+    const visited = new Set<string>();
+
+    while (stack.length > 0) {
+      const [x, y] = stack.pop()!;
+      const key = `${x},${y}`;
+      if (visited.has(key)) continue;
+      if (x < 0 || x >= canvasWidth || y < 0 || y >= canvasHeight) continue;
+      if (grid[y][x] !== targetColor) continue;
+
+      visited.add(key);
+      grid[y][x] = fillColor;
+      updateCell(x, y);
+
+      stack.push([x + 1, y], [x - 1, y], [x, y + 1], [x, y - 1]);
+    }
+    saveToStorage();
+  }
+
+  function updateCell(x: number, y: number) {
+    const cell = document.querySelector(`.pixel-cell[data-x="${x}"][data-y="${y}"]`) as HTMLElement;
+    if (cell) {
+      cell.style.backgroundColor = grid[y][x] || '#F7F7F7';
+    }
+  }
+
+  // ===== 撤销/重做 =====
+  function pushUndo() {
+    undoStack.push(grid.map((row) => [...row]));
+    if (undoStack.length > 50) undoStack.shift();
+    redoStack = [];
+  }
+
   function undo() {
-    if (state.historyIndex > 0) {
-      state.historyIndex--;
-      restoreGrid(state.history[state.historyIndex]);
-    }
+    if (undoStack.length === 0) return;
+    redoStack.push(grid.map((row) => [...row]));
+    grid = undoStack.pop()!;
+    renderCanvas();
+    saveToStorage();
   }
 
-  // 重做
   function redo() {
-    if (state.historyIndex < state.history.length - 1) {
-      state.historyIndex++;
-      restoreGrid(state.history[state.historyIndex]);
-    }
+    if (redoStack.length === 0) return;
+    undoStack.push(grid.map((row) => [...row]));
+    grid = redoStack.pop()!;
+    renderCanvas();
+    saveToStorage();
   }
 
-  // 恢复网格
-  function restoreGrid(gridData) {
-    state.grid = gridData.map(row => row.map(cell => cell ? { ...cell } : null));
-    
-    for (let y = 0; y < state.height; y++) {
-      for (let x = 0; x < state.width; x++) {
-        const cell = gridEl.children[y * state.width + x];
-        const color = state.grid[y][x];
-        
-        if (color) {
-          cell.style.backgroundColor = color.hex;
-          cell.classList.add('filled');
-        } else {
-          cell.style.backgroundColor = '';
-          cell.classList.remove('filled');
-        }
-      }
-    }
-    
-    updatePixelCount();
-  }
-
-  // 清空画布
-  function clearGrid() {
-    if (confirm('确定要清空画布吗？此操作无法撤销。')) {
-      for (let y = 0; y < state.height; y++) {
-        for (let x = 0; x < state.width; x++) {
-          setPixel(x, y, null);
-        }
-      }
-      saveState();
-    }
-  }
-
-  // 调整网格大小
-  function resizeGrid() {
-    const newWidth = parseInt(document.getElementById('gridWidth').value);
-    const newHeight = parseInt(document.getElementById('gridHeight').value);
-    
-    if (newWidth < 5 || newWidth > 50 || newHeight < 5 || newHeight > 50) {
-      alert('画布尺寸必须在 5-50 之间');
-      return;
-    }
-    
-    if (confirm('调整画布大小会清空当前内容，是否继续？')) {
-      state.width = newWidth;
-      state.height = newHeight;
-      state.history = [];
-      state.historyIndex = -1;
-      createGrid();
-      saveState();
-    }
-  }
-
-  // 更新网格信息
-  function updateGridInfo() {
-    gridInfoEl.textContent = `${state.width} × ${state.height} 格`;
-    updatePixelCount();
-  }
-
-  // 更新像素计数
-  function updatePixelCount() {
-    let count = 0;
-    for (let y = 0; y < state.height; y++) {
-      for (let x = 0; x < state.width; x++) {
-        if (state.grid[y][x]) count++;
-      }
-    }
-    pixelCountEl.textContent = `已用: ${count} 颗`;
-  }
-
-  // 导出PNG
+  // ===== 导出功能 =====
   function exportPNG() {
+    const cellSize = 20;
+    const padding = 1;
+    const totalW = canvasWidth * (cellSize + padding) + padding;
+    const totalH = canvasHeight * (cellSize + padding) + padding;
+
     const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    const pixelSize = 20;
-    
-    canvas.width = state.width * pixelSize;
-    canvas.height = state.height * pixelSize;
-    
-    // 绘制背景
-    ctx.fillStyle = '#FFFFFF';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    
-    // 绘制网格线
-    ctx.strokeStyle = '#E0E0E0';
-    ctx.lineWidth = 1;
-    for (let i = 0; i <= state.width; i++) {
-      ctx.beginPath();
-      ctx.moveTo(i * pixelSize, 0);
-      ctx.lineTo(i * pixelSize, canvas.height);
-      ctx.stroke();
-    }
-    for (let i = 0; i <= state.height; i++) {
-      ctx.beginPath();
-      ctx.moveTo(0, i * pixelSize);
-      ctx.lineTo(canvas.width, i * pixelSize);
-      ctx.stroke();
-    }
-    
-    // 绘制像素
-    for (let y = 0; y < state.height; y++) {
-      for (let x = 0; x < state.width; x++) {
-        const color = state.grid[y][x];
-        if (color) {
-          ctx.fillStyle = color.hex;
-          ctx.fillRect(x * pixelSize + 1, y * pixelSize + 1, pixelSize - 2, pixelSize - 2);
-        }
+    canvas.width = totalW;
+    canvas.height = totalH;
+    const ctx = canvas.getContext('2d')!;
+
+    // 背景
+    ctx.fillStyle = '#2D3436';
+    ctx.fillRect(0, 0, totalW, totalH);
+
+    for (let y = 0; y < canvasHeight; y++) {
+      for (let x = 0; x < canvasWidth; x++) {
+        const px = padding + x * (cellSize + padding);
+        const py = padding + y * (cellSize + padding);
+        ctx.fillStyle = grid[y][x] || '#F7F7F7';
+        ctx.fillRect(px, py, cellSize, cellSize);
       }
     }
-    
-    // 下载
+
     const link = document.createElement('a');
-    link.download = `拼豆设计_${state.width}x${state.height}_${Date.now()}.png`;
-    link.href = canvas.toDataURL();
+    link.download = `perler-design-${Date.now()}.png`;
+    link.href = canvas.toDataURL('image/png');
     link.click();
   }
 
-  // 导出打印版PDF (实际是HTML打印)
-  function exportPDF() {
-    const printWindow = window.open('', '_blank');
-    const pixelSize = 15;
-    
-    let gridHTML = '';
-    for (let y = 0; y < state.height; y++) {
-      gridHTML += '<tr>';
-      for (let x = 0; x < state.width; x++) {
-        const color = state.grid[y][x];
-        const bgColor = color ? color.hex : '#FFFFFF';
-        const borderColor = color ? '#000000' : '#CCCCCC';
-        gridHTML += `<td style="width:${pixelSize}px;height:${pixelSize}px;background:${bgColor};border:1px solid ${borderColor};"></td>`;
-      }
-      gridHTML += '</tr>';
-    }
-    
-    printWindow.document.write(`
-      <!DOCTYPE html>
-      <html>
-      <head>
-        <title>拼豆图纸 - 打印</title>
-        <style>
-          body { font-family: Arial, sans-serif; padding: 20px; }
-          h1 { text-align: center; font-size: 18px; }
-          .info { text-align: center; margin: 10px 0; font-size: 12px; color: #666; }
-          table { border-collapse: collapse; margin: 20px auto; }
-          td { box-sizing: border-box; }
-          .legend { margin-top: 20px; font-size: 11px; }
-          @media print {
-            body { padding: 0; }
-            .no-print { display: none; }
-          }
-        </style>
-      </head>
-      <body>
-        <h1>🎨 拼豆豆工坊 - 制作图纸</h1>
-        <div class="info">尺寸: ${state.width} × ${state.height} | 生成时间: ${new Date().toLocaleString()}</div>
-        <table>${gridHTML}</table>
-        <div class="legend">
-          <p>💡 制作提示：</p>
-          <p>1. 每个格子代表一颗拼豆</p>
-          <p>2. 建议从中心或边缘开始制作</p>
-          <p>3. 完成后用熨斗隔着烘焙纸熨烫</p>
-        </div>
-        <button class="no-print" onclick="window.print()" style="display:block;margin:20px auto;padding:10px 20px;">🖨️ 打印图纸</button>
-      </body>
-      </html>
-    `);
-    printWindow.document.close();
-  }
-
-  // 导出为JSON
   function exportJSON() {
-    // 收集使用的颜色
-    const usedColors = new Set();
-    for (let y = 0; y < state.height; y++) {
-      for (let x = 0; x < state.width; x++) {
-        const color = state.grid[y][x];
-        if (color) {
-          usedColors.add(color.hex);
-        }
-      }
-    }
-
     const data = {
-      version: '1.0',
-      title: '拼豆设计',
-      width: state.width,
-      height: state.height,
-      grid: state.grid,
-      colors: Array.from(usedColors),
-      exportedAt: new Date().toISOString()
+      width: canvasWidth,
+      height: canvasHeight,
+      grid: grid,
+      createdAt: new Date().toISOString(),
     };
-
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
-    link.download = `拼豆设计_${state.width}x${state.height}_${Date.now()}.json`;
-    link.href = url;
+    link.download = `perler-design-${Date.now()}.json`;
+    link.href = URL.createObjectURL(blob);
     link.click();
-    URL.revokeObjectURL(url);
+    URL.revokeObjectURL(link.href);
   }
 
-  // 分享/投稿作品
-  function shareWork() {
-    // 检查是否有内容
-    let hasContent = false;
-    for (let y = 0; y < state.height; y++) {
-      for (let x = 0; x < state.width; x++) {
-        if (state.grid[y][x]) {
-          hasContent = true;
-          break;
+  function printPDF() {
+    const cellSize = 20;
+    const padding = 1;
+    const totalW = canvasWidth * (cellSize + padding) + padding;
+    const totalH = canvasHeight * (cellSize + padding) + padding;
+
+    const canvas = document.createElement('canvas');
+    canvas.width = totalW;
+    canvas.height = totalH;
+    const ctx = canvas.getContext('2d')!;
+
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillRect(0, 0, totalW, totalH);
+
+    for (let y = 0; y < canvasHeight; y++) {
+      for (let x = 0; x < canvasWidth; x++) {
+        const px = padding + x * (cellSize + padding);
+        const py = padding + y * (cellSize + padding);
+        if (grid[y][x]) {
+          ctx.fillStyle = grid[y][x];
+          ctx.fillRect(px, py, cellSize, cellSize);
+        } else {
+          ctx.strokeStyle = '#CCCCCC';
+          ctx.strokeRect(px, py, cellSize, cellSize);
         }
       }
-      if (hasContent) break;
     }
 
-    if (!hasContent) {
-      alert('请先绘制一些内容再分享！');
-      return;
+    const win = window.open('', '_blank');
+    if (win) {
+      win.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>拼豆图纸 - 打印</title>
+          <style>
+            body { text-align: center; font-family: sans-serif; padding: 20px; }
+            img { max-width: 100%; image-rendering: pixelated; border: 2px solid #333; }
+            .info { margin-top: 10px; font-size: 14px; color: #666; }
+            @media print { body { padding: 0; } }
+          </style>
+        </head>
+        <body>
+          <img src="${canvas.toDataURL('image/png')}" />
+          <p class="info">尺寸: ${canvasWidth} x ${canvasHeight} 格 | 拼豆豆工坊</p>
+          <script>window.onload = function() { window.print(); }<\/script>
+        </body>
+        </html>
+      `);
+      win.document.close();
     }
-
-    // 显示投稿模态框
-    showShareModal();
   }
 
-  // 显示分享模态框
-  function showShareModal() {
-    const modal = document.createElement('div');
-    modal.className = 'share-modal';
-    modal.innerHTML = `
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3>🌐 分享您的作品</h3>
-          <button class="modal-close">&times;</button>
-        </div>
-        <div class="modal-body">
-          <p class="modal-desc">将您的作品分享到社区，让更多人看到您的创意！</p>
-          <div class="form-group">
-            <label for="workTitle">作品名称 *</label>
-            <input type="text" id="workTitle" placeholder="给您的作品起个名字" maxlength="50">
-          </div>
-          <div class="form-group">
-            <label for="workAuthor">作者昵称</label>
-            <input type="text" id="workAuthor" placeholder="输入您的昵称（选填）" maxlength="30">
-          </div>
-          <div class="form-group">
-            <label for="workDesc">作品描述</label>
-            <textarea id="workDesc" placeholder="介绍一下您的作品（选填）" maxlength="200"></textarea>
-          </div>
-          <div class="form-group">
-            <label>或者：</label>
-            <button class="copy-link-btn">📋 复制分享链接</button>
-            <p class="hint">复制链接后，可以直接发送给朋友</p>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button class="modal-btn cancel">取消</button>
-          <button class="modal-btn submit">发布到社区</button>
-        </div>
-      </div>
-    `;
-    document.body.appendChild(modal);
+  // ===== 分享功能 =====
+  function openShareModal() {
+    const modal = document.getElementById('share-modal') as HTMLElement;
+    modal.style.display = 'flex';
+  }
 
-    // 添加模态框样式
-    const style = document.createElement('style');
-    style.textContent = `
-      .share-modal {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0,0,0,0.6);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 1000;
-        padding: 20px;
-      }
-      .modal-content {
-        background: #fff;
-        border: 4px solid var(--color-border, #333);
-        box-shadow: 8px 8px 0 var(--color-border, #333);
-        max-width: 400px;
-        width: 100%;
-        max-height: 90vh;
-        overflow-y: auto;
-      }
-      .modal-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 16px;
-        border-bottom: 3px solid var(--color-border, #333);
-      }
-      .modal-header h3 {
-        font-family: var(--font-pixel, monospace);
-        margin: 0;
-        font-size: 14px;
-      }
-      .modal-close {
-        background: none;
-        border: none;
-        font-size: 24px;
-        cursor: pointer;
-        line-height: 1;
-      }
-      .modal-body {
-        padding: 16px;
-      }
-      .modal-desc {
-        margin: 0 0 16px;
-        font-size: 13px;
-        color: #666;
-      }
-      .form-group {
-        margin-bottom: 16px;
-      }
-      .form-group label {
-        display: block;
-        font-family: var(--font-pixel, monospace);
-        font-size: 11px;
-        margin-bottom: 6px;
-      }
-      .form-group input,
-      .form-group textarea {
-        width: 100%;
-        padding: 10px;
-        border: 2px solid var(--color-border, #333);
-        font-family: inherit;
-        font-size: 13px;
-        box-sizing: border-box;
-      }
-      .form-group textarea {
-        height: 80px;
-        resize: vertical;
-      }
-      .copy-link-btn {
-        width: 100%;
-        padding: 10px;
-        background: var(--color-secondary, #4ECDC4);
-        color: white;
-        border: 2px solid var(--color-border, #333);
-        cursor: pointer;
-        font-family: var(--font-pixel, monospace);
-        font-size: 12px;
-      }
-      .copy-link-btn:hover {
-        opacity: 0.9;
-      }
-      .hint {
-        font-size: 11px;
-        color: #999;
-        margin: 6px 0 0;
-      }
-      .modal-footer {
-        display: flex;
-        gap: 12px;
-        padding: 16px;
-        border-top: 3px solid var(--color-border, #333);
-      }
-      .modal-btn {
-        flex: 1;
-        padding: 12px;
-        font-family: var(--font-pixel, monospace);
-        font-size: 11px;
-        cursor: pointer;
-        border: 2px solid var(--color-border, #333);
-      }
-      .modal-btn.cancel {
-        background: #fff;
-      }
-      .modal-btn.submit {
-        background: #FF6B6B;
-        color: white;
-      }
-    `;
-    document.head.appendChild(style);
+  function closeShareModal() {
+    const modal = document.getElementById('share-modal') as HTMLElement;
+    modal.style.display = 'none';
+  }
 
-    // 事件绑定
-    modal.querySelector('.modal-close').onclick = () => modal.remove();
-    modal.querySelector('.cancel').onclick = () => modal.remove();
-    modal.onclick = (e) => {
-      if (e.target === modal) modal.remove();
+  function copyShareLink() {
+    const title = (document.getElementById('share-title') as HTMLInputElement).value || '未命名作品';
+    const data = { width: canvasWidth, height: canvasHeight, grid, title };
+    const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+    const link = `${window.location.origin}/design/shared?work=${encoded}`;
+
+    navigator.clipboard.writeText(link).then(() => {
+      alert('分享链接已复制到剪贴板！');
+    }).catch(() => {
+      prompt('请手动复制分享链接：', link);
+    });
+  }
+
+  function publishToCommunity() {
+    const title = (document.getElementById('share-title') as HTMLInputElement).value || '未命名作品';
+    const author = (document.getElementById('share-author') as HTMLInputElement).value || '匿名';
+    const desc = (document.getElementById('share-desc') as HTMLTextAreaElement).value || '';
+
+    const work = {
+      id: 'work-' + Date.now(),
+      title,
+      author,
+      description: desc,
+      width: canvasWidth,
+      height: canvasHeight,
+      grid,
+      colors: getUsedColors(),
+      likes: 0,
+      createdAt: new Date().toISOString(),
     };
 
-    // 复制链接按钮
-    modal.querySelector('.copy-link-btn').onclick = () => {
-      const title = document.getElementById('workTitle').value || '我的拼豆作品';
-      const jsonData = {
-        title,
-        width: state.width,
-        height: state.height,
-        grid: state.grid
-      };
-      const encoded = btoa(encodeURIComponent(JSON.stringify(jsonData)));
-      const shareUrl = `${window.location.origin}/design?work=${encoded}`;
-      
-      navigator.clipboard.writeText(shareUrl).then(() => {
-        modal.querySelector('.copy-link-btn').textContent = '✅ 已复制！';
-        setTimeout(() => {
-          modal.querySelector('.copy-link-btn').textContent = '📋 复制分享链接';
-        }, 2000);
-      }).catch(() => {
-        // Fallback
-        const textarea = document.createElement('textarea');
-        textarea.value = shareUrl;
-        document.body.appendChild(textarea);
-        textarea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textarea);
-        modal.querySelector('.copy-link-btn').textContent = '✅ 已复制！';
+    try {
+      const works = JSON.parse(localStorage.getItem(COMMUNITY_KEY) || '[]');
+      works.unshift(work);
+      localStorage.setItem(COMMUNITY_KEY, JSON.stringify(works));
+      alert('作品已发布到社区！');
+      closeShareModal();
+    } catch {
+      alert('发布失败，请稍后重试。');
+    }
+  }
+
+  function getUsedColors(): string[] {
+    const colorSet = new Set<string>();
+    for (const row of grid) {
+      for (const cell of row) {
+        if (cell) colorSet.add(cell);
+      }
+    }
+    return Array.from(colorSet);
+  }
+
+  // ===== 工具切换 =====
+  function setTool(tool: 'brush' | 'eraser' | 'fill' | 'picker') {
+    currentTool = tool;
+    document.querySelectorAll('.tool-btn').forEach((btn) => {
+      btn.classList.toggle('active', btn.dataset.tool === tool);
+    });
+    // 更新光标
+    document.querySelectorAll('.pixel-cell').forEach((cell) => {
+      (cell as HTMLElement).style.cursor = tool === 'picker' ? 'crosshair' : 'pointer';
+    });
+  }
+
+  // ===== 事件绑定 =====
+  function bindEvents() {
+    // 鼠标抬起停止绘制
+    document.addEventListener('mouseup', () => { isDrawing = false; });
+
+    // 工具按钮
+    document.querySelectorAll('.tool-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        setTool(btn.dataset.tool as 'brush' | 'eraser' | 'fill' | 'picker');
       });
-    };
+    });
 
-    // 发布按钮
-    modal.querySelector('.submit').onclick = async () => {
-      const title = document.getElementById('workTitle').value.trim();
-      const author = document.getElementById('workAuthor').value.trim() || '匿名用户';
-      const description = document.getElementById('workDesc').value.trim();
-
-      if (!title) {
-        alert('请输入作品名称！');
-        return;
+    // 操作按钮
+    document.getElementById('undo-btn')!.addEventListener('click', undo);
+    document.getElementById('redo-btn')!.addEventListener('click', redo);
+    document.getElementById('clear-btn')!.addEventListener('click', () => {
+      if (confirm('确定要清空画布吗？')) {
+        pushUndo();
+        grid = createEmptyGrid(canvasWidth, canvasHeight);
+        renderCanvas();
+        saveToStorage();
       }
+    });
 
-      // 收集颜色
-      const usedColors = new Set();
-      for (let y = 0; y < state.height; y++) {
-        for (let x = 0; x < state.width; x++) {
-          const color = state.grid[y][x];
-          if (color) usedColors.add(color.hex);
-        }
-      }
+    // 导出按钮
+    document.getElementById('export-png-btn')!.addEventListener('click', exportPNG);
+    document.getElementById('export-pdf-btn')!.addEventListener('click', printPDF);
+    document.getElementById('export-json-btn')!.addEventListener('click', exportJSON);
 
-      const workData = {
-        title,
-        author,
-        description,
-        width: state.width,
-        height: state.height,
-        grid: state.grid,
-        colors: Array.from(usedColors)
-      };
+    // 分享按钮
+    document.getElementById('share-btn')!.addEventListener('click', openShareModal);
+    document.getElementById('modal-close-btn')!.addEventListener('click', closeShareModal);
+    document.getElementById('copy-link-btn')!.addEventListener('click', copyShareLink);
+    document.getElementById('publish-btn')!.addEventListener('click', publishToCommunity);
 
-      const submitBtn = modal.querySelector('.submit');
-      submitBtn.textContent = '发布中...';
-      submitBtn.disabled = true;
+    // 点击模态框外部关闭
+    document.getElementById('share-modal')!.addEventListener('click', (e) => {
+      if ((e.target as HTMLElement).id === 'share-modal') closeShareModal();
+    });
 
-      // 生成作品ID
-      const workId = 'work_' + Date.now();
-      const workDataWithId = {
-        id: workId,
-        ...workData,
-        likes: 0,
-        views: 1,
-        createdAt: Date.now()
-      };
+    // 画布尺寸
+    document.getElementById('apply-size-btn')!.addEventListener('click', () => {
+      const w = parseInt((document.getElementById('canvas-width') as HTMLInputElement).value) || 20;
+      const h = parseInt((document.getElementById('canvas-height') as HTMLInputElement).value) || 20;
+      const newW = Math.max(5, Math.min(50, w));
+      const newH = Math.max(5, Math.min(50, h));
 
-      // 尝试发送到API
-      let apiSuccess = false;
-      try {
-        const response = await fetch('/api/works', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(workDataWithId)
-        });
-
-        if (response.ok) {
-          const result = await response.json();
-          if (result.success) {
-            apiSuccess = true;
-            modal.remove();
-            const shareUrl = `${window.location.origin}/design?view=${workId}`;
-            alert(`🎉 作品发布成功！\n\n分享链接：\n${shareUrl}\n\n（链接已复制到剪贴板）`);
-            navigator.clipboard.writeText(shareUrl);
+      if (newW !== canvasWidth || newH !== canvasHeight) {
+        pushUndo();
+        const newGrid = createEmptyGrid(newW, newH);
+        for (let y = 0; y < Math.min(canvasHeight, newH); y++) {
+          for (let x = 0; x < Math.min(canvasWidth, newW); x++) {
+            newGrid[y][x] = grid[y][x];
           }
         }
-      } catch (error) {
-        console.log('API 发布失败，将保存到本地');
-      }
-
-      // 无论API是否成功，都保存到本地缓存
-      const works = JSON.parse(localStorage.getItem('perlerCommunityWorks') || '[]');
-      works.unshift(workDataWithId);
-      localStorage.setItem('perlerCommunityWorks', JSON.stringify(works));
-
-      if (!apiSuccess) {
-        modal.remove();
-        const shareUrl = `${window.location.origin}/design?view=${workId}`;
-        alert(`📋 作品已保存到本地！\n\n分享链接：\n${shareUrl}\n\n（链接已复制到剪贴板）\n\n注意：作品仅在当前设备可见`);
-        navigator.clipboard.writeText(shareUrl);
-      }
-    };
-  }
-
-  // 保存到本地存储
-  function saveToStorage() {
-    const data = {
-      width: state.width,
-      height: state.height,
-      grid: state.grid,
-      recentColors: state.recentColors,
-      timestamp: Date.now()
-    };
-    localStorage.setItem('perlerDesigner', JSON.stringify(data));
-  }
-
-  // 从本地存储加载
-  function loadFromStorage() {
-    // 首先检查 URL 参数是否有分享的作品
-    const urlParams = new URLSearchParams(window.location.search);
-    const viewId = urlParams.get('view');
-    
-    if (viewId && viewId.startsWith('work_')) {
-      // 从本地存储加载社区作品
-      const works = JSON.parse(localStorage.getItem('perlerCommunityWorks') || '[]');
-      const work = works.find(w => w.id === viewId);
-      
-      if (work) {
-        state.width = work.width || 20;
-        state.height = work.height || 20;
-        state.grid = work.grid || [];
-        state.recentColors = [];
-        
-        document.getElementById('gridWidth').value = state.width;
-        document.getElementById('gridHeight').value = state.height;
-        
-        // 显示提示
-        showNotification('已加载分享的作品：' + (work.title || '未命名'));
-        return;
-      }
-    }
-    
-    // 检查是否有 work 参数（base64 编码的作品数据）
-    const workParam = urlParams.get('work');
-    if (workParam) {
-      try {
-        const workData = JSON.parse(decodeURIComponent(atob(workParam)));
-        state.width = workData.width || 20;
-        state.height = workData.height || 20;
-        state.grid = workData.grid || [];
-        state.recentColors = [];
-        
-        document.getElementById('gridWidth').value = state.width;
-        document.getElementById('gridHeight').value = state.height;
-        
-        showNotification('已加载分享的作品');
-        return;
-      } catch (e) {
-        console.error('解析分享数据失败', e);
-      }
-    }
-    
-    // 从本地存储加载
-    const saved = localStorage.getItem('perlerDesigner');
-    if (saved) {
-      try {
-        const data = JSON.parse(saved);
-        state.width = data.width || 20;
-        state.height = data.height || 20;
-        state.grid = data.grid || [];
-        state.recentColors = data.recentColors || [];
-        
-        document.getElementById('gridWidth').value = state.width;
-        document.getElementById('gridHeight').value = state.height;
-      } catch (e) {
-        console.error('加载保存的数据失败', e);
-      }
-    }
-  }
-  
-  // 显示通知
-  function showNotification(message) {
-    const notification = document.createElement('div');
-    notification.className = 'design-notification';
-    notification.textContent = message;
-    notification.style.cssText = `
-      position: fixed;
-      top: 80px;
-      left: 50%;
-      transform: translateX(-50%);
-      padding: 12px 24px;
-      background: #4ECDC4;
-      color: white;
-      border: 3px solid #2D3436;
-      box-shadow: 4px 4px 0 #2D3436;
-      font-family: 'Press Start 2P', monospace;
-      font-size: 0.625rem;
-      z-index: 1000;
-      animation: slideDown 0.3s ease;
-    `;
-    document.body.appendChild(notification);
-    
-    setTimeout(() => {
-      notification.style.animation = 'slideUp 0.3s ease';
-      setTimeout(() => notification.remove(), 300);
-    }, 3000);
-  }
-
-  // 绑定事件
-  function bindEvents() {
-    // 工具按钮
-    document.querySelectorAll('.tool-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        state.currentTool = btn.dataset.tool;
-      });
-    });
-    
-    // 操作按钮
-    document.getElementById('undoBtn').addEventListener('click', undo);
-    document.getElementById('redoBtn').addEventListener('click', redo);
-    document.getElementById('clearBtn').addEventListener('click', clearGrid);
-    document.getElementById('resizeGrid').addEventListener('click', resizeGrid);
-    document.getElementById('exportPNG').addEventListener('click', exportPNG);
-    document.getElementById('exportPDF').addEventListener('click', exportPDF);
-    
-    // 分享按钮
-    document.getElementById('shareWork').addEventListener('click', shareWork);
-    document.getElementById('exportJSON').addEventListener('click', exportJSON);
-    
-    // 鼠标释放
-    document.addEventListener('mouseup', () => {
-      if (state.isDrawing) {
-        state.isDrawing = false;
-        saveState();
+        canvasWidth = newW;
+        canvasHeight = newH;
+        grid = newGrid;
+        renderCanvas();
+        saveToStorage();
       }
     });
-    
+
     // 键盘快捷键
     document.addEventListener('keydown', (e) => {
       if (e.ctrlKey || e.metaKey) {
-        if (e.key === 'z') {
-          e.preventDefault();
-          undo();
-        } else if (e.key === 'y' || (e.key === 'z' && e.shiftKey)) {
-          e.preventDefault();
-          redo();
-        }
+        if (e.key === 'z') { e.preventDefault(); undo(); }
+        if (e.key === 'y') { e.preventDefault(); redo(); }
       }
+      if (!e.ctrlKey && !e.metaKey && !e.altKey) {
+        if (e.key === 'b') setTool('brush');
+        if (e.key === 'e') setTool('eraser');
+        if (e.key === 'f') setTool('fill');
+        if (e.key === 'i') setTool('picker');
+      }
+    });
+
+    // 窗口大小变化重新渲染
+    window.addEventListener('resize', () => {
+      renderCanvas();
     });
   }
 
-  // 启动
-  init();
+  // ===== 启动 =====
+  document.addEventListener('DOMContentLoaded', init);
 </script>
 
 <style>
-  .design-page {
-    padding: var(--spacing-xl) 0;
-    background: linear-gradient(180deg, var(--color-white) 0%, var(--color-background) 100%);
-    min-height: calc(100vh - 200px);
-  }
-  
+  /* 页面标题 */
   .page-header {
+    background: linear-gradient(135deg, var(--color-white) 0%, var(--color-background) 100%);
+    padding: var(--spacing-2xl) 0 var(--spacing-xl);
     text-align: center;
-    margin-bottom: var(--spacing-xl);
+    border-bottom: var(--border-width) solid var(--color-border);
   }
-  
+
   .page-title {
     font-family: var(--font-pixel);
-    font-size: clamp(1.25rem, 4vw, 1.75rem);
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    margin-bottom: var(--spacing-md);
     display: flex;
     align-items: center;
     justify-content: center;
     gap: var(--spacing-sm);
-    margin-bottom: var(--spacing-sm);
   }
-  
+
   .title-icon {
-    font-size: 1.5em;
+    font-size: 1.2em;
   }
-  
+
   .page-desc {
+    font-size: 1rem;
     color: var(--color-text);
-    opacity: 0.7;
-    margin: 0;
+    opacity: 0.8;
   }
-  
-  /* 设计器容器 */
-  .designer-container {
+
+  /* 设计区域 */
+  .design-section {
+    padding: var(--spacing-lg) 0 var(--spacing-2xl);
+    background-color: var(--color-background);
+  }
+
+  .design-layout {
     display: grid;
-    grid-template-columns: 200px 1fr 200px;
-    gap: var(--spacing-lg);
-    margin-bottom: var(--spacing-xl);
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
   }
-  
-  @media (max-width: 1024px) {
-    .designer-container {
-      grid-template-columns: 1fr;
+
+  @media (min-width: 1024px) {
+    .design-layout {
+      grid-template-columns: 200px 1fr 180px;
+      gap: var(--spacing-lg);
+      align-items: start;
     }
   }
-  
+
   /* 工具栏 */
   .toolbar {
     display: flex;
-    flex-direction: column;
-    gap: var(--spacing-md);
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
   }
-  
+
+  @media (min-width: 1024px) {
+    .toolbar {
+      flex-direction: column;
+      position: sticky;
+      top: 80px;
+    }
+  }
+
   .tool-group {
-    background: var(--color-white);
-    border: 3px solid var(--color-border);
-    padding: var(--spacing-md);
+    background-color: var(--color-white);
+    border: var(--border-width) solid var(--color-border);
+    box-shadow: 3px 3px 0 var(--color-border);
+    padding: var(--spacing-sm);
+    flex: 1;
+    min-width: 150px;
   }
-  
-  .group-title {
+
+  .tool-group-title {
     font-family: var(--font-pixel);
-    font-size: 0.625rem;
-    margin: 0 0 var(--spacing-sm) 0;
+    font-size: 0.5rem;
+    color: var(--color-text);
+    margin-bottom: var(--spacing-sm);
     padding-bottom: var(--spacing-xs);
-    border-bottom: 2px solid var(--color-border);
+    border-bottom: 2px dashed var(--color-border);
   }
-  
-  .input-row {
+
+  /* 画布设置 */
+  .canvas-settings {
     display: flex;
     align-items: center;
     gap: var(--spacing-xs);
-    margin-bottom: var(--spacing-xs);
-    font-size: 0.75rem;
+    flex-wrap: wrap;
   }
-  
-  .pixel-input {
-    width: 50px;
-    padding: 4px;
-    border: 2px solid var(--color-border);
+
+  .setting-label {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
     font-family: var(--font-pixel);
-    font-size: 0.625rem;
+    font-size: 0.5rem;
+    color: var(--color-text);
+  }
+
+  .setting-input {
+    width: 50px;
+    padding: var(--spacing-xs);
+    font-family: var(--font-pixel);
+    font-size: 0.5rem;
+    border: 2px solid var(--color-border);
+    background-color: var(--color-background);
     text-align: center;
   }
-  
+
+  .setting-input:focus {
+    outline: 2px solid var(--color-accent);
+  }
+
+  .setting-x {
+    font-family: var(--font-pixel);
+    font-size: 0.5rem;
+    color: var(--color-text);
+    opacity: 0.5;
+  }
+
+  /* 工具按钮 */
   .tool-buttons {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr 1fr;
     gap: var(--spacing-xs);
   }
-  
+
   .tool-btn {
-    padding: var(--spacing-sm);
-    background: var(--color-white);
-    border: 3px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: var(--spacing-xs);
+    font-family: var(--font-pixel);
+    font-size: 0.375rem;
+    border: 2px solid var(--color-border);
+    background-color: var(--color-background);
     cursor: pointer;
-    transition: all 0.2s;
-    font-size: 1.25rem;
+    transition: all 0.1s;
   }
-  
+
   .tool-btn:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 2px 2px 0 var(--color-border);
+    background-color: var(--color-accent);
   }
-  
+
   .tool-btn.active {
-    background: var(--color-primary);
+    background-color: var(--color-secondary);
+    color: var(--color-white);
     border-color: var(--color-border);
+    box-shadow: inset 2px 2px 0 rgba(0,0,0,0.2);
   }
-  
+
+  .tool-icon {
+    font-size: 1rem;
+  }
+
+  /* 操作按钮 */
   .action-buttons {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-xs);
   }
-  
-  .pixel-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--spacing-xs);
-    padding: var(--spacing-sm) var(--spacing-md);
+
+  .action-btn {
+    display: block;
+    width: 100%;
+    padding: var(--spacing-xs) var(--spacing-sm);
     font-family: var(--font-pixel);
-    font-size: 0.625rem;
-    background: var(--color-white);
-    border: 3px solid var(--color-border);
-    box-shadow: 3px 3px 0 var(--color-border);
+    font-size: 0.5rem;
+    border: 2px solid var(--color-border);
+    background-color: var(--color-background);
     cursor: pointer;
     transition: all 0.1s;
-    text-decoration: none;
-    color: var(--color-text);
+    text-align: left;
   }
-  
-  .pixel-btn:hover {
-    transform: translate(2px, 2px);
-    box-shadow: 1px 1px 0 var(--color-border);
+
+  .action-btn:hover {
+    background-color: var(--color-accent);
   }
-  
-  .pixel-btn.small {
-    padding: var(--spacing-xs) var(--spacing-sm);
-    font-size: 0.5rem;
+
+  .action-btn.danger:hover {
+    background-color: var(--color-primary);
+    color: var(--color-white);
   }
-  
-  .pixel-btn.danger {
-    background: #FF6B6B;
-    color: white;
-  }
-  
-  .pixel-btn.secondary {
-    background: var(--color-secondary);
-    color: white;
-  }
-  
-  .pixel-btn.share {
-    background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
-    color: white;
-  }
-  
-  .pixel-btn.share:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 5px 5px 0 var(--color-border);
-  }
-  
+
+  /* 导出按钮 */
   .export-buttons {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-xs);
   }
-  
+
+  /* 使用提示 */
+  .tips-area {
+    font-size: 0.75rem;
+    color: var(--color-text);
+    opacity: 0.7;
+    line-height: 1.8;
+  }
+
+  .tips-area p {
+    margin: 0;
+  }
+
   /* 画布区域 */
   .canvas-area {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .canvas-wrapper {
-    background: var(--color-white);
-    border: 4px solid var(--color-border);
-    box-shadow: 8px 8px 0 var(--color-border);
-    padding: var(--spacing-md);
+    justify-content: center;
+    align-items: flex-start;
     overflow: auto;
-    max-width: 100%;
   }
-  
-  .pixel-grid {
-    display: grid;
-    gap: 1px;
-    background: #E0E0E0;
-    border: 1px solid #E0E0E0;
-  }
-  
-  .grid-cell {
-    width: 20px;
-    height: 20px;
-    background: var(--color-white);
-    cursor: crosshair;
-    transition: transform 0.1s;
-  }
-  
-  .grid-cell:hover {
-    transform: scale(1.1);
-    box-shadow: 0 0 0 2px var(--color-primary);
-    z-index: 1;
-  }
-  
-  .grid-cell.filled {
-    border: 1px solid rgba(0,0,0,0.2);
-  }
-  
-  .canvas-info {
+
+  .canvas-wrapper {
+    background-color: var(--color-white);
+    border: var(--border-width) solid var(--color-border);
+    box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-shadow);
+    padding: var(--spacing-md);
     display: flex;
-    gap: var(--spacing-lg);
-    margin-top: var(--spacing-md);
-    font-family: var(--font-pixel);
-    font-size: 0.625rem;
-    color: var(--color-text);
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+    width: 100%;
   }
-  
+
+  .pixel-canvas {
+    display: inline-grid;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .pixel-cell {
+    transition: none;
+    box-sizing: border-box;
+  }
+
   /* 颜色面板 */
   .color-panel {
-    background: var(--color-white);
-    border: 3px solid var(--color-border);
-    padding: var(--spacing-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
   }
-  
-  .panel-title {
-    font-family: var(--font-pixel);
-    font-size: 0.75rem;
-    margin: 0 0 var(--spacing-sm) 0;
-    padding-bottom: var(--spacing-xs);
-    border-bottom: 2px solid var(--color-border);
+
+  @media (min-width: 1024px) {
+    .color-panel {
+      position: sticky;
+      top: 80px;
+    }
   }
-  
-  .color-palette {
+
+  .color-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: var(--spacing-xs);
-    margin-bottom: var(--spacing-md);
+    gap: 4px;
   }
-  
-  .color-btn {
-    width: 36px;
-    height: 36px;
-    border: 3px solid var(--color-border);
+
+  .color-swatch {
+    width: 100%;
+    aspect-ratio: 1;
+    border: 2px solid transparent;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.1s;
+    box-shadow: 1px 1px 0 var(--color-border);
   }
-  
-  .color-btn:hover {
+
+  .color-swatch:hover {
+    transform: scale(1.15);
+    z-index: 1;
+  }
+
+  .color-swatch.active {
+    border-color: var(--color-text);
+    box-shadow: 2px 2px 0 var(--color-text);
     transform: scale(1.1);
   }
-  
-  .color-btn.active {
-    box-shadow: 0 0 0 3px var(--color-primary);
-  }
-  
-  .current-color {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-xs);
-    padding: var(--spacing-sm);
-    background: var(--color-background);
-    font-size: 0.625rem;
-    font-family: var(--font-pixel);
-  }
-  
-  .color-preview {
+
+  .color-swatch.small {
     width: 24px;
     height: 24px;
-    border: 2px solid var(--color-border);
   }
-  
-  .sub-title {
-    font-family: var(--font-pixel);
-    font-size: 0.5rem;
-    margin: var(--spacing-sm) 0;
-    color: var(--color-text);
-    opacity: 0.7;
-  }
-  
+
   .recent-colors {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--spacing-xs);
+    gap: 4px;
+    min-height: 28px;
   }
-  
-  .recent-color-btn {
-    width: 28px;
-    height: 28px;
-    border: 2px solid var(--color-border);
-    cursor: pointer;
-    transition: transform 0.2s;
-  }
-  
-  .recent-color-btn:hover {
-    transform: scale(1.1);
-  }
-  
-  /* 提示区域 */
-  .tips-section {
-    background: var(--color-white);
-    border: 3px solid var(--color-border);
-    padding: var(--spacing-lg);
-  }
-  
-  .tips-title {
+
+  .empty-hint {
     font-family: var(--font-pixel);
-    font-size: 1rem;
-    margin: 0 0 var(--spacing-md) 0;
-    text-align: center;
+    font-size: 0.5rem;
+    color: var(--color-text);
+    opacity: 0.4;
   }
-  
-  .tips-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--spacing-md);
-  }
-  
-  @media (min-width: 768px) {
-    .tips-grid {
-      grid-template-columns: repeat(4, 1fr);
-    }
-  }
-  
-  .tip-item {
+
+  /* 当前颜色预览 */
+  .current-color-preview {
     display: flex;
     align-items: center;
     gap: var(--spacing-sm);
+  }
+
+  .preview-swatch {
+    width: 40px;
+    height: 40px;
+    border: 2px solid var(--color-border);
+    box-shadow: 2px 2px 0 var(--color-border);
+  }
+
+  .preview-hex {
+    font-family: var(--font-pixel);
+    font-size: 0.5rem;
+    color: var(--color-text);
+  }
+
+  /* 分享模态框 */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: var(--spacing-md);
+  }
+
+  .modal-content {
+    background-color: var(--color-white);
+    border: var(--border-width) solid var(--color-border);
+    box-shadow: 8px 8px 0 var(--color-border);
+    max-width: 500px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--spacing-md);
+    border-bottom: var(--border-width) solid var(--color-border);
+  }
+
+  .modal-title {
+    font-family: var(--font-pixel);
     font-size: 0.75rem;
-  }
-  
-  .tip-icon {
-    font-size: 1.25rem;
-  }
-  
-  .tip-item p {
+    color: var(--color-text);
     margin: 0;
+  }
+
+  .modal-close {
+    width: 32px;
+    height: 32px;
+    font-size: 1.5rem;
+    border: 2px solid var(--color-border);
+    background-color: var(--color-background);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+  }
+
+  .modal-close:hover {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+  }
+
+  .modal-body {
+    padding: var(--spacing-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+
+  .modal-label {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    font-family: var(--font-pixel);
+    font-size: 0.5rem;
+    color: var(--color-text);
+  }
+
+  .modal-input {
+    padding: var(--spacing-sm);
+    font-family: var(--font-body-zh);
+    font-size: 1rem;
+    border: 2px solid var(--color-border);
+    background-color: var(--color-background);
+  }
+
+  .modal-input:focus {
+    outline: 2px solid var(--color-accent);
+  }
+
+  .modal-textarea {
+    padding: var(--spacing-sm);
+    font-family: var(--font-body-zh);
+    font-size: 1rem;
+    border: 2px solid var(--color-border);
+    background-color: var(--color-background);
+    resize: vertical;
+    min-height: 80px;
+  }
+
+  .modal-textarea:focus {
+    outline: 2px solid var(--color-accent);
+  }
+
+  .modal-footer {
+    display: flex;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md);
+    border-top: var(--border-width) solid var(--color-border);
+    justify-content: flex-end;
+  }
+
+  /* 响应式 */
+  @media (max-width: 1023px) {
+    .toolbar {
+      order: 2;
+    }
+    .canvas-area {
+      order: 1;
+    }
+    .color-panel {
+      order: 3;
+    }
   }
 </style>

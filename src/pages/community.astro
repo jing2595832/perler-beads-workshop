@@ -2,109 +2,26 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-
-// 示例作品数据
-const showcaseWorks = [
-  {
-    id: 1,
-    author: '拼豆小达人',
-    avatar: '😊',
-    title: '彩虹独角兽',
-    description: '用了3个小时完成，颜色搭配很梦幻！',
-    likes: 128,
-    comments: 23,
-    tags: ['动物', '彩虹'],
-    color: '#FF6B6B'
-  },
-  {
-    id: 2,
-    author: '手工爱好者',
-    avatar: '🎨',
-    title: '樱花杯垫',
-    description: '春天的感觉，放在桌上心情都变好了',
-    likes: 96,
-    comments: 15,
-    tags: ['植物', '杯垫'],
-    color: '#FF6B9D'
-  },
-  {
-    id: 3,
-    author: '像素艺术家',
-    avatar: '🌟',
-    title: '马里奥风格蘑菇',
-    description: '经典游戏角色，满满的童年回忆',
-    likes: 234,
-    comments: 45,
-    tags: ['游戏', '经典'],
-    color: '#E74C3C'
-  },
-  {
-    id: 4,
-    author: '创意工坊',
-    avatar: '✨',
-    title: '星空钥匙扣',
-    description: '送给朋友的生日礼物，她超喜欢！',
-    likes: 167,
-    comments: 32,
-    tags: ['钥匙扣', '礼物'],
-    color: '#9B59B6'
-  },
-  {
-    id: 5,
-    author: '豆豆新手',
-    avatar: '🌱',
-    title: '第一个作品：小猫咪',
-    description: '第一次做拼豆，虽然不完美但很有成就感',
-    likes: 89,
-    comments: 28,
-    tags: ['动物', '新手'],
-    color: '#4ECDC4'
-  },
-  {
-    id: 6,
-    author: '国风爱好者',
-    avatar: '🏮',
-    title: '祥云纹书签',
-    description: '结合传统元素，很有中国风的感觉',
-    likes: 156,
-    comments: 19,
-    tags: ['国风', '书签'],
-    color: '#E67E22'
-  }
-];
-
-// 热门话题
-const hotTopics = [
-  { id: 1, title: '分享你的第一个拼豆作品', participants: 523, icon: '📸' },
-  { id: 2, title: '拼豆颜色搭配技巧讨论', participants: 328, icon: '🎨' },
-  { id: 3, title: '晒晒你的拼豆收纳方法', participants: 267, icon: '📦' },
-  { id: 4, title: '求助：熨烫总是失败怎么办', participants: 189, icon: '🔥' }
-];
-
-// 社区公告
-const announcements = [
-  { id: 1, title: '🎉 社区正式上线啦！', date: '2024-01-15', important: true },
-  { id: 2, title: '📢 分享作品赢好礼活动开始', date: '2024-01-10', important: false },
-  { id: 3, title: '🆕 新增50张图纸，快来下载', date: '2024-01-05', important: false }
-];
 ---
 
-<Layout title="社区" description="分享作品，交流心得，结识拼豆爱好者">
+<Layout title="拼豆社区" description="加入拼豆社区，分享你的作品，发现更多创意灵感">
   <Header activeNav="community" />
-  
-  <main class="community-page">
-    <div class="container">
-      <!-- 页面标题 -->
-      <div class="page-header">
+
+  <main>
+    <!-- 页面标题 -->
+    <section class="page-header">
+      <div class="container">
         <h1 class="page-title">
-          <span class="title-icon">👥</span>
+          <span class="title-icon">🌟</span>
           拼豆社区
         </h1>
-        <p class="page-desc">分享作品，交流心得，结识志同道合的拼豆爱好者</p>
+        <p class="page-desc">分享创意，发现灵感，和拼豆爱好者一起交流</p>
       </div>
-      
-      <!-- 社区统计 -->
-      <section class="stats-section">
+    </section>
+
+    <!-- 统计卡片 -->
+    <section class="stats-section">
+      <div class="container">
         <div class="stats-grid">
           <div class="stat-card">
             <span class="stat-icon">🎨</span>
@@ -127,853 +44,838 @@ const announcements = [
             <span class="stat-label">累计点赞</span>
           </div>
         </div>
-      </section>
-      
-      <!-- 主要内容区 -->
-        <div class="main-content">
-          <!-- 左侧：作品展示 -->
-          <section class="showcase-section">
-            <div class="section-header">
-              <h2 class="section-title">👤 用户作品</h2>
-              <div class="filter-tabs">
-                <button class="tab-btn active">最新</button>
-                <button class="tab-btn">热门</button>
-                <button class="tab-btn">精华</button>
-              </div>
-            </div>
-            
-            <div id="user-works-grid" class="works-grid">
-              <!-- 用户作品由JS动态加载 -->
-            </div>
-            
-            <div class="section-header" style="margin-top: var(--spacing-xl); padding-top: var(--spacing-lg); border-top: 2px dashed var(--color-border);">
-              <h2 class="section-title">📸 示例作品</h2>
-            </div>
-            
-            <div class="works-grid">
-              {showcaseWorks.map((work) => (
-                <div class="work-card" style={`--card-color: ${work.color}`}>
-                <div class="work-image">
-                  <div class="placeholder-image">
-                    <span class="placeholder-icon">🎨</span>
-                    <span class="placeholder-text">{work.title}</span>
-                  </div>
-                  <div class="work-overlay">
-                    <button class="like-btn">
-                      <span>❤️</span>
-                      <span>{work.likes}</span>
-                    </button>
-                  </div>
-                </div>
-                <div class="work-content">
-                  <h3 class="work-title">{work.title}</h3>
-                  <p class="work-desc">{work.description}</p>
-                  <div class="work-tags">
-                    {work.tags.map((tag) => (
-                      <span class="tag">{tag}</span>
-                    ))}
-                  </div>
-                  <div class="work-footer">
-                    <div class="author">
-                      <span class="author-avatar">{work.avatar}</span>
-                      <span class="author-name">{work.author}</span>
-                    </div>
-                    <div class="work-stats">
-                      <span class="stat">
-                        <span>💬</span>
-                        {work.comments}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-          
-          <button class="load-more-btn">加载更多作品</button>
-        </section>
-        
-        <!-- 右侧：侧边栏 -->
-        <aside class="sidebar">
-          <!-- 发布按钮 -->
-          <div class="sidebar-section">
-            <button class="publish-btn">
-              <span class="btn-icon">📤</span>
-              <span class="btn-text">分享我的作品</span>
-            </button>
-          </div>
-          
-          <!-- 热门话题 -->
-          <div class="sidebar-section">
-            <h3 class="sidebar-title">🔥 热门话题</h3>
-            <div class="topics-list">
-              {hotTopics.map((topic) => (
-                <a href="#" class="topic-item">
-                  <span class="topic-icon">{topic.icon}</span>
-                  <div class="topic-info">
-                    <span class="topic-title">{topic.title}</span>
-                    <span class="topic-participants">{topic.participants} 人参与</span>
-                  </div>
-                </a>
-              ))}
-            </div>
-          </div>
-          
-          <!-- 社区公告 -->
-          <div class="sidebar-section">
-            <h3 class="sidebar-title">📢 社区公告</h3>
-            <div class="announcements-list">
-              {announcements.map((announcement) => (
-                <div class={`announcement-item ${announcement.important ? 'important' : ''}`}>
-                  <span class="announcement-title">{announcement.title}</span>
-                  <span class="announcement-date">{announcement.date}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-          
-          <!-- 社区规则 -->
-          <div class="sidebar-section">
-            <h3 class="sidebar-title">📋 社区规则</h3>
-            <div class="rules-list">
-              <div class="rule-item">
-                <span class="rule-icon">✅</span>
-                <span>分享原创作品，尊重他人版权</span>
-              </div>
-              <div class="rule-item">
-                <span class="rule-icon">✅</span>
-                <span>友善交流，互相帮助学习</span>
-              </div>
-              <div class="rule-item">
-                <span class="rule-icon">❌</span>
-                <span>禁止发布广告和无关内容</span>
-              </div>
-              <div class="rule-item">
-                <span class="rule-icon">❌</span>
-                <span>禁止人身攻击和不当言论</span>
-              </div>
-            </div>
-          </div>
-        </aside>
       </div>
-      
-      <!-- 互动区域 -->
-      <section class="interaction-section">
-        <div class="interaction-card">
-          <div class="interaction-icon">💌</div>
-          <h2>加入我们的社区</h2>
-          <p>分享您的拼豆作品，获得灵感和反馈<br/>与其他爱好者一起交流成长</p>
-          <div class="interaction-buttons">
-            <button class="pixel-btn primary" onclick="alert('功能开发中，敬请期待！')">
-              立即加入
-            </button>
-            <a href="/patterns" class="pixel-btn">
-              浏览图纸
-            </a>
+    </section>
+
+    <!-- 主内容区 -->
+    <section class="community-main">
+      <div class="container">
+        <div class="community-layout">
+          <!-- 左侧主内容 -->
+          <div class="community-content">
+            <!-- 筛选标签 -->
+            <div class="filter-tabs">
+              <button class="filter-tab active" data-filter="latest">最新</button>
+              <button class="filter-tab" data-filter="popular">热门</button>
+              <button class="filter-tab" data-filter="featured">精华</button>
+            </div>
+
+            <!-- 用户作品展示区 -->
+            <div class="works-section">
+              <h2 class="section-title">
+                <span class="title-icon">🎨</span>
+                社区作品
+              </h2>
+              <div class="works-grid" id="user-works-grid">
+                <!-- 由JS动态渲染 -->
+              </div>
+            </div>
+
+            <!-- 示例作品 -->
+            <div class="examples-section">
+              <h2 class="section-title">
+                <span class="title-icon">✨</span>
+                精选作品
+              </h2>
+              <div class="examples-grid" id="examples-grid">
+                <!-- 由JS渲染示例数据 -->
+              </div>
+            </div>
           </div>
+
+          <!-- 右侧边栏 -->
+          <aside class="community-sidebar">
+            <!-- 分享我的作品 -->
+            <div class="sidebar-card">
+              <a href="/design" class="share-cta-btn">
+                <span class="cta-icon">🎨</span>
+                <span class="cta-text">分享我的作品</span>
+              </a>
+            </div>
+
+            <!-- 热门话题 -->
+            <div class="sidebar-card">
+              <h3 class="sidebar-title">🔥 热门话题</h3>
+              <ul class="topic-list">
+                <li class="topic-item">
+                  <a href="#" class="topic-link"># 新手入门教程</a>
+                  <span class="topic-count">328 讨论</span>
+                </li>
+                <li class="topic-item">
+                  <a href="#" class="topic-link"># 每日拼豆挑战</a>
+                  <span class="topic-count">256 讨论</span>
+                </li>
+                <li class="topic-item">
+                  <a href="#" class="topic-link"># 国风拼豆创作</a>
+                  <span class="topic-count">189 讨论</span>
+                </li>
+                <li class="topic-item">
+                  <a href="#" class="topic-link"># 拼豆配色技巧</a>
+                  <span class="topic-count">145 讨论</span>
+                </li>
+              </ul>
+            </div>
+
+            <!-- 社区公告 -->
+            <div class="sidebar-card">
+              <h3 class="sidebar-title">📢 社区公告</h3>
+              <ul class="notice-list">
+                <li class="notice-item">
+                  <span class="notice-date">06-01</span>
+                  <span class="notice-text">六月拼豆挑战赛开始报名啦！</span>
+                </li>
+                <li class="notice-item">
+                  <span class="notice-date">05-28</span>
+                  <span class="notice-text">新增立体拼豆教程专区</span>
+                </li>
+                <li class="notice-item">
+                  <span class="notice-date">05-20</span>
+                  <span class="notice-text">社区规则更新，请查看详情</span>
+                </li>
+              </ul>
+            </div>
+
+            <!-- 社区规则 -->
+            <div class="sidebar-card">
+              <h3 class="sidebar-title">📋 社区规则</h3>
+              <ol class="rules-list">
+                <li>尊重原创，转载请注明出处</li>
+                <li>友善交流，禁止人身攻击</li>
+                <li>分享作品请标注难度等级</li>
+                <li>禁止发布与拼豆无关的内容</li>
+                <li>遵守当地法律法规</li>
+              </ol>
+            </div>
+          </aside>
         </div>
-      </section>
-    </div>
+      </div>
+    </section>
+
+    <!-- 底部CTA -->
+    <section class="cta-section">
+      <div class="container">
+        <div class="cta-content">
+          <h2 class="cta-title">加入拼豆社区</h2>
+          <p class="cta-desc">和全球拼豆爱好者一起，分享创意，交流技巧，发现无限可能</p>
+          <a href="/design" class="pixel-btn cta-btn">开始创作</a>
+        </div>
+      </div>
+    </section>
   </main>
-  
+
   <Footer />
 </Layout>
 
-<style>
-  .community-page {
-    padding: var(--spacing-xl) 0;
-    background: linear-gradient(180deg, var(--color-white) 0%, var(--color-background) 100%);
-    min-height: calc(100vh - 200px);
-  }
-  
-  .page-header {
-    text-align: center;
-    margin-bottom: var(--spacing-xl);
-  }
-  
-  .page-title {
-    font-family: var(--font-pixel);
-    font-size: clamp(1.25rem, 4vw, 1.75rem);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--spacing-sm);
-    margin-bottom: var(--spacing-sm);
-  }
-  
-  .title-icon {
-    font-size: 1.5em;
-  }
-  
-  .page-desc {
-    color: var(--color-text);
-    opacity: 0.7;
-    margin: 0;
-  }
-  
-  /* 统计区域 */
-  .stats-section {
-    margin-bottom: var(--spacing-xl);
-  }
-  
-  .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--spacing-md);
-  }
-  
-  @media (min-width: 640px) {
-    .stats-grid {
-      grid-template-columns: repeat(4, 1fr);
-    }
-  }
-  
-  .stat-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: var(--spacing-lg);
-    background: var(--color-white);
-    border: 3px solid var(--color-border);
-    box-shadow: 4px 4px 0 var(--color-border);
-    transition: all 0.2s;
-  }
-  
-  .stat-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 6px 6px 0 var(--color-border);
-  }
-  
-  .stat-icon {
-    font-size: 2rem;
-    margin-bottom: var(--spacing-sm);
-  }
-  
-  .stat-number {
-    font-family: var(--font-pixel);
-    font-size: 1.25rem;
-    color: var(--color-primary);
-  }
-  
-  .stat-label {
-    font-size: 0.625rem;
-    opacity: 0.7;
-    margin-top: var(--spacing-xs);
-  }
-  
-  /* 主要内容区 */
-  .main-content {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--spacing-xl);
-    margin-bottom: var(--spacing-xl);
-  }
-  
-  @media (min-width: 1024px) {
-    .main-content {
-      grid-template-columns: 2fr 1fr;
-    }
-  }
-  
-  /* 作品展示 */
-  .showcase-section {
-    background: var(--color-white);
-    border: 3px solid var(--color-border);
-    padding: var(--spacing-lg);
-  }
-  
-  .section-header {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    gap: var(--spacing-md);
-    margin-bottom: var(--spacing-lg);
-    padding-bottom: var(--spacing-md);
-    border-bottom: 2px solid var(--color-border);
-  }
-  
-  .section-title {
-    font-family: var(--font-pixel);
-    font-size: 1rem;
-    margin: 0;
-  }
-  
-  .filter-tabs {
-    display: flex;
-    gap: var(--spacing-xs);
-  }
-  
-  .tab-btn {
-    padding: var(--spacing-xs) var(--spacing-sm);
-    font-family: var(--font-pixel);
-    font-size: 0.5rem;
-    background: var(--color-white);
-    border: 2px solid var(--color-border);
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  
-  .tab-btn:hover,
-  .tab-btn.active {
-    background: var(--color-primary);
-    color: var(--color-white);
-  }
-  
-  .works-grid {
-    display: grid;
-    grid-template-columns: repeat(1, 1fr);
-    gap: var(--spacing-md);
-    margin-bottom: var(--spacing-lg);
-  }
-  
-  @media (min-width: 640px) {
-    .works-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-  
-  .work-card {
-    border: 3px solid var(--color-border);
-    overflow: hidden;
-    transition: all 0.2s;
-  }
-  
-  .work-card:hover {
-    transform: translate(-4px, -4px);
-    box-shadow: 4px 4px 0 var(--card-color);
-    border-color: var(--card-color);
-  }
-  
-  .work-image {
-    position: relative;
-    aspect-ratio: 1;
-    background: var(--color-background);
-  }
-  
-  .placeholder-image {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: var(--spacing-sm);
-  }
-  
-  .placeholder-icon {
-    font-size: 3rem;
-    opacity: 0.5;
-  }
-  
-  .placeholder-text {
-    font-family: var(--font-pixel);
-    font-size: 0.625rem;
-    opacity: 0.7;
-  }
-  
-  .work-overlay {
-    position: absolute;
-    top: var(--spacing-sm);
-    right: var(--spacing-sm);
-    opacity: 0;
-    transition: opacity 0.2s;
-  }
-  
-  .work-card:hover .work-overlay {
-    opacity: 1;
-  }
-  
-  .like-btn {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    padding: var(--spacing-xs) var(--spacing-sm);
-    background: var(--color-white);
-    border: 2px solid var(--color-border);
-    font-family: var(--font-pixel);
-    font-size: 0.5rem;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  
-  .like-btn:hover {
-    background: #FF6B6B;
-    color: white;
-  }
-  
-  .work-content {
-    padding: var(--spacing-md);
-  }
-  
-  .work-title {
-    font-family: var(--font-pixel);
-    font-size: 0.75rem;
-    margin: 0 0 var(--spacing-xs) 0;
-  }
-  
-  .work-desc {
-    font-size: 0.75rem;
-    opacity: 0.8;
-    margin: 0 0 var(--spacing-sm) 0;
-    line-height: 1.5;
-  }
-  
-  .work-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px;
-    margin-bottom: var(--spacing-sm);
-  }
-  
-  .tag {
-    padding: 2px 8px;
-    font-size: 0.5rem;
-    background: var(--color-background);
-    border: 1px solid var(--color-border);
-  }
-  
-  .work-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: var(--spacing-sm);
-    border-top: 1px solid var(--color-border);
-  }
-  
-  .author {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-xs);
-  }
-  
-  .author-avatar {
-    font-size: 1.25rem;
-  }
-  
-  .author-name {
-    font-size: 0.625rem;
-    opacity: 0.8;
-  }
-  
-  .work-stats {
-    display: flex;
-    gap: var(--spacing-sm);
-  }
-  
-  .stat {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 0.5rem;
-    opacity: 0.7;
-  }
-  
-  .load-more-btn {
-    display: block;
-    width: 100%;
-    padding: var(--spacing-md);
-    font-family: var(--font-pixel);
-    font-size: 0.625rem;
-    background: var(--color-white);
-    border: 3px solid var(--color-border);
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  
-  .load-more-btn:hover {
-    background: var(--color-primary);
-    color: white;
-  }
-  
-  /* 侧边栏 */
-  .sidebar {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-lg);
-  }
-  
-  .sidebar-section {
-    background: var(--color-white);
-    border: 3px solid var(--color-border);
-    padding: var(--spacing-md);
-  }
-  
-  .publish-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--spacing-sm);
-    width: 100%;
-    padding: var(--spacing-md);
-    font-family: var(--font-pixel);
-    font-size: 0.75rem;
-    background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
-    color: white;
-    border: 3px solid var(--color-border);
-    box-shadow: 4px 4px 0 var(--color-border);
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  
-  .publish-btn:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0 var(--color-border);
-  }
-  
-  .btn-icon {
-    font-size: 1.25rem;
-  }
-  
-  .sidebar-title {
-    font-family: var(--font-pixel);
-    font-size: 0.625rem;
-    margin: 0 0 var(--spacing-md) 0;
-    padding-bottom: var(--spacing-xs);
-    border-bottom: 2px solid var(--color-border);
-  }
-  
-  .topics-list {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-sm);
-  }
-  
-  .topic-item {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    padding: var(--spacing-sm);
-    text-decoration: none;
-    color: var(--color-text);
-    border: 2px solid transparent;
-    transition: all 0.2s;
-  }
-  
-  .topic-item:hover {
-    background: var(--color-background);
-    border-color: var(--color-border);
-  }
-  
-  .topic-icon {
-    font-size: 1.5rem;
-    flex-shrink: 0;
-  }
-  
-  .topic-info {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-  }
-  
-  .topic-title {
-    font-size: 0.75rem;
-    font-weight: 500;
-  }
-  
-  .topic-participants {
-    font-size: 0.5rem;
-    opacity: 0.6;
-  }
-  
-  .announcements-list {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-sm);
-  }
-  
-  .announcement-item {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    padding: var(--spacing-sm);
-    background: var(--color-background);
-    border-left: 3px solid var(--color-border);
-  }
-  
-  .announcement-item.important {
-    border-left-color: #FF6B6B;
-    background: rgba(255, 107, 107, 0.1);
-  }
-  
-  .announcement-title {
-    font-size: 0.75rem;
-  }
-  
-  .announcement-date {
-    font-size: 0.5rem;
-    opacity: 0.6;
-  }
-  
-  .rules-list {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-sm);
-  }
-  
-  .rule-item {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-xs);
-    font-size: 0.75rem;
-  }
-  
-  .rule-icon {
-    font-size: 1rem;
-  }
-  
-  /* 互动区域 */
-  .interaction-section {
-    text-align: center;
-  }
-  
-  .interaction-card {
-    display: inline-flex;
-    flex-direction: column;
-    align-items: center;
-    padding: var(--spacing-2xl);
-    background: linear-gradient(135deg, #4ECDC4 0%, #44A08D 100%);
-    border: 4px solid var(--color-border);
-    box-shadow: 8px 8px 0 var(--color-border);
-    color: white;
-  }
-  
-  .interaction-icon {
-    font-size: 4rem;
-    margin-bottom: var(--spacing-md);
-  }
-  
-  .interaction-card h2 {
-    font-family: var(--font-pixel);
-    font-size: 1.25rem;
-    margin: 0 0 var(--spacing-sm) 0;
-  }
-  
-  .interaction-card p {
-    margin: 0 0 var(--spacing-lg) 0;
-    opacity: 0.9;
-    line-height: 1.6;
-  }
-  
-  .interaction-buttons {
-    display: flex;
-    gap: var(--spacing-md);
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  
-  .pixel-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: var(--spacing-sm) var(--spacing-lg);
-    font-family: var(--font-pixel);
-    font-size: 0.625rem;
-    background: var(--color-white);
-    border: 3px solid var(--color-border);
-    box-shadow: 4px 4px 0 var(--color-border);
-    text-decoration: none;
-    color: var(--color-text);
-    cursor: pointer;
-    transition: all 0.1s;
-  }
-  
-  .pixel-btn:hover {
-    transform: translate(2px, 2px);
-    box-shadow: 2px 2px 0 var(--color-border);
-  }
-  
-  .pixel-btn.primary {
-    background: #FFE66D;
-    color: var(--color-text);
-  }
-  
-  /* 用户作品样式 */
-  .user-work-card {
-    position: relative;
-  }
-  
-  .user-work-card::before {
-    content: '👤';
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    font-size: 0.75rem;
-    z-index: 1;
-    background: white;
-    border-radius: 50%;
-    width: 24px;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid var(--color-border);
-  }
-  
-  .no-works {
-    text-align: center;
-    padding: var(--spacing-xl);
-    opacity: 0.7;
-  }
-  
-  .no-works-icon {
-    font-size: 3rem;
-    margin-bottom: var(--spacing-sm);
-  }
-</style>
-
 <script>
-  // 页面加载后加载用户作品
-  document.addEventListener('DOMContentLoaded', async () => {
-    await loadUserWorks();
-    bindFilterEvents();
+  const COMMUNITY_KEY = 'perlerCommunityWorks';
+
+  // ===== 示例作品数据 =====
+  const exampleWorks = [
+    {
+      id: 'example-1',
+      title: '彩虹独角兽',
+      author: '小豆子',
+      description: '用16种颜色拼出的梦幻独角兽，送给女儿的生日礼物。',
+      width: 20,
+      height: 25,
+      colors: ['#FF6B6B', '#FF8E53', '#FFE66D', '#4ECDC4', '#45B7D1', '#5B8DEF', '#9B59B6', '#FF6B9D', '#FFFFFF'],
+      likes: 342,
+      createdAt: '2024-05-28T10:00:00Z',
+      isExample: true,
+    },
+    {
+      id: 'example-2',
+      title: '樱花杯垫',
+      author: '花间集',
+      description: '春天主题的樱花杯垫，粉色系配色温柔可爱。',
+      width: 18,
+      height: 18,
+      colors: ['#FF6B9D', '#FFB8D0', '#FFE4C4', '#FFFFFF', '#4ECDC4'],
+      likes: 256,
+      createdAt: '2024-05-25T14:30:00Z',
+      isExample: true,
+    },
+    {
+      id: 'example-3',
+      title: '马里奥蘑菇',
+      author: '像素玩家',
+      description: '经典游戏角色，红白配色，简单又可爱。',
+      width: 15,
+      height: 15,
+      colors: ['#FF6B6B', '#FFFFFF', '#2D3436', '#4ECDC4'],
+      likes: 198,
+      createdAt: '2024-05-22T09:15:00Z',
+      isExample: true,
+    },
+    {
+      id: 'example-4',
+      title: '星空钥匙扣',
+      author: '星夜工坊',
+      description: '深蓝底色配金色星星，做成钥匙扣特别好看。',
+      width: 12,
+      height: 12,
+      colors: ['#5B8DEF', '#2D3436', '#FFE66D', '#FFFFFF'],
+      likes: 167,
+      createdAt: '2024-05-20T16:45:00Z',
+      isExample: true,
+    },
+    {
+      id: 'example-5',
+      title: '第一个作品小猫咪',
+      author: '新手小白',
+      description: '我的第一个拼豆作品！虽然不太完美但很开心。',
+      width: 15,
+      height: 15,
+      colors: ['#FFE4C4', '#FF6B9D', '#2D3436', '#FFFFFF'],
+      likes: 423,
+      createdAt: '2024-05-18T11:00:00Z',
+      isExample: true,
+    },
+    {
+      id: 'example-6',
+      title: '祥云纹书签',
+      author: '国风匠人',
+      description: '传统祥云纹样设计的拼豆书签，古风韵味十足。',
+      width: 8,
+      height: 25,
+      colors: ['#C0392B', '#FFE66D', '#FF6B6B', '#FFFFFF'],
+      likes: 289,
+      createdAt: '2024-05-15T08:30:00Z',
+      isExample: true,
+    },
+  ];
+
+  // ===== 初始化 =====
+  document.addEventListener('DOMContentLoaded', () => {
+    loadUserWorks();
+    renderExamples();
+    bindFilterTabs();
   });
-  
-  // 加载用户作品
-  async function loadUserWorks() {
-    const userWorksGrid = document.getElementById('user-works-grid');
-    if (!userWorksGrid) return;
-    
-    let userWorks = [];
-    let useApiData = false;
-    
-    // 优先从API加载
+
+  // ===== 加载用户作品 =====
+  function loadUserWorks() {
+    const grid = document.getElementById('user-works-grid');
+    if (!grid) return;
+
     try {
-      const response = await fetch('/api/works?limit=50');
-      if (response.ok) {
-        const result = await response.json();
-        if (result.success && result.data && result.data.length > 0) {
-          userWorks = result.data;
-          useApiData = true;
-          
-          // 同时保存到本地缓存
-          localStorage.setItem('perlerCommunityWorksCache', JSON.stringify(userWorks));
-        }
-      }
-    } catch (e) {
-      console.log('API 加载失败，使用缓存数据');
-    }
-    
-    // 如果API失败，尝试从本地缓存加载
-    if (!useApiData) {
-      const cachedWorks = JSON.parse(localStorage.getItem('perlerCommunityWorksCache') || '[]');
-      if (cachedWorks.length > 0) {
-        userWorks = cachedWorks;
+      const works = JSON.parse(localStorage.getItem(COMMUNITY_KEY) || '[]');
+      if (works.length > 0) {
+        renderUserWorks(works);
       } else {
-        // 最后尝试从旧版本地存储加载
-        const localWorks = JSON.parse(localStorage.getItem('perlerCommunityWorks') || '[]');
-        userWorks = localWorks;
-      }
-    }
-    
-    // 渲染用户作品
-    renderUserWorks(userWorks);
-    
-    // 更新统计
-    updateStats(userWorks.length);
-  }
-  
-  // 渲染用户作品
-  function renderUserWorks(works) {
-    const userWorksGrid = document.getElementById('user-works-grid');
-    userWorksGrid.innerHTML = '';
-    
-    if (works.length === 0) {
-      userWorksGrid.innerHTML = `
-        <div class="no-works" style="grid-column: 1/-1;">
-          <div class="no-works-icon">🎨</div>
-          <p>还没有用户作品</p>
-          <p style="font-size: 0.625rem; opacity: 0.6;">成为第一个分享作品的人！</p>
-        </div>
-      `;
-      return;
-    }
-    
-    works.forEach(work => {
-      const card = document.createElement('a');
-      // 使用查询参数方式传递作品ID
-      card.href = `/design?view=${work.id}`;
-      card.className = 'work-card user-work-card';
-      card.style.setProperty('--card-color', work.colors?.[0] || '#FF6B6B');
-      
-      // 渲染缩略图
-      let thumbnailHTML = '<div class="work-image"><div class="placeholder-image"><div class="mini-canvas" style="display:grid;grid-template-columns:repeat(' + work.width + ',1fr);gap:1px;padding:8px;">';
-      
-      // 限制缩略图大小
-      const maxSize = Math.max(work.width, work.height);
-      const scale = Math.min(1, 80 / maxSize);
-      
-      for (let y = 0; y < work.height && y < 30; y++) {
-        for (let x = 0; x < work.width && x < 30; x++) {
-          const color = work.grid[y]?.[x];
-          thumbnailHTML += `<div style="width:${8*scale}px;height:${8*scale}px;background:${color?.hex || '#fff'};"></div>`;
-        }
-      }
-      thumbnailHTML += '</div></div></div>';
-      
-      card.innerHTML = `
-        ${thumbnailHTML}
-        <div class="work-content">
-          <h3 class="work-title">${escapeHtml(work.title)}</h3>
-          <p class="work-desc">${escapeHtml(work.description || '')}</p>
-          <div class="work-footer">
-            <div class="author">
-              <span class="author-name">${escapeHtml(work.author || '匿名用户')}</span>
-            </div>
-            <div class="work-stats">
-              <span class="stat"><span>❤️</span>${work.likes || 0}</span>
-            </div>
+        grid.innerHTML = `
+          <div class="empty-state">
+            <span class="empty-icon">🎨</span>
+            <p class="empty-text">还没有社区作品</p>
+            <p class="empty-hint">去设计工具创作你的第一个作品吧！</p>
+            <a href="/design" class="pixel-btn accent" style="font-size:0.5rem; display:inline-block; margin-top:var(--spacing-md);">开始创作</a>
           </div>
-        </div>
-      `;
-      
-      userWorksGrid.appendChild(card);
+        `;
+      }
+    } catch {
+      grid.innerHTML = '<p class="empty-text">加载作品失败</p>';
+    }
+  }
+
+  // ===== 渲染用户作品 =====
+  function renderUserWorks(works: any[]) {
+    const grid = document.getElementById('user-works-grid');
+    if (!grid) return;
+
+    grid.innerHTML = '';
+    works.forEach((work) => {
+      const card = createWorkCard(work);
+      grid.appendChild(card);
     });
   }
-  
-  // 更新统计
-  function updateStats(userWorkCount) {
-    const totalStat = document.querySelector('.stat-number:nth-child(2)');
-    if (totalStat) {
-      const currentTotal = parseInt(totalStat.textContent.replace(/,/g, '')) || 1234;
-      totalStat.textContent = (currentTotal + userWorkCount).toLocaleString();
-    }
+
+  // ===== 渲染示例作品 =====
+  function renderExamples() {
+    const grid = document.getElementById('examples-grid');
+    if (!grid) return;
+
+    grid.innerHTML = '';
+    exampleWorks.forEach((work) => {
+      const card = createWorkCard(work);
+      grid.appendChild(card);
+    });
   }
-  
-  // 绑定筛选事件
-  function bindFilterEvents() {
-    const tabBtns = document.querySelectorAll('.filter-tabs .tab-btn');
-    tabBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        tabBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        sortWorks(btn.textContent);
+
+  // ===== 创建作品卡片 =====
+  function createWorkCard(work: any): HTMLElement {
+    const card = document.createElement('div');
+    card.className = 'work-card';
+
+    // 生成缩略图
+    const thumbnail = generateThumbnail(work);
+
+    card.innerHTML = `
+      <div class="work-thumbnail">${thumbnail}</div>
+      <div class="work-info">
+        <h3 class="work-name">${escapeHtml(work.title || '未命名')}</h3>
+        <div class="work-meta-row">
+          <span class="work-author">👤 ${escapeHtml(work.author || '匿名')}</span>
+          <span class="work-likes">❤️ ${work.likes || 0}</span>
+        </div>
+        ${work.description ? `<p class="work-desc-preview">${escapeHtml(work.description).substring(0, 50)}${work.description.length > 50 ? '...' : ''}</p>` : ''}
+        <div class="work-colors-preview">
+          ${(work.colors || []).slice(0, 6).map((c: string) => `<span class="mini-swatch" style="background-color:${c};${c === '#FFFFFF' ? 'border:1px solid #2D3436;' : ''}"></span>`).join('')}
+          ${(work.colors || []).length > 6 ? `<span class="more-colors">+${work.colors.length - 6}</span>` : ''}
+        </div>
+      </div>
+    `;
+
+    // 点击跳转
+    card.addEventListener('click', () => {
+      if (work.isExample) {
+        // 示例作品显示提示
+        alert('这是精选示例作品，快去创作你自己的吧！');
+      } else if (work.id) {
+        window.location.href = `/design/${work.id}`;
+      }
+    });
+
+    card.style.cursor = 'pointer';
+    return card;
+  }
+
+  // ===== 生成缩略图 =====
+  function generateThumbnail(work: any): string {
+    if (work.grid && work.width && work.height) {
+      const cellSize = Math.max(4, Math.min(10, Math.floor(120 / Math.max(work.width, work.height))));
+      const totalW = work.width * cellSize;
+      const totalH = work.height * cellSize;
+
+      const canvas = document.createElement('canvas');
+      canvas.width = totalW;
+      canvas.height = totalH;
+      const ctx = canvas.getContext('2d')!;
+
+      ctx.fillStyle = '#F7F7F7';
+      ctx.fillRect(0, 0, totalW, totalH);
+
+      for (let y = 0; y < work.height; y++) {
+        for (let x = 0; x < work.width; x++) {
+          const color = work.grid[y]?.[x];
+          if (color) {
+            ctx.fillStyle = color;
+            ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
+          }
+        }
+      }
+
+      return `<img src="${canvas.toDataURL('image/png')}" alt="${escapeHtml(work.title || '')}" style="width:100%;height:100%;object-fit:contain;image-rendering:pixelated;" />`;
+    }
+
+    // 无grid数据时生成占位图
+    const canvas = document.createElement('canvas');
+    canvas.width = 120;
+    canvas.height = 120;
+    const ctx = canvas.getContext('2d')!;
+
+    const colors = work.colors || ['#FF6B6B', '#4ECDC4', '#FFE66D'];
+    const gridSize = 8;
+    const cellSize = 120 / gridSize;
+
+    for (let y = 0; y < gridSize; y++) {
+      for (let x = 0; x < gridSize; x++) {
+        ctx.fillStyle = colors[(x + y) % colors.length];
+        ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
+      }
+    }
+
+    return `<img src="${canvas.toDataURL('image/png')}" alt="${escapeHtml(work.title || '')}" style="width:100%;height:100%;object-fit:contain;image-rendering:pixelated;" />`;
+  }
+
+  // ===== 筛选标签 =====
+  function bindFilterTabs() {
+    const tabs = document.querySelectorAll('.filter-tab');
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        tabs.forEach((t) => t.classList.remove('active'));
+        tab.classList.add('active');
+
+        const filter = tab.dataset.filter;
+        if (filter === 'latest') {
+          loadUserWorks();
+        } else if (filter === 'popular') {
+          sortByLikes();
+        } else if (filter === 'featured') {
+          showFeatured();
+        }
       });
     });
   }
-  
-  // 排序作品
-  function sortWorks(sortBy) {
-    const userWorksGrid = document.getElementById('user-works-grid');
-    const cards = Array.from(userWorksGrid.querySelectorAll('.work-card'));
-    
-    cards.sort((a, b) => {
-      if (sortBy === '热门') {
-        const likesA = parseInt(a.querySelector('.stat span')?.textContent || 0);
-        const likesB = parseInt(b.querySelector('.stat span')?.textContent || 0);
-        return likesB - likesA;
-      }
-      // 默认按时间倒序
-      return 0;
-    });
-    
-    cards.forEach(card => userWorksGrid.appendChild(card));
+
+  function sortByLikes() {
+    try {
+      const works = JSON.parse(localStorage.getItem(COMMUNITY_KEY) || '[]');
+      works.sort((a: any, b: any) => (b.likes || 0) - (a.likes || 0));
+      renderUserWorks(works);
+    } catch {
+      // ignore
+    }
   }
-  
-  // HTML转义
-  function escapeHtml(str) {
+
+  function showFeatured() {
+    try {
+      const works = JSON.parse(localStorage.getItem(COMMUNITY_KEY) || '[]');
+      const featured = works.filter((w: any) => (w.likes || 0) >= 10);
+      if (featured.length > 0) {
+        renderUserWorks(featured);
+      } else {
+        const grid = document.getElementById('user-works-grid');
+        if (grid) {
+          grid.innerHTML = `
+            <div class="empty-state">
+              <span class="empty-icon">⭐</span>
+              <p class="empty-text">暂无精华作品</p>
+              <p class="empty-hint">获得10个以上点赞的作品将自动入选精华</p>
+            </div>
+          `;
+        }
+      }
+    } catch {
+      // ignore
+    }
+  }
+
+  // ===== 工具函数 =====
+  function escapeHtml(str: string): string {
     const div = document.createElement('div');
     div.textContent = str;
     return div.innerHTML;
   }
 </script>
+
+<style>
+  /* 页面标题 */
+  .page-header {
+    background: linear-gradient(135deg, var(--color-white) 0%, var(--color-background) 100%);
+    padding: var(--spacing-2xl) 0 var(--spacing-xl);
+    text-align: center;
+    border-bottom: var(--border-width) solid var(--color-border);
+  }
+
+  .page-title {
+    font-family: var(--font-pixel);
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    margin-bottom: var(--spacing-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+  }
+
+  .title-icon {
+    font-size: 1.2em;
+  }
+
+  .page-desc {
+    font-size: 1rem;
+    color: var(--color-text);
+    opacity: 0.8;
+  }
+
+  /* 统计卡片 */
+  .stats-section {
+    padding: var(--spacing-lg) 0;
+    background-color: var(--color-white);
+    border-bottom: var(--border-width) solid var(--color-border);
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-md);
+  }
+
+  @media (min-width: 640px) {
+    .stats-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .stat-card {
+    background-color: var(--color-background);
+    border: var(--border-width) solid var(--color-border);
+    box-shadow: 3px 3px 0 var(--color-border);
+    padding: var(--spacing-md);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-xs);
+  }
+
+  .stat-icon {
+    font-size: 1.5rem;
+  }
+
+  .stat-number {
+    font-family: var(--font-pixel);
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    color: var(--color-primary);
+  }
+
+  .stat-label {
+    font-family: var(--font-pixel);
+    font-size: 0.5rem;
+    color: var(--color-text);
+    opacity: 0.7;
+  }
+
+  /* 主内容区 */
+  .community-main {
+    padding: var(--spacing-xl) 0 var(--spacing-2xl);
+    background-color: var(--color-background);
+  }
+
+  .community-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+  }
+
+  @media (min-width: 1024px) {
+    .community-layout {
+      grid-template-columns: 1fr 280px;
+    }
+  }
+
+  /* 筛选标签 */
+  .filter-tabs {
+    display: flex;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .filter-tab {
+    padding: var(--spacing-xs) var(--spacing-md);
+    font-family: var(--font-pixel);
+    font-size: 0.5rem;
+    border: 2px solid var(--color-border);
+    background-color: var(--color-white);
+    cursor: pointer;
+    transition: all 0.1s;
+  }
+
+  .filter-tab:hover {
+    background-color: var(--color-accent);
+  }
+
+  .filter-tab.active {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    border-color: var(--color-border);
+    box-shadow: 2px 2px 0 var(--color-border);
+  }
+
+  /* 作品网格 */
+  .section-title {
+    font-family: var(--font-pixel);
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    color: var(--color-text);
+    margin-bottom: var(--spacing-lg);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+  }
+
+  .works-section {
+    margin-bottom: var(--spacing-2xl);
+  }
+
+  .works-grid,
+  .examples-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-md);
+  }
+
+  @media (min-width: 640px) {
+    .works-grid,
+    .examples-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  /* 作品卡片 */
+  .work-card {
+    background-color: var(--color-white);
+    border: var(--border-width) solid var(--color-border);
+    box-shadow: 3px 3px 0 var(--color-border);
+    overflow: hidden;
+    transition: all 0.2s ease;
+  }
+
+  .work-card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0 var(--color-border);
+  }
+
+  .work-card:active {
+    transform: translate(3px, 3px);
+    box-shadow: 0 0 0 var(--color-border);
+  }
+
+  .work-thumbnail {
+    aspect-ratio: 1;
+    background-color: var(--color-background);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-bottom: 2px solid var(--color-border);
+  }
+
+  .work-info {
+    padding: var(--spacing-sm);
+  }
+
+  .work-name {
+    font-family: var(--font-pixel);
+    font-size: 0.5rem;
+    color: var(--color-text);
+    margin-bottom: var(--spacing-xs);
+    line-height: 1.4;
+  }
+
+  .work-meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-pixel);
+    font-size: 0.375rem;
+    color: var(--color-text);
+    opacity: 0.7;
+    margin-bottom: var(--spacing-xs);
+  }
+
+  .work-desc-preview {
+    font-size: 0.75rem;
+    color: var(--color-text);
+    opacity: 0.6;
+    margin: 0 0 var(--spacing-xs) 0;
+    line-height: 1.4;
+  }
+
+  .work-colors-preview {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+  }
+
+  .mini-swatch {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 1px solid var(--color-border);
+  }
+
+  .more-colors {
+    font-family: var(--font-pixel);
+    font-size: 0.375rem;
+    color: var(--color-text);
+    opacity: 0.5;
+  }
+
+  /* 空状态 */
+  .empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: var(--spacing-2xl) 0;
+  }
+
+  .empty-icon {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: var(--spacing-md);
+  }
+
+  .empty-text {
+    font-family: var(--font-pixel);
+    font-size: 0.75rem;
+    color: var(--color-text);
+    margin-bottom: var(--spacing-xs);
+  }
+
+  .empty-hint {
+    font-size: 0.875rem;
+    color: var(--color-text);
+    opacity: 0.6;
+    margin: 0;
+  }
+
+  /* 侧边栏 */
+  .community-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+
+  @media (min-width: 1024px) {
+    .community-sidebar {
+      position: sticky;
+      top: 80px;
+    }
+  }
+
+  .sidebar-card {
+    background-color: var(--color-white);
+    border: var(--border-width) solid var(--color-border);
+    box-shadow: 3px 3px 0 var(--color-border);
+    padding: var(--spacing-md);
+  }
+
+  .sidebar-title {
+    font-family: var(--font-pixel);
+    font-size: 0.625rem;
+    color: var(--color-text);
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-xs);
+    border-bottom: 2px dashed var(--color-border);
+  }
+
+  /* 分享CTA */
+  .share-cta-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md);
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    font-family: var(--font-pixel);
+    font-size: 0.625rem;
+    text-decoration: none;
+    border: var(--border-width) solid var(--color-border);
+    box-shadow: 4px 4px 0 var(--color-border);
+    transition: all 0.1s;
+    width: 100%;
+  }
+
+  .share-cta-btn:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 var(--color-border);
+    color: var(--color-white);
+  }
+
+  .cta-icon {
+    font-size: 1.2em;
+  }
+
+  /* 话题列表 */
+  .topic-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
+  .topic-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .topic-link {
+    font-family: var(--font-pixel);
+    font-size: 0.5rem;
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .topic-link:hover {
+    color: var(--color-secondary);
+  }
+
+  .topic-count {
+    font-family: var(--font-pixel);
+    font-size: 0.375rem;
+    color: var(--color-text);
+    opacity: 0.5;
+  }
+
+  /* 公告列表 */
+  .notice-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
+  .notice-item {
+    display: flex;
+    gap: var(--spacing-sm);
+    align-items: flex-start;
+  }
+
+  .notice-date {
+    font-family: var(--font-pixel);
+    font-size: 0.375rem;
+    color: var(--color-primary);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .notice-text {
+    font-size: 0.8125rem;
+    color: var(--color-text);
+    line-height: 1.4;
+  }
+
+  /* 规则列表 */
+  .rules-list {
+    padding-left: var(--spacing-lg);
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+  }
+
+  .rules-list li {
+    font-size: 0.8125rem;
+    color: var(--color-text);
+    line-height: 1.6;
+  }
+
+  /* 底部CTA */
+  .cta-section {
+    padding: var(--spacing-2xl) 0;
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+    text-align: center;
+  }
+
+  .cta-content {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .cta-title {
+    font-family: var(--font-pixel);
+    font-size: clamp(1.25rem, 3vw, 1.75rem);
+    color: var(--color-white);
+    margin-bottom: var(--spacing-md);
+  }
+
+  .cta-desc {
+    font-size: 1rem;
+    color: var(--color-white);
+    opacity: 0.9;
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .cta-btn {
+    background-color: var(--color-accent) !important;
+    color: var(--color-text) !important;
+    font-size: 0.75rem !important;
+    padding: var(--spacing-sm) var(--spacing-xl) !important;
+    text-decoration: none;
+    display: inline-block;
+  }
+</style>

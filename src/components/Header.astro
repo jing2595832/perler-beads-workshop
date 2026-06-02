@@ -1,119 +1,78 @@
 ---
-import LanguageSwitcher from './LanguageSwitcher';
+import LanguageSwitcher from './LanguageSwitcher.tsx';
 
 export interface Props {
-  currentLang?: 'zh' | 'en' | 'ja';
-  activeNav?: 'home' | 'patterns' | 'design' | 'tutorials' | 'community';
+  activeNav?: string;
 }
 
-const { 
-  currentLang = 'zh',
-  activeNav = 'home'
-} = Astro.props;
+const { activeNav = '' } = Astro.props;
 
-const navData = {
-  zh: {
-    siteName: '拼豆豆工坊',
-    nav: [
-      { id: 'home', label: '首页', href: '/' },
-      { id: 'patterns', label: '图纸库', href: '/patterns' },
-      { id: 'design', label: '设计工具', href: '/design' },
-      { id: 'tutorials', label: '教程', href: '/tutorials' },
-      { id: 'community', label: '社区', href: '/community' }
-    ]
-  },
-  en: {
-    siteName: 'Perler Workshop',
-    nav: [
-      { id: 'home', label: 'Home', href: '/' },
-      { id: 'patterns', label: 'Patterns', href: '/patterns' },
-      { id: 'design', label: 'Designer', href: '/design' },
-      { id: 'tutorials', label: 'Tutorials', href: '/tutorials' },
-      { id: 'community', label: 'Community', href: '/community' }
-    ]
-  },
-  ja: {
-    siteName: 'ビーズ工房',
-    nav: [
-      { id: 'home', label: 'ホーム', href: '/' },
-      { id: 'patterns', label: '図案集', href: '/patterns' },
-      { id: 'design', label: 'デザイナー', href: '/design' },
-      { id: 'tutorials', label: 'チュートリアル', href: '/tutorials' },
-      { id: 'community', label: 'コミュニティ', href: '/community' }
-    ]
-  }
-};
-
-const content = navData[currentLang];
+const navLinks = [
+  { href: '/', label: '首页', labelEn: 'Home', labelJa: 'ホーム' },
+  { href: '/patterns', label: '图纸库', labelEn: 'Patterns', labelJa: '図案庫' },
+  { href: '/design', label: '设计工具', labelEn: 'Design', labelJa: 'デザイン' },
+  { href: '/tutorials', label: '教程', labelEn: 'Tutorials', labelJa: 'チュートリアル' },
+  { href: '/community', label: '社区', labelEn: 'Community', labelJa: 'コミュニティ' },
+];
 ---
 
-<header class="header">
-  <div class="container header-container">
+<header class="site-header">
+  <div class="header-container">
     <!-- Logo -->
-    <a href="/" class="logo">
-      <div class="logo-icon">
-        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- Pixel Bead Grid -->
-          <rect x="4" y="4" width="6" height="6" fill="#FF6B6B"/>
-          <rect x="12" y="4" width="6" height="6" fill="#4ECDC4"/>
-          <rect x="20" y="4" width="6" height="6" fill="#FFE66D"/>
-          <rect x="4" y="12" width="6" height="6" fill="#4ECDC4"/>
-          <rect x="12" y="12" width="6" height="6" fill="#FF6B6B"/>
-          <rect x="20" y="12" width="6" height="6" fill="#4ECDC4"/>
-          <rect x="4" y="20" width="6" height="6" fill="#FFE66D"/>
-          <rect x="12" y="20" width="6" height="6" fill="#4ECDC4"/>
-          <rect x="20" y="20" width="6" height="6" fill="#FF6B6B"/>
-        </svg>
-      </div>
-      <span class="logo-text">{content.siteName}</span>
+    <a href="/" class="logo" aria-label="拼豆豆工坊 - 返回首页">
+      <span class="logo-icon">&#x2B50;</span>
+      <span class="logo-text">拼豆豆工坊</span>
     </a>
-    
-    <!-- Navigation -->
-    <nav class="nav" aria-label="Main navigation">
+
+    <!-- Desktop Navigation -->
+    <nav class="main-nav desktop-nav" aria-label="主导航">
       <ul class="nav-list">
-        {content.nav.map((item) => (
+        {navLinks.map((link) => (
           <li class="nav-item">
-            <a 
-              href={item.href} 
-              class={`nav-link ${activeNav === item.id ? 'active' : ''}`}
-              aria-current={activeNav === item.id ? 'page' : undefined}
+            <a
+              href={link.href}
+              class:list={['nav-link', { active: activeNav === link.href || (activeNav === '' && link.href === '/') }]}
+              aria-current={activeNav === link.href || (activeNav === '' && link.href === '/') ? 'page' : undefined}
             >
-              {item.label}
+              {link.label}
             </a>
           </li>
         ))}
       </ul>
     </nav>
-    
-    <!-- Language Switcher -->
-    <div class="language-section">
-      <LanguageSwitcher currentLang={currentLang} client:load />
+
+    <!-- Header Actions -->
+    <div class="header-actions">
+      <div class="language-switcher-wrapper">
+        <LanguageSwitcher client:load />
+      </div>
+
+      <!-- Mobile Hamburger Button -->
+      <button
+        class="hamburger-btn"
+        id="hamburger-btn"
+        aria-label="打开导航菜单"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
     </div>
-    
-    <!-- Mobile Menu Button -->
-    <button 
-      class="mobile-menu-btn" 
-      aria-label="Toggle menu"
-      aria-expanded="false"
-      id="mobile-menu-toggle"
-    >
-      <span class="hamburger"></span>
-      <span class="hamburger"></span>
-      <span class="hamburger"></span>
-    </button>
   </div>
-  
-  <!-- Mobile Navigation -->
-  <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile navigation">
+
+  <!-- Mobile Navigation Menu -->
+  <nav class="mobile-nav" id="mobile-menu" aria-label="移动端导航" hidden>
     <ul class="mobile-nav-list">
-      {content.nav.map((item) => (
+      {navLinks.map((link) => (
         <li class="mobile-nav-item">
-          <a 
-            href={item.href} 
-            class={`mobile-nav-link ${activeNav === item.id ? 'active' : ''}`}
-            aria-current={activeNav === item.id ? 'page' : undefined}
+          <a
+            href={link.href}
+            class:list={['mobile-nav-link', { active: activeNav === link.href || (activeNav === '' && link.href === '/') }]}
+            aria-current={activeNav === link.href || (activeNav === '' && link.href === '/') ? 'page' : undefined}
           >
-            {item.label}
+            {link.label}
           </a>
         </li>
       ))}
@@ -121,249 +80,348 @@ const content = navData[currentLang];
   </nav>
 </header>
 
+<script>
+  // Mobile hamburger menu toggle
+  const hamburgerBtn = document.getElementById('hamburger-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+
+  if (hamburgerBtn && mobileMenu) {
+    hamburgerBtn.addEventListener('click', () => {
+      const isOpen = hamburgerBtn.getAttribute('aria-expanded') === 'true';
+
+      if (isOpen) {
+        // Close menu
+        hamburgerBtn.setAttribute('aria-expanded', 'false');
+        hamburgerBtn.setAttribute('aria-label', '打开导航菜单');
+        mobileMenu.hidden = true;
+        mobileMenu.classList.remove('open');
+        hamburgerBtn.classList.remove('open');
+        document.body.style.overflow = '';
+      } else {
+        // Open menu
+        hamburgerBtn.setAttribute('aria-expanded', 'true');
+        hamburgerBtn.setAttribute('aria-label', '关闭导航菜单');
+        mobileMenu.hidden = false;
+        mobileMenu.classList.add('open');
+        hamburgerBtn.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
+    });
+
+    // Close menu when a link is clicked
+    const mobileLinks = mobileMenu.querySelectorAll('.mobile-nav-link');
+    mobileLinks.forEach((link) => {
+      link.addEventListener('click', () => {
+        hamburgerBtn.setAttribute('aria-expanded', 'false');
+        hamburgerBtn.setAttribute('aria-label', '打开导航菜单');
+        mobileMenu.hidden = true;
+        mobileMenu.classList.remove('open');
+        hamburgerBtn.classList.remove('open');
+        document.body.style.overflow = '';
+      });
+    });
+
+    // Close menu on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && hamburgerBtn.getAttribute('aria-expanded') === 'true') {
+        hamburgerBtn.setAttribute('aria-expanded', 'false');
+        hamburgerBtn.setAttribute('aria-label', '打开导航菜单');
+        mobileMenu.hidden = true;
+        mobileMenu.classList.remove('open');
+        hamburgerBtn.classList.remove('open');
+        document.body.style.overflow = '';
+        hamburgerBtn.focus();
+      }
+    });
+  }
+</script>
+
 <style>
-  .header {
-    background-color: var(--color-white);
-    border-bottom: var(--border-width) solid var(--color-border);
+  /* ===== Header Container ===== */
+  .site-header {
     position: sticky;
     top: 0;
     z-index: 100;
-    box-shadow: 0 2px 0 rgba(44, 62, 80, 0.1);
+    background-color: var(--color-white);
+    border-bottom: var(--border-width) solid var(--color-border);
+    box-shadow: 0 4px 0 var(--color-border);
   }
-  
+
   .header-container {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 70px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--spacing-sm) var(--spacing-md);
     gap: var(--spacing-md);
   }
-  
-  /* Logo */
+
+  /* ===== Logo ===== */
   .logo {
     display: flex;
     align-items: center;
-    gap: var(--spacing-sm);
+    gap: var(--spacing-xs);
     text-decoration: none;
+    color: var(--color-text);
     flex-shrink: 0;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border: var(--border-width) solid var(--color-primary);
+    background-color: var(--color-primary);
+    box-shadow: 4px 4px 0 var(--color-border);
+    transition: all 0.1s ease;
   }
-  
+
+  .logo:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 var(--color-border);
+    background-color: var(--color-primary);
+    color: var(--color-white);
+  }
+
+  .logo:active {
+    transform: translate(4px, 4px);
+    box-shadow: 0 0 0 var(--color-border);
+  }
+
   .logo-icon {
-    width: 40px;
-    height: 40px;
-    border: 2px solid var(--color-border);
-    background-color: var(--color-white);
+    font-size: 1.25rem;
+    line-height: 1;
   }
-  
-  .logo-icon svg {
-    width: 100%;
-    height: 100%;
-    display: block;
-  }
-  
+
   .logo-text {
     font-family: var(--font-pixel);
-    font-size: 0.875rem;
-    color: var(--color-text);
-    line-height: 1.2;
+    font-size: clamp(0.5rem, 1.5vw, 0.75rem);
+    color: var(--color-white);
+    letter-spacing: 0.05em;
   }
-  
-  .logo:hover .logo-text {
-    color: var(--color-primary);
-  }
-  
-  /* Navigation */
-  .nav {
+
+  /* ===== Desktop Navigation ===== */
+  .desktop-nav {
     display: none;
   }
-  
+
   .nav-list {
     display: flex;
-    list-style: none;
+    align-items: center;
     gap: var(--spacing-xs);
+    list-style: none;
     margin: 0;
     padding: 0;
   }
-  
+
   .nav-link {
+    display: inline-block;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-family: var(--font-pixel);
+    font-size: 0.5rem;
+    color: var(--color-text);
+    text-decoration: none;
+    border: var(--border-width) solid transparent;
+    background-color: transparent;
+    transition: all 0.1s ease;
+    white-space: nowrap;
+  }
+
+  .nav-link:hover {
+    color: var(--color-white);
+    background-color: var(--color-secondary);
+    border-color: var(--color-border);
+    box-shadow: 3px 3px 0 var(--color-border);
+    transform: translate(1px, 1px);
+  }
+
+  .nav-link:active {
+    transform: translate(3px, 3px);
+    box-shadow: 0 0 0 var(--color-border);
+  }
+
+  .nav-link.active {
+    color: var(--color-white);
+    background-color: var(--color-primary);
+    border-color: var(--color-border);
+    box-shadow: 3px 3px 0 var(--color-border);
+  }
+
+  /* ===== Header Actions ===== */
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    flex-shrink: 0;
+  }
+
+  /* ===== Hamburger Button ===== */
+  .hamburger-btn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    width: 40px;
+    height: 40px;
+    padding: 8px;
+    background-color: var(--color-white);
+    border: var(--border-width) solid var(--color-border);
+    box-shadow: 3px 3px 0 var(--color-border);
+    cursor: pointer;
+    transition: all 0.1s ease;
+  }
+
+  .hamburger-btn:hover {
+    background-color: var(--color-accent);
+  }
+
+  .hamburger-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0 var(--color-border);
+  }
+
+  .hamburger-line {
+    display: block;
+    width: 20px;
+    height: 3px;
+    background-color: var(--color-text);
+    transition: all 0.2s ease;
+  }
+
+  /* Hamburger open state - X shape */
+  .hamburger-btn.open .hamburger-line:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .hamburger-btn.open .hamburger-line:nth-child(2) {
+    opacity: 0;
+  }
+
+  .hamburger-btn.open .hamburger-line:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  /* ===== Mobile Navigation ===== */
+  .mobile-nav {
+    display: none;
+    background-color: var(--color-white);
+    border-top: var(--border-width) solid var(--color-border);
+    box-shadow: 0 4px 0 var(--color-border);
+  }
+
+  .mobile-nav[hidden] {
+    display: none;
+  }
+
+  .mobile-nav.open {
+    display: block;
+    animation: slideDown 0.2s ease-out;
+  }
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .mobile-nav-list {
+    list-style: none;
+    margin: 0;
+    padding: var(--spacing-sm);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+  }
+
+  .mobile-nav-link {
     display: block;
     padding: var(--spacing-sm) var(--spacing-md);
     font-family: var(--font-pixel);
     font-size: 0.625rem;
     color: var(--color-text);
     text-decoration: none;
-    border: 2px solid transparent;
-    transition: all 0.2s ease;
-    white-space: nowrap;
-  }
-  
-  .nav-link:hover {
-    color: var(--color-primary);
-    background-color: rgba(255, 107, 107, 0.1);
-  }
-  
-  .nav-link.active {
-    color: var(--color-white);
-    background-color: var(--color-primary);
-    border-color: var(--color-border);
-    box-shadow: 2px 2px 0 var(--color-border);
-  }
-  
-  /* Language Section */
-  .language-section {
-    display: flex;
-    align-items: center;
-    margin-left: auto;
-  }
-  
-  /* Mobile Menu Button */
-  .mobile-menu-btn {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 40px;
-    height: 40px;
-    gap: 5px;
-    background-color: var(--color-white);
     border: var(--border-width) solid var(--color-border);
-    box-shadow: 2px 2px 0 var(--color-border);
-    cursor: pointer;
+    background-color: var(--color-white);
+    box-shadow: 3px 3px 0 var(--color-border);
     transition: all 0.1s ease;
+    text-align: center;
   }
-  
-  .mobile-menu-btn:hover {
-    background-color: var(--color-background);
-  }
-  
-  .mobile-menu-btn:active {
+
+  .mobile-nav-link:hover {
+    background-color: var(--color-secondary);
+    color: var(--color-white);
     transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0 var(--color-border);
+  }
+
+  .mobile-nav-link:active {
+    transform: translate(3px, 3px);
     box-shadow: 0 0 0 var(--color-border);
   }
-  
-  .hamburger {
-    display: block;
-    width: 20px;
-    height: 3px;
-    background-color: var(--color-text);
-    transition: all 0.3s ease;
-  }
-  
-  .mobile-menu-btn[aria-expanded="true"] .hamburger:nth-child(1) {
-    transform: rotate(45deg) translate(5px, 5px);
-  }
-  
-  .mobile-menu-btn[aria-expanded="true"] .hamburger:nth-child(2) {
-    opacity: 0;
-  }
-  
-  .mobile-menu-btn[aria-expanded="true"] .hamburger:nth-child(3) {
-    transform: rotate(-45deg) translate(6px, -6px);
-  }
-  
-  /* Mobile Navigation */
-  .mobile-nav {
-    display: none;
-    background-color: var(--color-white);
-    border-top: var(--border-width) solid var(--color-border);
-    border-bottom: var(--border-width) solid var(--color-border);
-  }
-  
-  .mobile-nav.open {
-    display: block;
-  }
-  
-  .mobile-nav-list {
-    list-style: none;
-    margin: 0;
-    padding: var(--spacing-md);
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-xs);
-  }
-  
-  .mobile-nav-link {
-    display: block;
-    padding: var(--spacing-md);
-    font-family: var(--font-pixel);
-    font-size: 0.75rem;
-    color: var(--color-text);
-    text-decoration: none;
-    border: 2px solid var(--color-border);
-    background-color: var(--color-white);
-    text-align: center;
-    transition: all 0.2s ease;
-  }
-  
-  .mobile-nav-link:hover {
-    background-color: var(--color-primary);
-    color: var(--color-white);
-  }
-  
+
   .mobile-nav-link.active {
     background-color: var(--color-primary);
     color: var(--color-white);
-    box-shadow: 3px 3px 0 var(--color-border);
+    border-color: var(--color-border);
   }
-  
-  /* Desktop Styles */
-  @media (min-width: 1024px) {
-    .nav {
+
+  /* ===== Desktop Breakpoint ===== */
+  @media (min-width: 768px) {
+    .desktop-nav {
       display: block;
     }
-    
-    .mobile-menu-btn {
+
+    .hamburger-btn {
       display: none;
     }
-    
+
     .mobile-nav {
       display: none !important;
     }
-    
-    .logo-text {
-      font-size: 1rem;
-    }
-  }
-  
-  @media (min-width: 768px) and (max-width: 1023px) {
-    .nav {
-      display: block;
-    }
-    
+
     .nav-link {
-      font-size: 0.5rem;
-      padding: var(--spacing-sm);
+      font-size: 0.5625rem;
     }
-    
-    .mobile-menu-btn {
-      display: none;
+
+    .header-container {
+      padding: var(--spacing-sm) var(--spacing-lg);
     }
-    
-    .mobile-nav {
-      display: none !important;
+  }
+
+  @media (min-width: 1024px) {
+    .nav-link {
+      font-size: 0.625rem;
+      padding: var(--spacing-xs) var(--spacing-md);
+    }
+
+    .nav-list {
+      gap: var(--spacing-sm);
+    }
+  }
+
+  /* ===== Focus Styles ===== */
+  .nav-link:focus-visible,
+  .mobile-nav-link:focus-visible,
+  .hamburger-btn:focus-visible,
+  .logo:focus-visible {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  /* ===== Reduced Motion ===== */
+  @media (prefers-reduced-motion: reduce) {
+    .hamburger-line,
+    .nav-link,
+    .mobile-nav-link,
+    .logo,
+    .hamburger-btn {
+      transition: none;
+    }
+
+    .mobile-nav.open {
+      animation: none;
     }
   }
 </style>
-
-<script>
-  // Mobile menu toggle
-  const menuToggle = document.getElementById('mobile-menu-toggle');
-  const mobileNav = document.getElementById('mobile-nav');
-  
-  if (menuToggle && mobileNav) {
-    menuToggle.addEventListener('click', () => {
-      const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
-      menuToggle.setAttribute('aria-expanded', (!isExpanded).toString());
-      mobileNav.classList.toggle('open');
-    });
-    
-    // Close mobile menu when clicking on a link
-    const mobileLinks = mobileNav.querySelectorAll('a');
-    mobileLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        menuToggle.setAttribute('aria-expanded', 'false');
-        mobileNav.classList.remove('open');
-      });
-    });
-  }
-</script>

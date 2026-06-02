@@ -13,13 +13,13 @@ interface Language {
 const languages: Language[] = [
   { code: 'zh', label: '中文', flag: '🇨🇳' },
   { code: 'en', label: 'English', flag: '🇬🇧' },
-  { code: 'ja', label: '日本語', flag: '🇯🇵' }
+  { code: 'ja', label: '日本語', flag: '🇯🇵' },
 ];
 
 export default function LanguageSwitcher({ currentLang = 'zh' }: LanguageSwitcherProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedLang, setSelectedLang] = useState<Language>(
-    languages.find(l => l.code === currentLang) || languages[0]
+    languages.find((l) => l.code === currentLang) || languages[0]
   );
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -35,36 +35,48 @@ export default function LanguageSwitcher({ currentLang = 'zh' }: LanguageSwitche
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Handle language change
-  const handleLanguageChange = (lang: Language) => {
-    setSelectedLang(lang);
-    setIsOpen(false);
-    
-    // Save to localStorage
-    localStorage.setItem('preferred-language', lang.code);
-    
-    // Update body data attribute
-    document.body.setAttribute('data-lang', lang.code);
-    
-    // Navigate to the same page with new language
-    const currentPath = window.location.pathname;
-    const searchParams = new URLSearchParams(window.location.search);
-    searchParams.set('lang', lang.code);
-    
-    // Reload page with new language parameter
-    window.location.href = `${currentPath}?${searchParams.toString()}`;
-  };
+  // Close dropdown on Escape key
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsOpen(false);
+      }
+    };
 
-  // Load saved language on mount
+    if (isOpen) {
+      document.addEventListener('keydown', handleEscape);
+      return () => document.removeEventListener('keydown', handleEscape);
+    }
+  }, [isOpen]);
+
+  // Load saved language preference on mount
   useEffect(() => {
     const savedLang = localStorage.getItem('preferred-language');
     if (savedLang && ['zh', 'en', 'ja'].includes(savedLang)) {
-      const lang = languages.find(l => l.code === savedLang as 'zh' | 'en' | 'ja');
+      const lang = languages.find((l) => l.code === (savedLang as 'zh' | 'en' | 'ja'));
       if (lang && lang.code !== currentLang) {
         setSelectedLang(lang);
       }
     }
   }, [currentLang]);
+
+  // Handle language change
+  const handleLanguageChange = (lang: Language) => {
+    setSelectedLang(lang);
+    setIsOpen(false);
+
+    // Save preference to localStorage
+    localStorage.setItem('preferred-language', lang.code);
+
+    // Update body data attribute
+    document.body.setAttribute('data-lang', lang.code);
+
+    // Reload page with ?lang=xx URL parameter
+    const currentPath = window.location.pathname;
+    const searchParams = new URLSearchParams(window.location.search);
+    searchParams.set('lang', lang.code);
+    window.location.href = `${currentPath}?${searchParams.toString()}`;
+  };
 
   return (
     <div className="language-switcher" ref={dropdownRef}>
@@ -73,33 +85,29 @@ export default function LanguageSwitcher({ currentLang = 'zh' }: LanguageSwitche
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
         aria-haspopup="listbox"
-        aria-label="Select language"
+        aria-label="选择语言 / Select language"
       >
         <span className="flag">{selectedLang.flag}</span>
         <span className="label">{selectedLang.label}</span>
-        <svg 
+        <svg
           className={`arrow ${isOpen ? 'open' : ''}`}
-          width="12" 
-          height="8" 
-          viewBox="0 0 12 8" 
+          width="12"
+          height="8"
+          viewBox="0 0 12 8"
           fill="none"
           aria-hidden="true"
         >
-          <path 
-            d="M1 1L6 6L11 1" 
-            stroke="currentColor" 
-            strokeWidth="2" 
+          <path
+            d="M1 1L6 6L11 1"
+            stroke="currentColor"
+            strokeWidth="2"
             strokeLinecap="square"
           />
         </svg>
       </button>
 
       {isOpen && (
-        <ul 
-          className="dropdown"
-          role="listbox"
-          aria-label="Languages"
-        >
+        <ul className="dropdown" role="listbox" aria-label="可用语言">
           {languages.map((lang) => (
             <li key={lang.code} role="option">
               <button
@@ -110,18 +118,18 @@ export default function LanguageSwitcher({ currentLang = 'zh' }: LanguageSwitche
                 <span className="flag">{lang.flag}</span>
                 <span className="label">{lang.label}</span>
                 {selectedLang.code === lang.code && (
-                  <svg 
+                  <svg
                     className="checkmark"
-                    width="14" 
-                    height="14" 
-                    viewBox="0 0 14 14" 
+                    width="14"
+                    height="14"
+                    viewBox="0 0 14 14"
                     fill="none"
                     aria-hidden="true"
                   >
-                    <path 
-                      d="M2 7L5.5 10.5L12 4" 
-                      stroke="currentColor" 
-                      strokeWidth="2" 
+                    <path
+                      d="M2 7L5.5 10.5L12 4"
+                      stroke="currentColor"
+                      strokeWidth="2"
                       strokeLinecap="square"
                     />
                   </svg>
@@ -145,21 +153,22 @@ export default function LanguageSwitcher({ currentLang = 'zh' }: LanguageSwitche
           padding: 8px 12px;
           background-color: var(--color-white);
           border: 3px solid var(--color-border);
-          box-shadow: 3px 3px 0 var(--color-border);
+          box-shadow: 4px 4px 0 var(--color-border);
           font-family: var(--font-pixel);
           font-size: 0.625rem;
           color: var(--color-text);
           cursor: pointer;
           transition: all 0.1s ease;
+          white-space: nowrap;
         }
 
         .language-btn:hover {
-          background-color: var(--color-background);
+          background-color: var(--color-accent);
         }
 
         .language-btn:active {
           transform: translate(2px, 2px);
-          box-shadow: 1px 1px 0 var(--color-border);
+          box-shadow: 2px 2px 0 var(--color-border);
         }
 
         .flag {
@@ -190,7 +199,7 @@ export default function LanguageSwitcher({ currentLang = 'zh' }: LanguageSwitche
           position: absolute;
           top: calc(100% + 8px);
           right: 0;
-          min-width: 140px;
+          min-width: 150px;
           background-color: var(--color-white);
           border: 3px solid var(--color-border);
           box-shadow: 4px 4px 0 var(--color-border);
@@ -198,10 +207,10 @@ export default function LanguageSwitcher({ currentLang = 'zh' }: LanguageSwitche
           margin: 0;
           padding: 4px;
           z-index: 1000;
-          animation: slideDown 0.15s ease-out;
+          animation: dropdownSlide 0.15s ease-out;
         }
 
-        @keyframes slideDown {
+        @keyframes dropdownSlide {
           from {
             opacity: 0;
             transform: translateY(-8px);
@@ -248,7 +257,7 @@ export default function LanguageSwitcher({ currentLang = 'zh' }: LanguageSwitche
           font-size: 0.625rem;
           color: var(--color-text);
           cursor: pointer;
-          transition: all 0.15s ease;
+          transition: all 0.1s ease;
           text-align: left;
         }
 
@@ -261,6 +270,7 @@ export default function LanguageSwitcher({ currentLang = 'zh' }: LanguageSwitche
         .dropdown-item.selected {
           background-color: var(--color-secondary);
           color: var(--color-white);
+          border-color: var(--color-border);
         }
 
         .dropdown-item .checkmark {
@@ -268,7 +278,7 @@ export default function LanguageSwitcher({ currentLang = 'zh' }: LanguageSwitche
           flex-shrink: 0;
         }
 
-        /* High contrast focus styles */
+        /* Focus styles */
         .language-btn:focus-visible,
         .dropdown-item:focus-visible {
           outline: 3px solid var(--color-accent);
